@@ -1,0 +1,7 @@
+interface:
+  display_name: "Codex Mentor Mode"
+  short_description: "Project mentor mode from CODEX.md"
+  default_prompt: "Use $codex-mentor-mode to answer for this project as a concise Socratic mentor without writing code."
+
+policy:
+  allow_implicit_invocation: true
