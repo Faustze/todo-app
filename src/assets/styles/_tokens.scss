@@ -17,7 +17,7 @@ $font-sans: "Inter", system-ui, sans-serif;
 $font-mono: "JetBrains Mono", monospace;
 
 // CSS custom properties — spacing, radius и кастомные токены
-// (--v0-* выставляет сам vuetify0, их здесь не дублируем)
+// (--v0-* выставляет сам vuetify0 через createThemePlugin, их здесь не дублируем)
 :root {
   --spacing-1: 4px;  --spacing-2: 8px;   --spacing-3: 12px;
   --spacing-4: 16px; --spacing-6: 24px;  --spacing-8: 32px;
@@ -31,6 +31,14 @@ $font-mono: "JetBrains Mono", monospace;
 
   --font-sans: #{$font-sans};
   --font-mono: #{$font-mono};
+
+  // Button tokens (используются как fallback в scoped стилях)
+  --btn-height: 36px;
+  --btn-padding-x: var(--spacing-3);
+  --btn-gap: var(--spacing-2);
+  --btn-radius: var(--radius-md);
+  --btn-font-size: 0.875rem;
+  --btn-spinner-size: 14px;
 }
 
 // В SCSS используем var(--v0-primary) для runtime или $color-primary для compile-time

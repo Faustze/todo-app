@@ -1,12 +1,12 @@
 import { defineConfig, presetWind4 } from 'unocss'
-import { colors, radius, spacing, typography } from './src/tokens'
+import { lightColors, radius, spacing, typography } from './src/tokens'
 
 export default defineConfig({
   presets: [presetWind4()],
 
   theme: {
     colors: Object.fromEntries(
-      Object.keys(colors).map(key => [key, `var(--v0-${key})`]),
+      Object.keys(lightColors).map(key => [key, `var(--v0-${key})`]),
     ),
     spacing,
     borderRadius: radius,

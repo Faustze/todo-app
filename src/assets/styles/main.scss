@@ -1,4 +1,5 @@
 // main.scss — точка входа глобальных стилей
 @use 'tokens';   // выставляет :root vars
 @use 'reset';
-// mixins не импортируем здесь — они auto-inject через nuxt.config
+@use 'button';   // централизованные стили кнопок (миксины)
+// mixins не импортируем здесь — они auto-inject через vite.config additionalData

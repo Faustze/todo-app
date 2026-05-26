@@ -1,0 +1,116 @@
+// _button.scss — централизованные стили кнопок
+// Все цвета берутся из --v0-* CSS-переменных (createThemePlugin)
+// Никаких hardcoded цветов — всё через тему
+
+@use 'sass:map';
+@use 'tokens';
+
+// ─── CSS custom properties для кнопок (runtime fallback) ───
+// Эти переменные используются как fallback если SCSS-компиляция невозможна
+// Основной путь: @include btn-flat(primary) → генерирует стили с --v0-* переменными
+
+// ─── Базовый миксин — общие стили для всех кнопок ───
+@mixin btn-base {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  height: 36px;
+  padding: 0 var(--spacing-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition:
+    opacity 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+
+  &:focus-visible {
+    outline-color: currentColor;
+  }
+
+  &:hover:not([data-disabled]) {
+    opacity: 0.88;
+  }
+
+  &:active:not([data-disabled]) {
+    transform: scale(0.97);
+  }
+
+  &[data-disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// ─── Spinner ───
+@mixin btn-spinner {
+  .btn__spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: var(--radius-full);
+    animation: btn-spin 0.6s linear infinite;
+  }
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+// ─── Варианты кнопок ───
+
+// Solid / Flat — залитый цветом
+// Использует: --v0-{color} (bg), --v0-on-{color} (text)
+@mixin btn-flat($color: primary) {
+  background-color: var(--v0-#{$color});
+  color: var(--v0-on-#{$color});
+  border-color: transparent;
+}
+
+// Outlined — контурная
+// Использует: --v0-{color} (border + text)
+@mixin btn-outlined($color: primary) {
+  background-color: transparent;
+  color: var(--v0-#{$color});
+  border-color: var(--v0-#{$color});
+}
+
+// Ghost — прозрачная с цветным текстом
+// Использует: --v0-{color} (text only)
+@mixin btn-ghost($color: primary) {
+  background-color: transparent;
+  color: var(--v0-#{$color});
+  border-color: transparent;
+}
+
+// Icon — квадратная иконочная кнопка
+// Наследует ghost-стили + особые размеры
+@mixin btn-icon($color: primary) {
+  @include btn-ghost($color);
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  justify-content: center;
+}
+
+// ─── Spinner внутри Loading sub-component ───
+@mixin btn-loading {
+  .btn__spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: var(--radius-full);
+    animation: btn-spin 0.6s linear infinite;
+  }
+}
