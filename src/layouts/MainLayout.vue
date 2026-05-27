@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import ThemeToggle from '@/components/ThemeToggle.vue'
+  import ThemeToggle from '@/components/ThemeToggle.vue'
 </script>
 
 <template>
   <div class="main-layout">
     <header class="main-layout__header">
       <div class="main-layout__brand">
-        <h1 class="main-layout__title">Todo App</h1>
         <a
           href="https://github.com/Faustze/todo-app"
           target="_blank"
@@ -53,13 +52,7 @@ import ThemeToggle from '@/components/ThemeToggle.vue'
   .main-layout__brand {
     display: flex;
     align-items: center;
-    gap: 1rem;
-  }
-
-  .main-layout__title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--v0-text);
+    gap: 0.75rem;
   }
 
   .main-layout__github {

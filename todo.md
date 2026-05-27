@@ -9,7 +9,7 @@
 
 - [x] Vuetify0 плагин с темой (light/dark), стандартный префикс `--v0-*`
 - [x] ThemeToggle (cycle + persist + ViewTransition API circle-анимация)
-- [x] MainLayout с header (logo + github-иконка + ThemeToggle), main, footer
+- [x] MainLayout с header (github-иконка + ThemeToggle), main, footer
 - [x] Vue Router 5 + вложенные маршруты
 - [x] DkButton — Button.Root (variant × size × color из ThemeColorKey)
 - [x] DkCard — Atom
@@ -29,6 +29,9 @@
 - [x] plugins: vuetify0 + todoApp (Breakpoints + Rules) + registerPlugins
 - [x] Pinia store с watch → localStorage, storeToRefs pattern
 - [x] helpers.withMessage() — русские описания ошибок валидации
+- [x] **DkLogo** — SVG логотип (T+D), в MainLayout вместо текстового заголовка
+- [x] **Поиск** — инпут по названию на pages/index.vue, searchTasks() в task-filters
+- [x] **Сортировка** — DkSortButtons (дата/приоритет, asc/desc), sortTasks() в task-filters
 
 ## Архитектура
 
@@ -44,13 +47,17 @@ TaskItem.vue → TaskList.vue → pages/index.vue
 
 ## Итерация 6 — Полировка UX
 
+- [x] **Поиск по названию** — инпут на pages/index.vue под DkToggle (storeToRefs searchQuery → searchTasks)
+- [x] **Сортировка TaskItem** — DkSortButtons: по дате createdAtUtc (asc/desc), по приоритету (asc/desc)
+- [ ] **IconStatus вместо Chip** — иконка статуса с hover tooltip (IconCircleCheck/IconLoader/IconBan)
+- [ ] **Централизованные иконки** — все Icon* через Tabler icons единообразно
+- [ ] **Цвета приоритета TaskItem** — низкий: muted текст, средний: белый текст, высокий: error-белый текст; рамка соответствует цвету
+- [ ] **IconClose для DkModal** — кнопка закрытия в модалке (Vuetify0 Dialog.Close или IconX)
 - [ ] Checkbox для быстрого переключения статуса
 - [ ] Drag'n'drop перемещение задач
 - [ ] Toast/notification для CRUD
 - [ ] Страница деталей задачи
-- [ ] Поиск, сортировка
-- [ ] Удалить EditTaskModal.vue (заглушка)
-- [ ] Удалить HelloWorld.vue (дефолтный Vite)
+- [ ] **Переписать README.md** — завтра перед коммитом
 
 ---
 
@@ -68,3 +75,5 @@ TaskItem.vue → TaskList.vue → pages/index.vue
 - [x] **Vuetify0 primitives** — Button, Single, Dialog, Atom, Input, Breakpoints
 - [x] **Responsive modal** — center desktop / bottom-sheet mobile
 - [x] **Select styling** — appearance:none, custom SVG arrow, focus state
+- [x] **Search** — инпут по названию, case-insensitive
+- [x] **Sort** — по дате и приоритету, asc/desc

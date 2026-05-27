@@ -2,7 +2,7 @@
   import type { Task } from '@/types/task'
   import DkButton from '@/components/ui/DkButton.vue'
   import { statusLabel, priorityLabel, formatDate } from '@/utils/task-display'
-import { IconEdit, IconTrash } from '@tabler/icons-vue';
+  import { IconEdit, IconTrash } from '@tabler/icons-vue';
 
   defineProps<{
     task: Task

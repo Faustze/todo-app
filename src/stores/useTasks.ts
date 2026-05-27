@@ -1,14 +1,22 @@
 import type { CreateTask, Task, TaskFilter, UpdateTask } from '@/types/task'
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
-import { countTasksByStatus, filterTasks } from '@/utils/task-filters'
+import { countTasksByStatus, filterTasks, searchTasks, sortTasks } from '@/utils/task-filters'
+import type { SortBy, SortDir } from '@/utils/task-filters'
 import { load, save } from '@/utils/tasks-helpers'
 
 export const useTasks = defineStore('tasks', () => {
   const tasks = ref<Task[]>(load())
   const filter = ref<TaskFilter>('all')
+  const searchQuery = ref('')
+  const sortBy = ref<SortBy>('date')
+  const sortDir = ref<SortDir>('desc')
 
-  const filteredTasks = computed(() => filterTasks(tasks.value, filter.value))
+  const filteredTasks = computed(() => {
+    const byStatus = filterTasks(tasks.value, filter.value)
+    const bySearch = searchTasks(byStatus, searchQuery.value)
+    return sortTasks(bySearch, sortBy.value, sortDir.value)
+  })
   const totalCount = computed(() => tasks.value.length)
   const doneCount = computed(() => countTasksByStatus(tasks.value, 'done'))
 
@@ -45,11 +53,23 @@ export const useTasks = defineStore('tasks', () => {
     filter.value = f
   }
 
+  function setSearchQuery(q: string): void {
+    searchQuery.value = q
+  }
+
+  function setSortBy(by: SortBy): void {
+    sortBy.value = by
+  }
+
+  function toggleSortDir(): void {
+    sortDir.value = sortDir.value === 'asc' ? 'desc' : 'asc'
+  }
+
   watch(tasks, (val) => save(val), { deep: true })
 
   return {
-    tasks, filter,
+    tasks, filter, searchQuery, sortBy, sortDir,
     filteredTasks, totalCount, doneCount,
-    create, update, remove, setFilter,
+    create, update, remove, setFilter, setSearchQuery, setSortBy, toggleSortDir,
   }
 })

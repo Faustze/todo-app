@@ -19,6 +19,28 @@ export function filterTasks(tasks: Task[], filter: TaskFilter): Task[] {
     : tasks.filter(task => matchesTaskFilter(task, filter))
 }
 
+export function searchTasks(tasks: Task[], query: string): Task[] {
+  if (!query.trim()) return tasks
+  const q = query.toLowerCase().trim()
+  return tasks.filter(task => task.title.toLowerCase().includes(q))
+}
+
 export function countTasksByStatus(tasks: Task[], status: Task['status']): number {
   return tasks.filter(task => task.status === status).length
+}
+
+export type SortBy = 'date' | 'priority'
+export type SortDir = 'asc' | 'desc'
+
+const PRIORITY_ORDER: Record<TaskPriority, number> = { low: 1, middle: 2, high: 3 }
+
+export function sortTasks(tasks: Task[], by: SortBy, dir: SortDir): Task[] {
+  const sorted = [...tasks]
+  const sign = dir === 'asc' ? 1 : -1
+  if (by === 'date') {
+    sorted.sort((a, b) => sign * (new Date(a.createdAtUtc).getTime() - new Date(b.createdAtUtc).getTime()))
+  } else {
+    sorted.sort((a, b) => sign * (PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]))
+  }
+  return sorted
 }

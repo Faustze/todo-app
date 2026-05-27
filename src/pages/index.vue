@@ -8,9 +8,11 @@
   import CreateTaskModal from '@/components/tasks/CreateTaskModal.vue'
   import { useTasks } from '@/stores/useTasks'
   import { FILTER_OPTIONS } from '@/utils/task-filters'
+  import DkSortButtons from '@/components/DkSortButtons.vue'
+  import { IconSearch } from '@tabler/icons-vue'
 
   const tasksStore = useTasks()
-  const { filter, totalCount, doneCount } = storeToRefs(tasksStore)
+  const { filter, searchQuery, totalCount, doneCount } = storeToRefs(tasksStore)
   const { create, setFilter } = tasksStore
 
   const createOpen = shallowRef(false)
@@ -47,6 +49,20 @@
       class="page__filter"
     />
 
+    <div class="flex flex-row gap-2">
+      <div class="page__search flex-grow-1">
+        <IconSearch class="page__search-icon" />
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Поиск по названию..."
+          class="page__search-input"
+        />
+      </div>
+      <DkSortButtons />
+    </div>
+
+
     <TaskList />
 
     <CreateTaskModal v-model="createOpen" @create="handleCreate" />
@@ -79,5 +95,40 @@
   .page__filter {
     display: flex;
     justify-content: center;
+  }
+
+  .page__search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--v0-border);
+    border-radius: 0.5rem;
+    background: var(--v0-surface);
+    transition: border-color 0.15s ease;
+  }
+
+  .page__search:focus-within {
+    border-color: var(--v0-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--v0-primary) 20%, transparent);
+  }
+
+  .page__search-icon {
+    color: var(--v0-muted);
+    flex-shrink: 0;
+  }
+
+  .page__search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: var(--v0-text);
+    font-size: 0.9375rem;
+    outline: none;
+    min-width: 0;
+  }
+
+  .page__search-input::placeholder {
+    color: var(--v0-muted);
   }
 </style>
