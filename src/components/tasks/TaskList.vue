@@ -1,7 +1,7 @@
 <script setup lang="ts">
+  import type { Task, TaskFormValues } from '@/types/task'
   import { ref, shallowRef } from 'vue'
   import { storeToRefs } from 'pinia'
-  import type { Task, TaskFormValues } from '@/types/task'
   import { useTasks } from '@/stores/useTasks'
   import TaskItem from './TaskItem.vue'
   import UpdateTaskModal from './UpdateTaskModal.vue'

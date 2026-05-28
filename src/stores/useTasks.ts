@@ -7,7 +7,7 @@ import { load, save } from '@/utils/tasks-helpers'
 
 export const useTasks = defineStore('tasks', () => {
   const tasks = ref<Task[]>(load())
-  const filter = ref<TaskFilter>('all')
+  const filter = ref<TaskFilter>('in-progress')
   const searchQuery = ref('')
   const sortBy = ref<SortBy>('date')
   const sortDir = ref<SortDir>('desc')

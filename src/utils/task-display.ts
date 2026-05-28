@@ -23,6 +23,10 @@ function priorityColor(priority: TaskPriority): TaskPriorityConfig['color'] {
   return TASK_PRIORITIES[priority]?.color ?? 'primary'
 }
 
+function priorityIcon(priority: TaskPriority): string {
+  return { high: '↑', middle: '→', low: '↓' }[priority]
+}
+
 interface TaskStatusConfig {
   label: string
   color: 'primary' | 'success' | 'error' | 'warning'
@@ -33,4 +37,4 @@ interface TaskPriorityConfig {
   color: 'primary' | 'success' | 'error' | 'warning'
 }
 
-export { statusLabel, priorityLabel, formatDate, statusColor, priorityColor }
+export { statusLabel, priorityLabel, formatDate, statusColor, priorityColor, priorityIcon }

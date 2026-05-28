@@ -1,7 +1,8 @@
 <script setup lang="ts">
-  import { Button } from '@vuetify/v0'
-  import { computed } from 'vue'
   import type { ThemeColorKey } from '@/tokens/colors'
+  import { Button } from '@vuetify/v0'
+  import { IconLoader } from '@tabler/icons-vue'
+  import { computed } from 'vue';
 
   defineOptions({ name: 'DkButton' })
 
@@ -55,18 +56,9 @@
     </Button.Content>
 
     <Button.Loading>
-      <svg class="dk-button__spinner" viewBox="0 0 24 24">
-        <circle
-          cx="12"
-          cy="12"
-          r="10"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-dasharray="32"
-          stroke-linecap="round"
-        />
-      </svg>
+      <span class="dk-button__spinner">
+        <IconLoader size="16" />
+      </span>
     </Button.Loading>
   </Button.Root>
 </template>
@@ -145,8 +137,7 @@
     position: absolute;
     inset: 0;
     margin: auto;
-    width: 1em;
-    height: 1em;
+    display: inline-flex;
     animation: spin 0.8s linear infinite;
   }
 

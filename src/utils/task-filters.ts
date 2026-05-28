@@ -1,5 +1,5 @@
 import { TASK_STATUSES } from '@/constants/taskStatuses'
-import type { Task, TaskFilter } from '@/types/task'
+import type { Task, TaskFilter, TaskPriority } from '@/types/task'
 
 export const FILTER_OPTIONS: Array<{ value: string, label: string }> = [
   { value: 'all', label: 'Все' },

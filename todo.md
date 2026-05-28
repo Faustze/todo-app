@@ -16,7 +16,7 @@
 - [x] DkToggle — Single.Root для фильтрации (defineModel + @click)
 - [x] DkModal — Dialog.Root + Dialog.Content (responsive: center / bottom-sheet)
 - [x] DkLayout — адаптивный layout (useBreakpoints)
-- [x] TaskList + TaskItem с бейджами, TransitionGroup, storeToRefs
+- [x] TaskList + TaskItem с цветными бордерами приоритета, TransitionGroup, storeToRefs
 - [x] TaskForm — Vuelidate + Input.Root/Control/Error, reactive form
   - title: required + minLength(3) + maxLength(200)
   - description: maxLength(500)
@@ -49,15 +49,20 @@ TaskItem.vue → TaskList.vue → pages/index.vue
 
 - [x] **Поиск по названию** — инпут на pages/index.vue под DkToggle (storeToRefs searchQuery → searchTasks)
 - [x] **Сортировка TaskItem** — DkSortButtons: по дате createdAtUtc (asc/desc), по приоритету (asc/desc)
-- [ ] **IconStatus вместо Chip** — иконка статуса с hover tooltip (IconCircleCheck/IconLoader/IconBan)
-- [ ] **Централизованные иконки** — все Icon* через Tabler icons единообразно
-- [ ] **Цвета приоритета TaskItem** — низкий: muted текст, средний: белый текст, высокий: error-белый текст; рамка соответствует цвету
+- [x] **IconStatus вместо Chip** — иконка статуса с hover tooltip (IconCircleCheck/IconLoader/IconBan)
+- [x] **Централизованные иконки** — все Icon* через Tabler icons единообразно
+- [x] **Цвета приоритета TaskItem** — high: error border+tint+bold, middle: warning border, low: muted border+muted title; бейдж убран
 - [ ] **IconClose для DkModal** — кнопка закрытия в модалке (Vuetify0 Dialog.Close или IconX)
+- [ ] **TaskForm** При редактировании задачи надо в полях оставлять данные которые в нее записаны, а не оставлять их пустыми. При создании задачи естественно нужно оставлять пустыми
+- [ ] Поменять цвет hover при наведении на TaskItem, сделать его более нейтральным (серым)
+- [ ] Добавить описание с text-truncate для TaskItem
+- [ ] Подумать где лучше расположить дату и время и что отображать
 - [ ] Checkbox для быстрого переключения статуса
 - [ ] Drag'n'drop перемещение задач
 - [ ] Toast/notification для CRUD
 - [ ] Страница деталей задачи
-- [ ] **Переписать README.md** — завтра перед коммитом
+- [ ] Выбрать шрифт и подобрать его размеры адаптивно
+- [ ] **Переписать README.md**
 
 ---
 

@@ -1,35 +1,36 @@
 <script setup lang="ts">
   import { Single } from '@vuetify/v0'
 
-  defineOptions({ name: 'DkToggle' })
+  defineOptions({ name: 'DkToggle', inheritAttrs: false })
 
-  const model = defineModel<string>({ default: 'all' })
+  const model = defineModel<string>({ default: 'in-progress' })
 
-  const { options = [] } = defineProps<{
+  const { options = [], class: klass } = defineProps<{
     options?: Array<{ value: string, label: string }>
+    class?: string
   }>()
 </script>
 
 <template>
-  <Single.Root v-model="model" mandatory>
-    <div class="dk-toggle">
+  <div :class="class" class="dk-toggle">
+    <Single.Root v-model="model">
       <Single.Item
         v-for="option in options"
         :key="option.value"
         :value="option.value"
-        v-slot="{ isSelected }"
+        v-slot="{ isSelected, attrs }"
       >
         <button
           type="button"
           class="dk-toggle__option"
           :data-active="isSelected || undefined"
-          @click="model = option.value"
+          v-bind="attrs"
         >
           {{ option.label }}
         </button>
       </Single.Item>
-    </div>
-  </Single.Root>
+    </Single.Root>
+  </div>
 </template>
 
 <style scoped>

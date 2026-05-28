@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import type { Task } from '@/types/task'
   import DkButton from '@/components/ui/DkButton.vue'
-  import { statusLabel, priorityLabel, formatDate } from '@/utils/task-display'
-  import { IconEdit, IconTrash } from '@tabler/icons-vue';
+  import { formatDate } from '@/utils/task-display'
+  import { IconEdit, IconTrash } from '@tabler/icons-vue'
+  import IconStatus from './IconStatus.vue'
 
   defineProps<{
     task: Task
@@ -18,21 +19,15 @@
 <template>
   <div class="task-item" :class="`task-item--${task.priority}`">
     <div class="task-item__info">
-      <span class="task-item__number">{{ number }}.</span>
+      <IconStatus :task-id="task.id" :status="task.status" />
       <div class="task-item__content">
         <h4 class="task-item__title">{{ task.title }}</h4>
         <div class="task-item__meta">
-          <span class="task-item__badge" :data-status="task.status">
-            {{ statusLabel(task.status) }}
-          </span>
-          <span class="task-item__badge task-item__badge--priority" :data-priority="task.priority">
-            {{ priorityLabel(task.priority) }}
-          </span>
           <span class="task-item__date">{{ formatDate(task.createdAtUtc) }}</span>
         </div>
       </div>
     </div>
-   <div class="task-item__actions">
+    <div class="task-item__actions">
       <DkButton variant="ghost" color="warning" size="sm" @click="emit('edit', task)">
         <IconEdit size="20" />
       </DkButton>
@@ -48,7 +43,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.75rem 1rem;
+    padding: 0.3rem 1rem;
     background: var(--v0-surface);
     border: 1px solid var(--v0-border);
     border-radius: 0.75rem;
@@ -59,16 +54,28 @@
     border-color: var(--v0-primary);
   }
 
+  /* High: red border-left + light red tint */
   .task-item--high {
     border-left: 3px solid var(--v0-error);
+    background: color-mix(in srgb, var(--v0-error) 4%, var(--v0-surface));
   }
 
+  .task-item--high .task-item__title {
+    font-weight: 600;
+  }
+
+  /* Middle: yellow border-left */
   .task-item--middle {
     border-left: 3px solid var(--v0-warning);
   }
 
+  /* Low: gray border-left, muted title */
   .task-item--low {
-    border-left: 3px solid var(--v0-primary);
+    border-left: 3px solid var(--v0-muted);
+  }
+
+  .task-item--low .task-item__title {
+    color: var(--v0-muted);
   }
 
   .task-item__info {
@@ -77,14 +84,6 @@
     gap: 0.75rem;
     min-width: 0;
     flex: 1;
-  }
-
-  .task-item__number {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--v0-muted);
-    min-width: 1.5rem;
-    text-align: right;
   }
 
   .task-item__content {
@@ -108,45 +107,6 @@
     align-items: center;
     gap: 0.5rem;
     flex-wrap: wrap;
-  }
-
-  .task-item__badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.125rem 0.5rem;
-    border-radius: 0.25rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-  }
-
-  .task-item__badge[data-status="in-progress"] {
-    background: color-mix(in srgb, var(--v0-warning) 15%, transparent);
-    color: var(--v0-warning);
-  }
-
-  .task-item__badge[data-status="done"] {
-    background: color-mix(in srgb, var(--v0-success) 15%, transparent);
-    color: var(--v0-success);
-  }
-
-  .task-item__badge[data-status="cancel"] {
-    background: color-mix(in srgb, var(--v0-error) 15%, transparent);
-    color: var(--v0-error);
-  }
-
-  .task-item__badge--priority[data-priority="low"] {
-    background: color-mix(in srgb, var(--v0-primary) 10%, transparent);
-    color: var(--v0-primary);
-  }
-
-  .task-item__badge--priority[data-priority="middle"] {
-    background: color-mix(in srgb, var(--v0-warning) 10%, transparent);
-    color: var(--v0-warning);
-  }
-
-  .task-item__badge--priority[data-priority="high"] {
-    background: color-mix(in srgb, var(--v0-error) 10%, transparent);
-    color: var(--v0-error);
   }
 
   .task-item__date {

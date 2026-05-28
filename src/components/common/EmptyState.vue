@@ -1,14 +1,12 @@
 <script setup lang="ts">
+  import { IconEraser } from '@tabler/icons-vue'
+
   defineOptions({ name: 'EmptyState' })
 </script>
 
 <template>
   <div class="empty-state">
-    <svg class="empty-state__icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-      <line x1="9" y1="9" x2="15" y2="15" />
-      <line x1="15" y1="9" x2="9" y2="15" />
-    </svg>
+    <IconEraser size="48" class="empty-state__icon" />
     <h3 class="empty-state__title">Задач пока нет</h3>
     <p class="empty-state__hint">Создайте первую задачу, чтобы начать</p>
     <slot />

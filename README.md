@@ -1,91 +1,92 @@
 # todo-app
 
-Минимальное клиентское Todo-приложение на Vue с UI на Vuetify-zero, полным CRUD и хранением данных в localStorage.
-Бэкенд не используется, поэтому архитектура строится вокруг одной сущности Task и локального слоя состояния.
-
-## Цели проекта
-
-Сделать учебное, но аккуратно организованное приложение, в котором есть:
-
-- создание задачи;
-- просмотр списка и деталей задачи;
-- редактирование задачи;
-- удаление задачи с подтверждением;
-- сохранение данных между перезагрузками через localStorage;
-- компонентный подход и работа с формами и валидацией.
+Клиентское Todo-приложение на Vue 3 + TypeScript с UI на Vuetify0 (headless), полным CRUD, валидацией форм и хранением в localStorage.
 
 ## Технологический стек
 
-- Vue 3
-- Vuetify-zero (UI-компоненты)
-- Vuelidate (валидация форм)
-- localStorage (персистентность данных)
-- JavaScript или TypeScript (на выбор команды)
+- **Vue 3.5** + **TypeScript 6.0**
+- **Vuetify0** (`@vuetify/v0`) — headless компоненты (Button, Single, Dialog, Input, Atom)
+- **Pinia 3** — управление состоянием, `storeToRefs` для реактивности
+- **Vuelidate 2** — валидация форм с русскими описаниями ошибок
+- **Tabler Icons** — все иконки централизованно через `@tabler/icons-vue`
+- **UnoCSS** — утилитарные стили
+- **SCSS** — компонентные стили
+- **Vite 8** — сборка
 
-## Архитектурные решения
+## Функциональность
 
-### 1) Модель данных: только Task (MVP без User)
+- **CRUD** — создание, чтение, редактирование, удаление задач
+- **Валидация** — title: required + minLength(3) + maxLength(200), description: maxLength(500)
+- **Фильтрация** по статусу (Все / В процессе / Выполнено / Отменено)
+- **Поиск** по названию (case-insensitive)
+- **Сортировка** по дате и приоритету (asc/desc)
+- **Персистентность** — localStorage с автоматической синхронизацией
+- **Темы** — light/dark с переключением и ViewTransition API
+- **Статус задачи** — быстрый toggle in-progress ↔ done через checkbox (IconSquare/IconSquareCheck)
+- **Приоритеты** — визуальная иерархия через цветные бордеры (high=red+tint+bold, middle=warning, low=muted)
 
-В первой версии не используем сущность User, чтобы не усложнять структуру без бэкенда и настоящих внешних ключей.
+## Модель данных
 
-Поля Task:
+```typescript
+interface Task {
+  id: string              // crypto.randomUUID()
+  title: string           // обязательное, 3-200 символов
+  description?: string    // опционально, до 500 символов
+  status: 'in-progress' | 'done' | 'cancel'
+  priority: 'low' | 'middle' | 'high'
+  createdAtUtc: Date
+  updatedAtUtc: Date
+}
+```
 
-- id: уникальный идентификатор (UID)
-- name: строка, обязательное поле
-- description: строка, опционально
-- tag: строка, опционально
-- status: enum (например: todo, in_progress, done)
-- createdAtUtc: дата создания
-- updatedAtUtc: дата последнего обновления
+## Архитектура
 
-### 2) Правила CRUD
+```
+pages/index.vue
+  ├── DkToggle (фильтрация по статусу)
+  ├── SearchInput (поиск по названию)
+  ├── DkSortButtons (сортировка)
+  ├── TaskList (TransitionGroup)
+  │   └── TaskItem
+  │       ├── IconStatus (checkbox toggle + IconBan)
+  │       ├── title + date
+  │       └── DkButton (edit/delete)
+  ├── CreateTaskModal
+  ├── UpdateTaskModal
+  └── DeleteTaskModal
 
-- Create: создаем новую задачу с новым id и датами createdAtUtc / updatedAtUtc.
-- Read: читаем список задач и детальную информацию по выбранной задаче.
-- Update: обновляем существующую задачу без изменения id, обязательно обновляем updatedAtUtc.
-- Delete: удаляем задачу после подтверждения в модальном окне.
+Pinia Store (useTasks)
+  ├── tasks: ref<Task[]>
+  ├── filter: ref<TaskFilter> (default: 'in-progress')
+  ├── searchQuery: ref<string>
+  ├── sortBy/sortDir
+  ├── filteredTasks: computed (filter → search → sort)
+  └── watch(tasks) → localStorage
+```
 
-### 3) LocalStorage стратегия
+## Ключевые решения
 
-- Храним массив задач по одному ключу, например `todo_app_tasks`.
-- При старте приложения читаем localStorage и инициализируем состояние.
-- После любой операции Create/Update/Delete сразу синхронизируем состояние обратно в localStorage.
-- При ошибке чтения/парсинга используем безопасный fallback: пустой список задач.
+### Vuetify0 паттерны
+- **Single.Root** (DkToggle) — `inheritAttrs: false` + explicit `class` prop, `v-bind="attrs"` на Single.Item обязателен для клика
+- **Button.Root** — `loading` через `Button.Loading` sub-component, кастомный spinner через `IconLoader`
+- **Dialog.Root** — без Teleport, внутренний portal
 
-### 4) Компонентная структура
+### Иконки
+- Все иконки через Tabler Icons: `IconBrandGithub`, `IconEraser`, `IconLoader`, `IconSquare`, `IconSquareCheck`, `IconBan`, `IconEdit`, `IconTrash`, `IconSearch`, `IconChevronDown`
+- Inline SVG в шаблонах полностью заменены на Tabler-компоненты
 
-- Отдельные компоненты для формы, списка, карточки и модального подтверждения.
-- Компонент формы переиспользуется и для Create, и для Update.
-- Удаление оформлено универсальным модальным компонентом с `v-model` и событием подтверждения.
+### Визуальная иерархия приоритетов
+| Приоритет | Бордер | Фон | Текст |
+|---|---|---|---|
+| High | `3px solid error` | `error 4% tint` | `font-weight: 600` |
+| Middle | `3px solid warning` | — | normal |
+| Low | `3px solid muted` | — | `color: muted` |
 
-## Поток данных
+## Запуск
 
-1. Пользователь инициирует действие через UI-компонент.
-2. Компонент вызывает метод из `useTasks`.
-3. `useTasks` изменяет in-memory состояние задач.
-4. Обновленное состояние синхронизируется через `taskStorageService` в localStorage.
-5. UI реактивно перерисовывается.
-
-## Валидация форм (минимальные правила)
-
-Для `name`:
-
-- обязательно;
-- минимальная длина (например, 3 символа).
-
-Для `description`:
-
-- опционально;
-- ограничение максимальной длины.
-
-Для `tag`:
-
-- опционально;
-- нормализация пробелов/регистра по правилам проекта.
-
-## Нефункциональные требования
-
-- Идентификатор задачи неизменен после создания.
-- Удаление всегда требует явного подтверждения.
-- Приложение корректно работает после перезагрузки страницы.
-- Пустые и ошибочные состояния отображаются явно и дружелюбно.
+```bash
+npm install
+npm run dev      # dev-сервер
+npm run build    # production сборка
+npm run preview  # просмотр билда
+```
