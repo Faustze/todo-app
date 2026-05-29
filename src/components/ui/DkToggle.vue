@@ -37,7 +37,7 @@
   .dk-toggle {
     display: inline-flex;
     background: var(--v0-border);
-    border-radius: 0.5rem;
+    border-radius: 0.3rem;
     padding: 0.25rem;
     gap: 0.25rem;
   }

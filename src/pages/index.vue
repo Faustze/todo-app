@@ -12,7 +12,7 @@
   import { IconSearch } from '@tabler/icons-vue'
 
   const tasksStore = useTasks()
-  const { filter, searchQuery, totalCount, doneCount } = storeToRefs(tasksStore)
+  const { filter, searchQuery } = storeToRefs(tasksStore)
   const { create, setFilter } = tasksStore
 
   const createOpen = shallowRef(false)
@@ -34,10 +34,6 @@
 <template>
   <div class="page">
     <header class="page__header">
-      <div class="page__stats">
-        <span class="page__stat">Всего: {{ totalCount }}</span>
-        <span class="page__stat">Выполнено: {{ doneCount }}</span>
-      </div>
       <DkButton variant="solid" @click="createOpen = true">
         + Новая задача
       </DkButton>
@@ -62,8 +58,12 @@
       <DkSortButtons />
     </div>
 
-
     <TaskList />
+
+    <!-- <div class="page__stats">
+      <span class="page__stat">Всего: {{ totalCount }}</span>
+      <span class="page__stat">Выполнено: {{ doneCount }}</span>
+    </div> -->
 
     <CreateTaskModal v-model="createOpen" @create="handleCreate" />
   </div>
@@ -79,7 +79,7 @@
   .page__header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: end;
   }
 
   .page__stats {

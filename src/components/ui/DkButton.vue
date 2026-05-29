@@ -57,9 +57,12 @@
 
     <Button.Loading>
       <span class="dk-button__spinner">
-        <IconLoader size="16" />
+        <IconLoader size="22" />
       </span>
     </Button.Loading>
+    <Button.HiddenInput>
+
+    </Button.HiddenInput>
   </Button.Root>
 </template>
 
@@ -92,6 +95,9 @@
     background: transparent;
     color: var(--v0-text);
     border: none;
+    &:hover {
+      color: var(--v0-primary)
+    }
   }
 
   .dk-button--custom[data-variant="solid"] {

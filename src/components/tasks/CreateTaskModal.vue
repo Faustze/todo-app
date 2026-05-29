@@ -25,6 +25,7 @@
   <DkModal v-model="open">
     <div class="create-task-modal">
       <h2 class="create-task-modal__title">Новая задача</h2>
+      <hr class="border-gray-500 rounded-lg my-4" />
       <TaskForm mode="create" @submit="handleSubmit" @cancel="handleCancel" />
     </div>
   </DkModal>

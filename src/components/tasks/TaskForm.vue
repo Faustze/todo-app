@@ -9,6 +9,9 @@
     helpers,
   } from '@vuelidate/validators'
   import { reactive } from 'vue'
+  import DkButton from '../ui/DkButton.vue'
+  import { IconX } from '@tabler/icons-vue'
+  import { Select } from '@vuetify/v0'
 
   defineOptions({ name: 'TaskForm' })
 
@@ -122,11 +125,43 @@
     <div class="task-form__row">
       <div class="task-form__field">
         <label class="task-form__label">Статус</label>
-        <select v-model="form.status" class="task-form__select">
-          <option v-for="opt in statusOptions" :key="opt.value" :value="opt.value">
-            {{ opt.label }}
-          </option>
-        </select>
+        <Select.Root v-model="form.status">
+          <Select.Activator class="flex items-center justify-between w-full px-3 py-3 rounded-md border border-divider bg-surface text-on-surface text-sm cursor-pointer focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2">
+            <Select.Value v-slot="{ selectedValue }">
+              {{ selectedValue }}
+            </Select.Value>
+
+            <Select.Placeholder class="text-on-surface-variant">Выберите статус...</Select.Placeholder>
+
+            <Select.Cue v-slot="{ isOpen }" class="text-xs opacity-50">
+              {{ isOpen ? '&#x25B4;' : '&#x25BE;' }}
+            </Select.Cue>
+          </Select.Activator>
+
+          <Select.Content class="p-1 rounded-lg border border-divider bg-surface shadow-lg" :style="{ minWidth: 'anchor-size(width)' }">
+            <Select.Item
+              v-for="item in statusOptions"
+              :id="item.value"
+              :key="item.value"
+              :value="item.value"
+            >
+              <template #default="{ isSelected, isHighlighted }">
+                <div
+                  class="px-3 py-2 rounded-md cursor-default select-none text-sm"
+                  :class="[
+                    isHighlighted
+                      ? 'bg-primary text-on-primary'
+                      : isSelected
+                        ? 'text-primary font-medium'
+                        : 'text-on-surface hover:bg-surface-variant',
+                  ]"
+                >
+                  {{ item.label }}
+                </div>
+              </template>
+            </Select.Item>
+          </Select.Content>
+        </Select.Root>
       </div>
 
       <div class="task-form__field">
@@ -140,12 +175,18 @@
     </div>
 
     <div class="task-form__actions">
-      <button type="button" class="task-form__btn task-form__btn--ghost" @click="emit('cancel')">
+      <DkButton variant="ghost" @click="emit('cancel')">
         Отмена
-      </button>
-      <button type="submit" class="task-form__btn task-form__btn--primary">
+      </DkButton>
+      <DkButton variant="solid" @click="handleSubmit">
         {{ mode === 'create' ? 'Создать' : 'Сохранить' }}
-      </button>
+      </DkButton>
+    </div>
+
+    <div class="task-form__close_btn">
+      <DkButton variant="ghost" @click="emit('cancel')">
+        <IconX size="22" />
+      </DkButton>
     </div>
   </form>
 </template>
@@ -254,6 +295,12 @@
     justify-content: flex-end;
     gap: 0.75rem;
     margin-top: 0.5rem;
+  }
+
+  .task-form__close_btn {
+    position: absolute;
+    top: 1rem;
+    right: 0.5rem;
   }
 
   .task-form__btn {

@@ -8,7 +8,6 @@
     <header class="main-layout__header">
       <div class="main-layout__brand">
         <a
-          href="https://github.com/Faustze/todo-app"
           target="_blank"
           rel="noopener noreferrer"
           class="main-layout__github"

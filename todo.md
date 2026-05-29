@@ -52,14 +52,16 @@ TaskItem.vue → TaskList.vue → pages/index.vue
 - [x] **IconStatus вместо Chip** — иконка статуса с hover tooltip (IconCircleCheck/IconLoader/IconBan)
 - [x] **Централизованные иконки** — все Icon* через Tabler icons единообразно
 - [x] **Цвета приоритета TaskItem** — high: error border+tint+bold, middle: warning border, low: muted border+muted title; бейдж убран
-- [ ] **IconClose для DkModal** — кнопка закрытия в модалке (Vuetify0 Dialog.Close или IconX)
-- [ ] **TaskForm** При редактировании задачи надо в полях оставлять данные которые в нее записаны, а не оставлять их пустыми. При создании задачи естественно нужно оставлять пустыми
-- [ ] Поменять цвет hover при наведении на TaskItem, сделать его более нейтральным (серым)
-- [ ] Добавить описание с text-truncate для TaskItem
-- [ ] Подумать где лучше расположить дату и время и что отображать
-- [ ] Checkbox для быстрого переключения статуса
+- [x] **IconClose для DkModal** — кнопка закрытия в модалке (Vuetify0 Dialog.Close или IconX)
+- [x] **TaskForm** При редактировании задачи надо в полях оставлять данные которые в нее записаны, а не оставлять их пустыми. При создании задачи естественно нужно оставлять пустыми
+- [x] Поменять цвет hover при наведении на TaskItem, сделать его более нейтральным (серым)
+- [x] Подумать где лучше расположить дату и время и что отображать
+- [x] Checkbox для быстрого переключения статуса
+- [ ] Поменять DkToggle на button (filter icon) -> Treeview with checkboxes
+- [ ] Поменять magnifer icon для search input
+- [ ] Сделать удобный v0-Select для модалок (Create, Update). Как поменять иконку. border цвет?
 - [ ] Drag'n'drop перемещение задач
-- [ ] Toast/notification для CRUD
+- [ ] Toast/notification для CRUD (Snackbar v0)
 - [ ] Страница деталей задачи
 - [ ] Выбрать шрифт и подобрать его размеры адаптивно
 - [ ] **Переписать README.md**

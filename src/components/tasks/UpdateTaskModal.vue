@@ -38,7 +38,9 @@
   <DkModal v-model="open">
     <div class="update-task-modal">
       <h2 class="update-task-modal__title">Редактирование задачи</h2>
+      <hr class="border-gray-500 rounded-lg my-4" />
       <TaskForm
+        :key="task?.id"
         mode="edit"
         :initial="initialValues"
         @submit="handleSubmit"
