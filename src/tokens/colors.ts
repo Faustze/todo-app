@@ -1,5 +1,6 @@
 export const lightColors = {
   'primary': '#6366f1',
+  'primary-dark': '#4f46e5',
   'secondary': '#3b82f6',
   'error': '#ef4444',
   'info': '#0ea5e9',
@@ -12,7 +13,7 @@ export const lightColors = {
   'text': '#0f172a',
   'muted': '#64748b',
   'border': '#e2e8f0',
-  'divider': '#e2e8f0',
+  'divider': '#c8d2de',
   'on-primary': '#ffffff',
   'on-secondary': '#ffffff',
   'on-error': '#ffffff',
@@ -26,6 +27,7 @@ export const lightColors = {
 
 export const darkColors = {
   'primary': '#818cf8',
+  'primary-dark': '#6366f1',
   'secondary': '#fbbf24',
   'error': '#f87171',
   'info': '#38bdf8',
@@ -33,12 +35,12 @@ export const darkColors = {
   'warning': '#fb923c',
   'background': '#18181b',
   'surface': '#1f1f23',
-  'surface-tint': '#2a2a2a',
+  'surface-tint': '#b3b3b3',
   'surface-variant': '#1e1e1e',
   'text': '#f1f5f9',
   'muted': '#94a3b8',
   'border': '#2e2e32',
-  'divider': '#404040',
+  'divider': '#5a5a5a',
   'on-primary': '#1a1a1a',
   'on-secondary': '#1a1a1a',
   'on-error': '#1a1a1a',

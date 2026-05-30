@@ -1,29 +1,3 @@
-<script setup lang="ts">
-  import type { TaskStatus } from '@/types/task'
-  import { TASK_STATUSES } from '@/constants/taskStatuses'
-  import { useTasks } from '@/stores/useTasks'
-  import {
-    IconSquare,
-    IconSquareCheck,
-    IconBan,
-  } from '@tabler/icons-vue'
-
-  const props = defineProps<{
-    taskId: string
-    status: TaskStatus
-  }>()
-
-  const tasksStore = useTasks()
-
-  function toggleStatus() {
-    if (props.status === 'in-progress') {
-      tasksStore.update(props.taskId, { status: 'done' })
-    } else if (props.status === 'done') {
-      tasksStore.update(props.taskId, { status: 'in-progress' })
-    }
-  }
-</script>
-
 <template>
   <!-- in-progress / done: checkbox -->
   <button
@@ -55,6 +29,33 @@
     <IconBan size="24" color="var(--v0-error)" />
   </span>
 </template>
+
+<script setup lang="ts">
+import type { TaskStatus } from '@/types/task'
+import {
+  IconBan,
+  IconSquare,
+  IconSquareCheck,
+} from '@tabler/icons-vue'
+import { TASK_STATUSES } from '@/constants/taskStatuses'
+import { useTasks } from '@/stores/useTasks'
+
+const props = defineProps<{
+  taskId: string
+  status: TaskStatus
+}>()
+
+const tasksStore = useTasks()
+
+function toggleStatus() {
+  if (props.status === 'in-progress') {
+    tasksStore.update(props.taskId, { status: 'done' })
+  }
+  else if (props.status === 'done') {
+    tasksStore.update(props.taskId, { status: 'in-progress' })
+  }
+}
+</script>
 
 <style scoped>
   .status-control {

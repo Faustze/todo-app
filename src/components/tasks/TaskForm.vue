@@ -1,89 +1,12 @@
-<script setup lang="ts">
-  import { Input } from '@vuetify/v0'
-  import type { TaskFormValues, TaskStatus, TaskPriority } from '@/types/task'
-  import { useVuelidate } from '@vuelidate/core'
-  import {
-    required,
-    maxLength,
-    minLength,
-    helpers,
-  } from '@vuelidate/validators'
-  import { reactive } from 'vue'
-  import DkButton from '../ui/DkButton.vue'
-  import { IconX } from '@tabler/icons-vue'
-  import { Select } from '@vuetify/v0'
-
-  defineOptions({ name: 'TaskForm' })
-
-  const props = defineProps<{
-    mode: 'create' | 'edit'
-    initial?: Partial<TaskFormValues>
-  }>()
-
-  const emit = defineEmits<{
-    submit: [values: TaskFormValues]
-    cancel: []
-  }>()
-
-  const form = reactive<TaskFormValues>({
-    title: props.initial?.title ?? '',
-    description: props.initial?.description ?? '',
-    status: props.initial?.status ?? 'in-progress',
-    priority: props.initial?.priority ?? 'middle',
-  })
-
-  const rules = {
-    title: {
-      required: helpers.withMessage(
-        'Поле обязательно для заполнения',
-        required,
-      ),
-      minLength: helpers.withMessage(
-        'Название должно содержать минимум 3 символа',
-        minLength(3),
-      ),
-      maxLength: helpers.withMessage(
-        ({ $params }) => `Название не должно превышать ${$params.max} символов`,
-        maxLength(200),
-      ),
-    },
-    description: {
-      maxLength: helpers.withMessage(
-        ({ $params }) => `Описание не должно превышать ${$params.max} символов`,
-        maxLength(500),
-      ),
-    },
-  }
-
-  const v$ = useVuelidate(rules, form)
-
-  const statusOptions: Array<{ value: TaskStatus, label: string }> = [
-    { value: 'in-progress', label: 'В процессе' },
-    { value: 'done', label: 'Выполнено' },
-    { value: 'cancel', label: 'Отменено' },
-  ]
-
-  const priorityOptions: Array<{ value: TaskPriority, label: string }> = [
-    { value: 'low', label: 'Низкий' },
-    { value: 'middle', label: 'Средний' },
-    { value: 'high', label: 'Высокий' },
-  ]
-
-  async function handleSubmit() {
-    const valid = await v$.value.$validate()
-    if (!valid) return
-    emit('submit', { ...form })
-  }
-</script>
-
 <template>
   <form class="task-form" @submit.prevent="handleSubmit">
     <Input.Root
+      :id="titleId"
       v-model="form.title"
       :error="v$.title.$error"
       class="task-form__field"
     >
-      <label class="task-form__label">Название</label>
+      <label :for="titleId" class="task-form__label">Название</label>
       <Input.Control
         class="task-form__input"
         placeholder="Введите название задачи"
@@ -100,11 +23,12 @@
     </Input.Root>
 
     <Input.Root
+      :id="descId"
       v-model="form.description"
       :error="v$.description.$error"
       class="task-form__field"
     >
-      <label class="task-form__label">Описание</label>
+      <label :for="descId" class="task-form__label">Описание</label>
       <Input.Control
         as="textarea"
         class="task-form__textarea"
@@ -124,72 +48,116 @@
 
     <div class="task-form__row">
       <div class="task-form__field">
-        <label class="task-form__label">Статус</label>
-        <Select.Root v-model="form.status">
-          <Select.Activator class="flex items-center justify-between w-full px-3 py-3 rounded-md border border-divider bg-surface text-on-surface text-sm cursor-pointer focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2">
-            <Select.Value v-slot="{ selectedValue }">
-              {{ selectedValue }}
-            </Select.Value>
-
-            <Select.Placeholder class="text-on-surface-variant">Выберите статус...</Select.Placeholder>
-
-            <Select.Cue v-slot="{ isOpen }" class="text-xs opacity-50">
-              {{ isOpen ? '&#x25B4;' : '&#x25BE;' }}
-            </Select.Cue>
-          </Select.Activator>
-
-          <Select.Content class="p-1 rounded-lg border border-divider bg-surface shadow-lg" :style="{ minWidth: 'anchor-size(width)' }">
-            <Select.Item
-              v-for="item in statusOptions"
-              :id="item.value"
-              :key="item.value"
-              :value="item.value"
-            >
-              <template #default="{ isSelected, isHighlighted }">
-                <div
-                  class="px-3 py-2 rounded-md cursor-default select-none text-sm"
-                  :class="[
-                    isHighlighted
-                      ? 'bg-primary text-on-primary'
-                      : isSelected
-                        ? 'text-primary font-medium'
-                        : 'text-on-surface hover:bg-surface-variant',
-                  ]"
-                >
-                  {{ item.label }}
-                </div>
-              </template>
-            </Select.Item>
-          </Select.Content>
-        </Select.Root>
+        <label :for="statusId" class="task-form__label">Статус</label>
+        <UiSelect v-model="form.status" :options="statusOptions" placeholder="Выберите статус..." />
       </div>
-
       <div class="task-form__field">
-        <label class="task-form__label">Приоритет</label>
-        <select v-model="form.priority" class="task-form__select">
-          <option v-for="opt in priorityOptions" :key="opt.value" :value="opt.value">
-            {{ opt.label }}
-          </option>
-        </select>
+        <label :for="priorityId" class="task-form__label">Приоритет</label>
+        <UiSelect v-model="form.priority" :options="priorityOptions" placeholder="Выберите приоритет..." />
       </div>
     </div>
 
     <div class="task-form__actions">
-      <DkButton variant="ghost" @click="emit('cancel')">
+      <UiButton variant="ghost" @click="emit('cancel')">
         Отмена
-      </DkButton>
-      <DkButton variant="solid" @click="handleSubmit">
+      </UiButton>
+      <UiButton variant="solid" @click="handleSubmit">
         {{ mode === 'create' ? 'Создать' : 'Сохранить' }}
-      </DkButton>
+      </UiButton>
     </div>
 
     <div class="task-form__close_btn">
-      <DkButton variant="ghost" @click="emit('cancel')">
+      <UiButton variant="ghost" @click="emit('cancel')">
         <IconX size="22" />
-      </DkButton>
+      </UiButton>
     </div>
   </form>
 </template>
+
+<script setup lang="ts">
+import type { TaskFormValues, TaskPriority, TaskStatus } from '@/types/task'
+import { IconX } from '@tabler/icons-vue'
+import { useVuelidate } from '@vuelidate/core'
+import {
+  helpers,
+  maxLength,
+  minLength,
+  required,
+} from '@vuelidate/validators'
+import { Input } from '@vuetify/v0'
+import { computed, reactive } from 'vue'
+import UiButton from '@/components/ui/UiButton.vue'
+import UiSelect from '../ui/UiSelect.vue'
+
+defineOptions({ name: 'TaskForm' })
+
+const props = defineProps<{
+  mode: 'create' | 'edit'
+  initial?: Partial<TaskFormValues>
+}>()
+
+const emit = defineEmits<{
+  submit: [values: TaskFormValues]
+  cancel: []
+}>()
+
+const uid = computed(() => `task-form-${props.mode}`)
+const titleId = computed(() => `${uid.value}-title`)
+const descId = computed(() => `${uid.value}-description`)
+const priorityId = computed(() => `${uid.value}-priority`)
+const statusId = computed(() => `${uid.value}-status-label`)
+
+const form = reactive<TaskFormValues>({
+  title: props.initial?.title ?? '',
+  description: props.initial?.description ?? '',
+  status: props.initial?.status ?? 'in-progress',
+  priority: props.initial?.priority ?? 'middle',
+})
+
+const rules = {
+  title: {
+    required: helpers.withMessage(
+      'Поле обязательно для заполнения',
+      required,
+    ),
+    minLength: helpers.withMessage(
+      'Название должно содержать минимум 3 символа',
+      minLength(3),
+    ),
+    maxLength: helpers.withMessage(
+      ({ $params }) => `Название не должно превышать ${$params.max} символов`,
+      maxLength(200),
+    ),
+  },
+  description: {
+    maxLength: helpers.withMessage(
+      ({ $params }) => `Описание не должно превышать ${$params.max} символов`,
+      maxLength(500),
+    ),
+  },
+}
+
+const v$ = useVuelidate(rules, form)
+
+const statusOptions: Array<{ id: TaskStatus, label: string }> = [
+  { id: 'in-progress', label: 'В процессе' },
+  { id: 'done', label: 'Выполнено' },
+  { id: 'cancel', label: 'Отменено' },
+]
+
+const priorityOptions: Array<{ id: TaskPriority, label: string }> = [
+  { id: 'low', label: 'Низкий' },
+  { id: 'middle', label: 'Средний' },
+  { id: 'high', label: 'Высокий' },
+]
+
+async function handleSubmit() {
+  const valid = await v$.value.$validate()
+  if (!valid)
+    return
+  emit('submit', { ...form })
+}
+</script>
 
 <style scoped>
   .task-form {
@@ -283,6 +251,18 @@
   .task-form__select option {
     background: var(--v0-surface);
     color: var(--v0-text);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .task-form__error {

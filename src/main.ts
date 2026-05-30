@@ -1,11 +1,11 @@
-import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { createApp } from 'vue'
 import { registerPlugins } from '@/plugins'
-import 'virtual:uno.css'
-import '@unocss/reset/normalize.css'
-
 import App from './App.vue'
-import '@/assets/styles/style.scss'
+import 'virtual:uno.css'
+
+import '@unocss/reset/normalize.css'
+import '@/assets/styles/style.css'
 
 const app = createApp(App)
 const pinia = createPinia()

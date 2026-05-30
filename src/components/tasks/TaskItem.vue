@@ -1,42 +1,44 @@
-<script setup lang="ts">
-  import type { Task } from '@/types/task'
-  import DkButton from '@/components/ui/DkButton.vue'
-  import { formatDate } from '@/utils/task-display'
-  import { IconEdit, IconTrash } from '@tabler/icons-vue'
-  import IconStatus from './IconStatus.vue'
-
-  defineProps<{
-    task: Task
-    number: number
-  }>()
-
-  const emit = defineEmits<{
-    edit: [task: Task]
-    delete: [id: string, title: string]
-  }>()
-</script>
-
 <template>
   <div class="task-item" :class="`task-item--${task.priority}`">
     <div class="task-item__info">
       <IconStatus :task-id="task.id" :status="task.status" />
       <div class="task-item__content">
-        <h4 class="task-item__title">{{ task.title }}</h4>
+        <h4 class="task-item__title">
+          {{ task.title }}
+        </h4>
       </div>
     </div>
     <div class="task-item__meta">
       <span class="task-item__date">{{ formatDate(task.createdAtUtc) }}</span>
     </div>
     <div class="task-item__actions">
-      <DkButton variant="ghost" color="warning" size="sm" @click="emit('edit', task)">
+      <UiButton variant="icon" color="warning" size="sm" @click="emit('edit', task)">
         <IconEdit size="20" />
-      </DkButton>
-      <DkButton variant="outline" color="error" size="sm" @click="emit('delete', task.id, task.title)">
+      </UiButton>
+      <UiButton variant="icon" color="error" size="sm" @click="emit('delete', task.id, task.title)">
         <IconTrash size="20" />
-      </DkButton>
+      </UiButton>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import type { Task } from '@/types/task'
+import { IconEdit, IconTrash } from '@tabler/icons-vue'
+import UiButton from '@/components/ui/UiButton.vue'
+import { formatDate } from '@/utils/task-display'
+import IconStatus from './IconStatus.vue'
+
+defineProps<{
+  task: Task
+  number: number
+}>()
+
+const emit = defineEmits<{
+  edit: [task: Task]
+  delete: [id: string, title: string]
+}>()
+</script>
 
 <style scoped>
   .task-item {
@@ -47,17 +49,18 @@
     padding: 0.3rem 1rem;
     background: var(--v0-surface);
     border: 1px solid var(--v0-border);
-    border-radius: 0.3rem;
+    border-radius: 0.2rem;
     transition: border-color 0.15s ease;
   }
 
   .task-item:hover {
     border-color: var(--v0-primary);
+    cursor: pointer;
   }
 
   /* High priority — bold text, error tint, colored left border */
   .task-item--high {
-    border-left: 3px solid var(--v0-error);
+    border-left: 1px solid var(--v0-error);
     background: color-mix(in srgb, var(--v0-error) 8%, var(--v0-surface));
   }
   .task-item--high .task-item__title {
@@ -67,7 +70,7 @@
 
   /* Middle priority — default, subtle primary border-left */
   .task-item--middle {
-    border-left: 3px solid var(--v0-primary);
+    border-left: 1px solid var(--v0-primary);
   }
   .task-item--middle .task-item__title {
     font-weight: 500;
@@ -76,7 +79,7 @@
 
   /* Low priority — muted, fades into background */
   .task-item--low {
-    border-left: 3px solid var(--v0-muted);
+    border-left: 1px solid var(--v0-muted);
   }
   .task-item--low .task-item__title {
     font-weight: 400;
@@ -134,7 +137,6 @@
 
   .task-item__actions {
     display: flex;
-    gap: 0.5rem;
     flex-shrink: 0;
   }
 </style>

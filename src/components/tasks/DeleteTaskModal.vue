@@ -1,24 +1,5 @@
-<script setup lang="ts">
-  import DkModal from '@/components/ui/DkModal.vue'
-  import DkButton from '@/components/ui/DkButton.vue'
-  import { IconAlertTriangle, IconX } from '@tabler/icons-vue'
-
-  defineOptions({ name: 'DeleteTaskModal' })
-
-  const open = defineModel<boolean>({ default: false })
-
-  const props = defineProps<{
-    taskTitle?: string
-  }>()
-
-  const emit = defineEmits<{
-    confirm: []
-    cancel: []
-  }>()
-</script>
-
 <template>
-  <DkModal v-model="open">
+  <UiModal v-model="open">
     <div class="delete-modal">
       <div class="delete-modal__header">
         <div class="delete-modal__icon">
@@ -35,25 +16,44 @@
         Это действие нельзя отменить
       </p>
       <div class="delete-modal__actions">
-        <DkButton variant="ghost" @click="emit('cancel')">
+        <UiButton variant="ghost" @click="emit('cancel')">
           Отмена
-        </DkButton>
-        <DkButton variant="solid" color="error" @click="emit('confirm')">
+        </UiButton>
+        <UiButton variant="solid" color="error" @click="emit('confirm')">
           Удалить
-        </DkButton>
+        </UiButton>
         <button
           class="delete-modal__close-btn"
-          @click="emit('cancel')"
           type="button"
+          @click="emit('cancel')"
         >
           <IconX size="22" />
         </button>
       </div>
     </div>
-  </DkModal>
+  </UiModal>
 </template>
 
-<style scoped lang="scss">
+<script setup lang="ts">
+import { IconAlertTriangle, IconX } from '@tabler/icons-vue'
+import UiButton from '@/components/ui/UiButton.vue'
+import UiModal from '@/components/ui/UiModal.vue'
+
+defineOptions({ name: 'DeleteTaskModal' })
+
+defineProps<{
+  taskTitle?: string
+}>()
+
+const emit = defineEmits<{
+  confirm: []
+  cancel: []
+}>()
+
+const open = defineModel<boolean>({ default: false })
+</script>
+
+<style scoped>
   .delete-modal {
     padding: 1rem;
     position: relative;
@@ -76,8 +76,8 @@
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background: rgba($color-error, 0.12);
-    color: $color-error;
+    background: color-mix(in srgb, var(--v0-error) 12%, transparent);
+    color: var(--v0-error);
     flex-shrink: 0;
   }
 

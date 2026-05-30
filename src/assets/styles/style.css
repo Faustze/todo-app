@@ -28,7 +28,6 @@ html {
   color: var(--v0-text);
 }
 
-// Theme change animation
 @media (prefers-reduced-motion: no-preference) {
   html:not(.no-sliding) [slide-enter],
   html:not(.no-sliding) .slide-enter,

@@ -1,26 +1,23 @@
-<script setup lang="ts">
-  import { Dialog } from '@vuetify/v0'
-  import { useBreakpoints } from '@vuetify/v0'
-  import { toRef } from 'vue'
-
-  defineOptions({ name: 'DkModal' })
-
-  const open = defineModel<boolean>({ default: false })
-
-  const breakpoints = useBreakpoints()
-  const mobile = toRef(() => breakpoints.smAndDown.value)
-</script>
-
 <template>
   <Dialog.Root v-model="open">
-    <Dialog.Content class="dk-modal" :data-mobile="mobile || undefined">
+    <Dialog.Content class="ui-modal" :data-mobile="mobile || undefined">
       <slot />
     </Dialog.Content>
   </Dialog.Root>
 </template>
 
+<script setup lang="ts">
+import { Dialog, useBreakpoints } from '@vuetify/v0'
+import { toRef } from 'vue'
+
+const open = defineModel<boolean>({ default: false })
+
+const breakpoints = useBreakpoints()
+const mobile = toRef(() => breakpoints.smAndDown.value)
+</script>
+
 <style>
-  .dk-modal {
+  .ui-modal {
     position: fixed;
     top: 0%;
     left: 0%;
@@ -34,7 +31,7 @@
     overflow: hidden;
   }
 
-  .dk-modal[data-mobile] {
+  .ui-modal[data-mobile] {
     top: auto;
     bottom: 0;
     left: 0;

@@ -1,51 +1,3 @@
-<script setup lang="ts">
-  import type { Task, TaskFormValues } from '@/types/task'
-  import { ref, shallowRef } from 'vue'
-  import { storeToRefs } from 'pinia'
-  import { useTasks } from '@/stores/useTasks'
-  import TaskItem from './TaskItem.vue'
-  import UpdateTaskModal from './UpdateTaskModal.vue'
-  import DeleteTaskModal from './DeleteTaskModal.vue'
-  import EmptyState from '@/components/common/EmptyState.vue'
-
-  const tasksStore = useTasks()
-  const { filteredTasks } = storeToRefs(tasksStore)
-  const { update, remove } = tasksStore
-
-  const editingTask = shallowRef<Task | null>(null)
-  const editOpen = ref(false)
-
-  const deletingTask = shallowRef<{ id: string, title: string } | null>(null)
-  const deleteOpen = ref(false)
-
-  function onEdit(task: Task) {
-    editingTask.value = task
-    editOpen.value = true
-  }
-
-  function onDelete(id: string, title: string) {
-    deletingTask.value = { id, title }
-    deleteOpen.value = true
-  }
-
-  function handleUpdate(id: string, values: TaskFormValues) {
-    update(id, {
-      title: values.title,
-      description: values.description,
-      priority: values.priority,
-      status: values.status,
-    })
-  }
-
-  function handleConfirmDelete() {
-    if (deletingTask.value) {
-      remove(deletingTask.value.id)
-    }
-    deleteOpen.value = false
-    deletingTask.value = null
-  }
-</script>
-
 <template>
   <div class="task-list">
     <TransitionGroup name="task" tag="div" class="task-list__items">
@@ -60,7 +12,9 @@
     </TransitionGroup>
 
     <EmptyState v-if="filteredTasks.length === 0">
-      <p class="text-muted">Задачи не найдены</p>
+      <p class="text-muted">
+        Задачи не найдены
+      </p>
     </EmptyState>
 
     <UpdateTaskModal
@@ -77,6 +31,54 @@
     />
   </div>
 </template>
+
+<script setup lang="ts">
+import type { Task, TaskFormValues } from '@/types/task'
+import { storeToRefs } from 'pinia'
+import { ref, shallowRef } from 'vue'
+import EmptyState from '@/components/common/EmptyState.vue'
+import { useTasks } from '@/stores/useTasks'
+import DeleteTaskModal from './DeleteTaskModal.vue'
+import TaskItem from './TaskItem.vue'
+import UpdateTaskModal from './UpdateTaskModal.vue'
+
+const tasksStore = useTasks()
+const { filteredTasks } = storeToRefs(tasksStore)
+const { update, remove } = tasksStore
+
+const editingTask = shallowRef<Task | null>(null)
+const editOpen = ref(false)
+
+const deletingTask = shallowRef<{ id: string, title: string } | null>(null)
+const deleteOpen = ref(false)
+
+function onEdit(task: Task) {
+  editingTask.value = task
+  editOpen.value = true
+}
+
+function onDelete(id: string, title: string) {
+  deletingTask.value = { id, title }
+  deleteOpen.value = true
+}
+
+function handleUpdate(id: string, values: TaskFormValues) {
+  update(id, {
+    title: values.title,
+    description: values.description,
+    priority: values.priority,
+    status: values.status,
+  })
+}
+
+function handleConfirmDelete() {
+  if (deletingTask.value) {
+    remove(deletingTask.value.id)
+  }
+  deleteOpen.value = false
+  deletingTask.value = null
+}
+</script>
 
 <style scoped>
   .task-list {

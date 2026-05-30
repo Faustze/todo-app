@@ -1,61 +1,31 @@
-<script setup lang="ts">
-  import type { TaskFormValues, TaskFilter } from '@/types/task'
-  import { shallowRef, computed } from 'vue'
-  import { storeToRefs } from 'pinia'
-  import DkButton from '@/components/ui/DkButton.vue'
-  import DkToggle from '@/components/ui/DkToggle.vue'
-  import TaskList from '@/components/tasks/TaskList.vue'
-  import CreateTaskModal from '@/components/tasks/CreateTaskModal.vue'
-  import { useTasks } from '@/stores/useTasks'
-  import { FILTER_OPTIONS } from '@/utils/task-filters'
-  import DkSortButtons from '@/components/DkSortButtons.vue'
-  import { IconSearch } from '@tabler/icons-vue'
-
-  const tasksStore = useTasks()
-  const { filter, searchQuery } = storeToRefs(tasksStore)
-  const { create, setFilter } = tasksStore
-
-  const createOpen = shallowRef(false)
-
-  const activeFilter = computed({
-    get: () => filter.value,
-    set: (v: string) => setFilter(v as TaskFilter),
-  })
-
-  function handleCreate(values: TaskFormValues): void {
-    create({
-      title: values.title,
-      description: values.description,
-      priority: values.priority,
-    })
-  }
-</script>
-
 <template>
   <div class="page">
     <header class="page__header">
-      <DkButton variant="solid" @click="createOpen = true">
-        + Новая задача
-      </DkButton>
+      <UiButton variant="solid" @click="createOpen = true">
+        <IconPlus size="20" />
+      </UiButton>
     </header>
 
-    <DkToggle
+    <UiToggle
       v-model="activeFilter"
       :options="FILTER_OPTIONS"
       class="page__filter"
     />
 
     <div class="flex flex-row gap-2">
-      <div class="page__search flex-grow-1">
-        <IconSearch class="page__search-icon" />
+      <div class="page__search grow">
+        <label for="task-search" class="sr-only">Поиск по названию</label>
+        <IconMagnifer class="page__search-icon" />
         <input
+          id="task-search"
           v-model="searchQuery"
           type="text"
+          name="search"
           placeholder="Поиск по названию..."
           class="page__search-input"
-        />
+        >
       </div>
-      <DkSortButtons />
+      <UiSortButtons />
     </div>
 
     <TaskList />
@@ -68,6 +38,40 @@
     <CreateTaskModal v-model="createOpen" @create="handleCreate" />
   </div>
 </template>
+
+<script setup lang="ts">
+import type { TaskFilter, TaskFormValues } from '@/types/task'
+import { IconPlus } from '@tabler/icons-vue'
+import { storeToRefs } from 'pinia'
+import { computed, shallowRef } from 'vue'
+import IconMagnifer from '@/assets/icons/IconMagnifer.vue'
+import CreateTaskModal from '@/components/tasks/CreateTaskModal.vue'
+import TaskList from '@/components/tasks/TaskList.vue'
+import UiButton from '@/components/ui/UiButton.vue'
+import UiToggle from '@/components/ui/UiToggle.vue'
+import UiSortButtons from '@/components/UiSortButtons.vue'
+import { useTasks } from '@/stores/useTasks'
+import { FILTER_OPTIONS } from '@/utils/task-filters'
+
+const tasksStore = useTasks()
+const { filter, searchQuery } = storeToRefs(tasksStore)
+const { create, setFilter } = tasksStore
+
+const createOpen = shallowRef(false)
+
+const activeFilter = computed({
+  get: () => filter.value,
+  set: (v: string) => setFilter(v as TaskFilter),
+})
+
+function handleCreate(values: TaskFormValues): void {
+  create({
+    title: values.title,
+    description: values.description,
+    priority: values.priority,
+  })
+}
+</script>
 
 <style scoped>
   .page {
@@ -103,7 +107,7 @@
     gap: 0.5rem;
     padding: 0.5rem 0.75rem;
     border: 1px solid var(--v0-border);
-    border-radius: 0.5rem;
+    border-radius: 0.2rem;
     background: var(--v0-surface);
     transition: border-color 0.15s ease;
   }
@@ -130,5 +134,17 @@
 
   .page__search-input::placeholder {
     color: var(--v0-muted);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 </style>

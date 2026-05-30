@@ -1,46 +1,30 @@
-<script setup lang="ts">
-  import { Input } from '@vuetify/v0'
-  import type { RuleInput } from '@vuetify/v0'
-
-  defineOptions({ name: 'DkInput' })
-
-  const { label, description, type = 'text', placeholder, rules } = defineProps<{
-    label?: string
-    description?: string
-    type?: string
-    placeholder?: string
-    rules?: RuleInput[]
-  }>()
-
-  const model = defineModel<string>({ default: '' })
-</script>
-
 <template>
   <Input.Root
+    :id="fieldId"
+    v-slot="{ isValid }"
     v-model="model"
     :label="label"
     :type="type"
     :rules="rules"
-    v-slot="{ isValid }"
   >
-    <div class="dk-input" :data-error="isValid === false || undefined">
-      <label v-if="label" class="dk-input__label">
+    <div class="ui-input" :data-error="isValid === false || undefined">
+      <label v-if="label" :for="fieldId" class="ui-input__label">
         {{ label }}
       </label>
 
       <Input.Control
-        class="dk-input__control"
+        class="ui-input__control"
         :placeholder="placeholder"
       />
 
-      <Input.Description v-if="description && isValid !== false" class="dk-input__description">
+      <Input.Description v-if="description && isValid !== false" class="ui-input__description">
         {{ description }}
       </Input.Description>
 
       <Input.Error v-slot="{ errors: messages }">
         <span
           v-if="messages.length"
-          class="dk-input__error"
+          class="ui-input__error"
         >
           {{ messages[0] }}
         </span>
@@ -49,20 +33,37 @@
   </Input.Root>
 </template>
 
+<script setup lang="ts">
+import type { RuleInput } from '@vuetify/v0'
+import { Input } from '@vuetify/v0'
+import { useId } from 'vue'
+
+const { label, description, type = 'text', placeholder, rules } = defineProps<{
+  label?: string
+  description?: string
+  type?: string
+  placeholder?: string
+  rules?: RuleInput[]
+}>()
+
+const model = defineModel<string>({ default: '' })
+const fieldId = useId()
+</script>
+
 <style scoped>
-  .dk-input {
+  .ui-input {
     display: flex;
     flex-direction: column;
     gap: 0.375rem;
   }
 
-  .dk-input__label {
+  .ui-input__label {
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--v0-text);
   }
 
-  .dk-input__control {
+  .ui-input__control {
     padding: 0.625rem 0.75rem;
     border: 1px solid var(--v0-border);
     border-radius: 0.5rem;
@@ -73,21 +74,21 @@
     transition: border-color 0.15s ease;
   }
 
-  .dk-input__control:focus {
+  .ui-input__control:focus {
     border-color: var(--v0-primary);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--v0-primary) 20%, transparent);
   }
 
-  .dk-input[data-error] .dk-input__control {
+  .ui-input[data-error] .ui-input__control {
     border-color: var(--v0-error);
   }
 
-  .dk-input__description {
+  .ui-input__description {
     font-size: 0.8125rem;
     color: var(--v0-muted);
   }
 
-  .dk-input__error {
+  .ui-input__error {
     font-size: 0.8125rem;
     color: var(--v0-error);
   }
