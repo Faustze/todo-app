@@ -1,31 +1,21 @@
 <template>
   <div class="page">
-    <header class="page__header">
-      <UiButton variant="solid" @click="createOpen = true">
-        <IconPlus size="20" />
-      </UiButton>
+    <header class="flex flex-row gap-p">
+      <UiSortButtons />
+      <div class="ml-auto" />
+      <FilterSelect v-model="activeFilter" :options="FILTER_OPTIONS" placeholder="Выберите статус..." />
     </header>
 
-    <UiToggle
-      v-model="activeFilter"
-      :options="FILTER_OPTIONS"
-      class="page__filter"
-    />
-
     <div class="flex flex-row gap-2">
-      <div class="page__search grow">
+      <div class="grow">
         <label for="task-search" class="sr-only">Поиск по названию</label>
-        <IconMagnifer class="page__search-icon" />
-        <input
-          id="task-search"
-          v-model="searchQuery"
-          type="text"
-          name="search"
-          placeholder="Поиск по названию..."
-          class="page__search-input"
-        >
+        <SearchInput v-model="searchQuery" :loading="loading" :count="1" placeholder="Поиск по названию..." />
       </div>
-      <UiSortButtons />
+      <div class="flex ml-auto" style="height: 42px;">
+        <UiButton variant="outline" size="sm" @click="createOpen = true">
+          <IconPlus size="20" />
+        </UiButton>
+      </div>
     </div>
 
     <TaskList />
@@ -43,17 +33,18 @@
 import type { TaskFilter, TaskFormValues } from '@/types/task'
 import { IconPlus } from '@tabler/icons-vue'
 import { storeToRefs } from 'pinia'
-import { computed, shallowRef } from 'vue'
-import IconMagnifer from '@/assets/icons/IconMagnifer.vue'
-import CreateTaskModal from '@/components/tasks/CreateTaskModal.vue'
-import TaskList from '@/components/tasks/TaskList.vue'
+import { computed, ref, shallowRef } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
-import UiToggle from '@/components/ui/UiToggle.vue'
-import UiSortButtons from '@/components/UiSortButtons.vue'
+import TaskList from '@/components/views/list/TaskList.vue'
+import FilterSelect from '@/components/views/list/ui/filter/FilterSelect.vue'
+import CreateTaskModal from '@/components/views/list/ui/modals/CreateTaskModal.vue'
+import SearchInput from '@/components/views/list/ui/SearchInput.vue'
+import UiSortButtons from '@/components/views/list/ui/sort/UiSortButtons.vue'
 import { useTasks } from '@/stores/useTasks'
 import { FILTER_OPTIONS } from '@/utils/task-filters'
 
 const tasksStore = useTasks()
+const loading = ref(false)
 const { filter, searchQuery } = storeToRefs(tasksStore)
 const { create, setFilter } = tasksStore
 
@@ -77,13 +68,7 @@ function handleCreate(values: TaskFormValues): void {
   .page {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .page__header {
-    display: flex;
-    align-items: center;
-    justify-content: end;
+    gap: 1rem;
   }
 
   .page__stats {
@@ -94,11 +79,6 @@ function handleCreate(values: TaskFormValues): void {
   .page__stat {
     font-size: 0.875rem;
     color: var(--v0-muted);
-  }
-
-  .page__filter {
-    display: flex;
-    justify-content: center;
   }
 
   .page__search {

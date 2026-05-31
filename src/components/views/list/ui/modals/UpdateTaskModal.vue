@@ -20,7 +20,7 @@
 import type { Task, TaskFormValues } from '@/types/task'
 import { computed } from 'vue'
 import UiModal from '@/components/ui/UiModal.vue'
-import TaskForm from './TaskForm.vue'
+import TaskForm from '@/components/views/list/ui/forms/TaskForm.vue'
 
 defineOptions({ name: 'UpdateTaskModal' })
 

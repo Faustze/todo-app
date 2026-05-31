@@ -7,10 +7,7 @@
       class="task-form__field"
     >
       <label :for="titleId" class="task-form__label">Название</label>
-      <Input.Control
-        class="task-form__input"
-        placeholder="Введите название задачи"
-      />
+      <Input.Control class="task-form__input" placeholder="Введите название задачи" />
       <Input.Error>
         <span
           v-for="error of v$.title.$errors"
@@ -87,7 +84,7 @@ import {
 import { Input } from '@vuetify/v0'
 import { computed, reactive } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
-import UiSelect from '../ui/UiSelect.vue'
+import UiSelect from '@/components/ui/UiSelect.vue'
 
 defineOptions({ name: 'TaskForm' })
 
@@ -197,7 +194,6 @@ async function handleSubmit() {
 
   .task-form__input[data-focused] {
     border-color: var(--v0-primary);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--v0-primary) 20%, transparent);
   }
 
   .task-form__input[data-state="invalid"] {
@@ -219,38 +215,10 @@ async function handleSubmit() {
 
   .task-form__textarea[data-focused] {
     border-color: var(--v0-primary);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--v0-primary) 20%, transparent);
   }
 
   .task-form__textarea[data-state="invalid"] {
     border-color: var(--v0-error);
-  }
-
-  .task-form__select {
-    padding: 0.625rem 2.5rem 0.625rem 0.88rem;
-    border: 1px solid var(--v0-border);
-    border-radius: 0.5rem;
-    background: var(--v0-surface);
-    color: var(--v0-text);
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.15s ease;
-    appearance: none;
-    width: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-  }
-
-  .task-form__select:focus {
-    border-color: var(--v0-primary);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--v0-primary) 20%, transparent);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23818cf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  }
-
-  .task-form__select option {
-    background: var(--v0-surface);
-    color: var(--v0-text);
   }
 
   .sr-only {
@@ -281,35 +249,5 @@ async function handleSubmit() {
     position: absolute;
     top: 1rem;
     right: 0.5rem;
-  }
-
-  .task-form__btn {
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    font-weight: 500;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-
-  .task-form__btn--ghost {
-    background: transparent;
-    color: var(--v0-muted);
-    border: 1px solid var(--v0-border);
-  }
-
-  .task-form__btn--ghost:hover {
-    background: var(--v0-surface);
-    color: var(--v0-text);
-  }
-
-  .task-form__btn--primary {
-    background: var(--v0-primary);
-    color: var(--v0-on-primary);
-    border: none;
-  }
-
-  .task-form__btn--primary:hover {
-    opacity: 0.9;
   }
 </style>

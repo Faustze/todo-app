@@ -24,7 +24,7 @@
   <span
     v-else
     class="status-control status-control--static"
-    :title="TASK_STATUSES[status].label"
+    :title="TASK_STATUSES[status].id"
   >
     <IconBan size="24" color="var(--v0-error)" />
   </span>

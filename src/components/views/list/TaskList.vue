@@ -8,6 +8,7 @@
         :number="index + 1"
         @edit="onEdit"
         @delete="onDelete"
+        @show="onShow"
       />
     </TransitionGroup>
 
@@ -36,12 +37,14 @@
 import type { Task, TaskFormValues } from '@/types/task'
 import { storeToRefs } from 'pinia'
 import { ref, shallowRef } from 'vue'
-import EmptyState from '@/components/common/EmptyState.vue'
+import { useRouter } from 'vue-router'
+import EmptyState from '@/components/views/list/EmptyState.vue'
+import DeleteTaskModal from '@/components/views/list/ui/modals/DeleteTaskModal.vue'
+import UpdateTaskModal from '@/components/views/list/ui/modals/UpdateTaskModal.vue'
 import { useTasks } from '@/stores/useTasks'
-import DeleteTaskModal from './DeleteTaskModal.vue'
 import TaskItem from './TaskItem.vue'
-import UpdateTaskModal from './UpdateTaskModal.vue'
 
+const router = useRouter()
 const tasksStore = useTasks()
 const { filteredTasks } = storeToRefs(tasksStore)
 const { update, remove } = tasksStore
@@ -60,6 +63,10 @@ function onEdit(task: Task) {
 function onDelete(id: string, title: string) {
   deletingTask.value = { id, title }
   deleteOpen.value = true
+}
+
+function onShow(id: string) {
+  router.push({ path: `/task/${id}` })
 }
 
 function handleUpdate(id: string, values: TaskFormValues) {

@@ -26,35 +26,41 @@ npm run preview  # просмотр билда
 
 - **CRUD** — создание, чтение, редактирование, удаление задач
 - **Валидация** — title: required + minLength(3) + maxLength(200), description: maxLength(500)
-- **Фильтрация** по статусу (Все / В процессе / Выполнено / Отменено)
+- **Фильтрация** по статусу (Все / В процессе / Выполнено / Отменено) через выпадающий список
 - **Поиск** по названию (case-insensitive)
 - **Сортировка** по дате и приоритету (asc/desc)
-- **Персистентность** — localStorage с автоматической синхронизацией
+- **Персистентность** — localStorage с автоматической синхронизацией (pinia-plugin-persistedstate)
 - **Темы** — light/dark с переключением и ViewTransition API
 - **Статус задачи** — быстрый toggle in-progress ↔ done через checkbox (IconSquare/IconSquareCheck)
-- **Приоритеты** — визуальная иерархия через цветные бордеры (high=red+tint+bold, middle=warning, low=muted)
+- **Приоритеты** — визуальная иерархия через цветные бордеры (high=red+tint+bold, middle=primary, low=muted)
+- **Детальная страница** — /task/:id с полной информацией о задаче
 
 ## Архитектура
 
 ```txt
 pages/index.vue
-  ├── UiToggle (фильтрация по статусу)
+  ├── FilterSelect (вложенный фильтр по статусу)
   ├── SearchInput (поиск по названию)
   ├── UiSortButtons (сортировка)
   ├── TaskList (TransitionGroup)
   │   └── TaskItem
   │       ├── IconStatus (checkbox toggle + IconBan)
-  │       ├── title + date
-  │       └── UiButton (edit/delete)
+  │       ├── title + TaskItemActions (edit/delete/show)
+  │       └── приоритетные стили (high/middle/low)
   ├── CreateTaskModal
   ├── UpdateTaskModal
   └── DeleteTaskModal
 
-Pinia Store (useTasks)
+pages/tasks/[id].vue (детальная страница)
+  ├── BackButton (router.back)
+  └── TaskView (статус, приоритет, описание, даты)
+
+Pinia Store (useTasks + persist)
   ├── tasks: ref<Task[]>
   ├── filter: ref<TaskFilter> (default: 'in-progress')
   ├── searchQuery: ref<string>
   ├── sortBy/sortDir
   ├── filteredTasks: computed (filter → search → sort)
-  └── watch(tasks) → localStorage
+  ├── getTaskById(id) → Task | undefined
+  └── persist: { afterHydrate → Date, watch → save }
 ```

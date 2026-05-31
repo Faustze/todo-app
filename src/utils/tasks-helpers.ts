@@ -1,31 +1,6 @@
-import { STORAGE_KEY } from "@/constants/storageKeys"
-import type { Task } from "@/types/task"
+import type { Task } from '@/types/task'
+import { STORAGE_KEY } from '@/constants/storageKeys'
 
-const mockTasks: Task[] = [{
-  id: '123',
-  title: 'title',
-  status: 'done',
-  priority: 'low',
-  createdAtUtc: new Date(),
-  updatedAtUtc: new Date(),
-},
-{
-  id: '1243',
-  title: 'title',
-  status: 'in-progress',
-  priority: 'middle',
-  createdAtUtc: new Date(),
-  updatedAtUtc: new Date(),
-},
-{
-  id: '12435',
-  title: 'title',
-  status: 'cancel',
-  priority: 'high',
-  createdAtUtc: new Date(),
-  updatedAtUtc: new Date(),
-  }
-]
 function serialize(tasks: Task[]): string {
   return JSON.stringify(tasks)
 }
@@ -38,17 +13,42 @@ function deserialize(raw: string): Task[] {
   }))
 }
 
-function load(): Task[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? deserialize(raw) : mockTasks
-  } catch {
-    return []
-  }
-}
-
 function save(tasks: Task[]): void {
   localStorage.setItem(STORAGE_KEY, serialize(tasks))
 }
 
-export { serialize, deserialize, load, save }
+export { deserialize, save, serialize }
+
+// фукнции для не persist store
+// function load(): Task[] {
+//   try {
+//     const raw = localStorage.getItem(STORAGE_KEY)
+//     return raw ? deserialize(raw) : mockTasks
+//   }
+//   catch {
+//     return []
+//   }
+// }
+
+// const mockTasks: Task[] = [{
+//   id: '123',
+//   title: 'title',
+//   status: 'done',
+//   priority: 'low',
+//   createdAtUtc: new Date(),
+//   updatedAtUtc: new Date(),
+// }, {
+//   id: '1243',
+//   title: 'title',
+//   status: 'in-progress',
+//   priority: 'middle',
+//   createdAtUtc: new Date(),
+//   updatedAtUtc: new Date(),
+// }, {
+//   id: '12435',
+//   title: 'title',
+//   status: 'cancel',
+//   priority: 'high',
+//   createdAtUtc: new Date(),
+//   updatedAtUtc: new Date(),
+// }]

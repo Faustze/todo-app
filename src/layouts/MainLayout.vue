@@ -1,8 +1,3 @@
-<script setup lang="ts">
-  import ThemeToggle from '@/components/ThemeToggle.vue'
-  import { IconBrandGithub } from '@tabler/icons-vue'
-</script>
-
 <template>
   <div class="main-layout">
     <header class="main-layout__header">
@@ -10,6 +5,7 @@
         <a
           target="_blank"
           rel="noopener noreferrer"
+          href="https://github.com/Faustze/todo-app"
           class="main-layout__github"
           title="Source code"
         >
@@ -24,10 +20,17 @@
       </div>
     </main>
     <footer class="main-layout__footer">
-      <span class="text-muted">&copy; 2026 Todo App — Builded with Vuetify0</span>
+      <p class="text-muted">
+        &copy; 2026 Todo App — Builded with Vuetify0
+      </p>
     </footer>
   </div>
 </template>
+
+<script setup lang="ts">
+import { IconBrandGithub } from '@tabler/icons-vue'
+import ThemeToggle from '@/components/common/ThemeToggle.vue'
+</script>
 
 <style scoped>
   .main-layout {
@@ -85,7 +88,7 @@
 
   .main-layout__footer {
     text-align: center;
-    padding: 1rem;
+    padding: 0.005rem;
     border-top: 1px solid var(--v0-border);
   }
 </style>

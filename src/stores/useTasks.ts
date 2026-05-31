@@ -1,12 +1,12 @@
+import type { SortBy, SortDir } from '@/types/sort'
 import type { CreateTask, Task, TaskFilter, UpdateTask } from '@/types/task'
 import { defineStore } from 'pinia'
-import { ref, computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { countTasksByStatus, filterTasks, searchTasks, sortTasks } from '@/utils/task-filters'
-import type { SortBy, SortDir } from '@/utils/task-filters'
-import { load, save } from '@/utils/tasks-helpers'
+import { save } from '@/utils/tasks-helpers'
 
 export const useTasks = defineStore('tasks', () => {
-  const tasks = ref<Task[]>(load())
+  const tasks = ref<Task[]>([])
   const filter = ref<TaskFilter>('in-progress')
   const searchQuery = ref('')
   const sortBy = ref<SortBy>('date')
@@ -19,6 +19,10 @@ export const useTasks = defineStore('tasks', () => {
   })
   const totalCount = computed(() => tasks.value.length)
   const doneCount = computed(() => countTasksByStatus(tasks.value, 'done'))
+
+  function getTaskById(id: string): Task | undefined {
+    return tasks.value.find(t => t.id === id)
+  }
 
   function create(payload: CreateTask): void {
     const task: Task = {
@@ -38,7 +42,7 @@ export const useTasks = defineStore('tasks', () => {
     const newTask = {
       id,
       updatedAtUtc: Date.now(),
-      ...payload
+      ...payload,
     }
     if (idx !== -1) {
       Object.assign(tasks.value[idx], newTask)
@@ -65,11 +69,34 @@ export const useTasks = defineStore('tasks', () => {
     sortDir.value = sortDir.value === 'asc' ? 'desc' : 'asc'
   }
 
-  watch(tasks, (val) => save(val), { deep: true })
+  watch(tasks, val => save(val), { deep: true })
 
   return {
-    tasks, filter, searchQuery, sortBy, sortDir,
-    filteredTasks, totalCount, doneCount,
-    create, update, remove, setFilter, setSearchQuery, setSortBy, toggleSortDir,
+    tasks,
+    filter,
+    searchQuery,
+    sortBy,
+    sortDir,
+    filteredTasks,
+    totalCount,
+    doneCount,
+    getTaskById,
+    create,
+    update,
+    remove,
+    setFilter,
+    setSearchQuery,
+    setSortBy,
+    toggleSortDir,
   }
-})
+}, { persist: {
+  key: 'todo-app-tasks-store',
+  // восстанавливаем Date из ISO-строк после гидрации из localStorage
+  afterHydrate(ctx) {
+    ctx.store.tasks = ctx.store.tasks.map((t: Task) => ({
+      ...t,
+      createdAtUtc: new Date(t.createdAtUtc),
+      updatedAtUtc: new Date(t.updatedAtUtc),
+    }))
+  },
+} })

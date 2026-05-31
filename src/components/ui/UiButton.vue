@@ -101,12 +101,12 @@ const colorStyle = computed(() => {
       color: var(--v0-primary)
     }
   }
+
   .ui-button[data-variant="icon"] {
     background: transparent;
     color: var(--v0-text);
     border: none;
-    padding: 0;
-    margin: 0;
+    padding: 0px !important;
     &:hover {
       color: var(--v0-primary)
     }

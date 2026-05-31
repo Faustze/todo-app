@@ -5,16 +5,19 @@
         <div class="delete-modal__icon">
           <IconAlertTriangle size="28" />
         </div>
+        <div class="flex flex-row gap-2 items-center">
+          <p class="delete-modal__title">
+            Удалить задачу
+          </p>
+          <p v-if="taskTitle" class="delete-modal__task">
+            «{{ taskTitle }}»?
+          </p>
+        </div>
+
+        <p class="delete-modal__hint">
+          Это действие нельзя отменить
+        </p>
       </div>
-      <p class="delete-modal__title">
-        Удалить задачу?
-      </p>
-      <p v-if="taskTitle" class="delete-modal__task">
-        «{{ taskTitle }}»
-      </p>
-      <p class="delete-modal__hint">
-        Это действие нельзя отменить
-      </p>
       <div class="delete-modal__actions">
         <UiButton variant="ghost" @click="emit('cancel')">
           Отмена
@@ -59,14 +62,14 @@ const open = defineModel<boolean>({ default: false })
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
   }
 
   .delete-modal__header {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 1rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
   }
 
   .delete-modal__icon {
@@ -107,8 +110,8 @@ const open = defineModel<boolean>({ default: false })
   }
 
   .delete-modal__task {
-    color: var(--v0-text);
-    font-size: 0.9375rem;
+    color: var(--v0-error);
+    font-size: 1rem;
     font-weight: 600;
     line-height: 1.5;
     margin: 0 0 0.375rem;
@@ -123,9 +126,9 @@ const open = defineModel<boolean>({ default: false })
   }
 
   .delete-modal__actions {
-    display: inline-flex;
+    display: flex;
     flex-direction: row;
-    justify-self: end;
+    justify-content: end;
     gap: 0.5rem;
   }
 </style>

@@ -1,17 +1,19 @@
-<script setup lang="ts">
-  import { IconEraser } from '@tabler/icons-vue'
-
-  defineOptions({ name: 'EmptyState' })
-</script>
-
 <template>
   <div class="empty-state">
     <IconEraser size="48" class="empty-state__icon" />
-    <h3 class="empty-state__title">Задач пока нет</h3>
-    <p class="empty-state__hint">Создайте первую задачу, чтобы начать</p>
+    <h3 class="empty-state__title">
+      Задач пока нет
+    </h3>
+    <p class="empty-state__hint">
+      Создайте первую задачу, чтобы начать
+    </p>
     <slot />
   </div>
 </template>
+
+<script setup lang="ts">
+import { IconEraser } from '@tabler/icons-vue'
+</script>
 
 <style scoped>
   .empty-state {

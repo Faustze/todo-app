@@ -9,6 +9,12 @@ export type TaskFilter = TaskStatus | 'all'
 export type CreateTask = Pick<Task, 'title' | 'priority' | 'description'>
 export type UpdateTask = Partial<Pick<Task, 'title' | 'description' | 'priority' | 'status'>>
 
+// ACTIONS
+export interface TaskItemActionOption {
+  id: string
+  label: string
+  action?: (v?: any) => any
+}
 // FORM
 export interface TaskFormValues {
   title: string

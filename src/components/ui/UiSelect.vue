@@ -1,6 +1,6 @@
 <template>
   <Select.Root v-model="model">
-    <Select.Activator class="flex items-center justify-between w-full px-3 py-2 rounded-md border border-divider bg-surface text-on-surface text-sm cursor-pointer focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2">
+    <Select.Activator class="flex items-center justify-between w-full px-3 py-2 rounded-md border border-border bg-surface text-on-surface text-sm cursor-pointer focus-within:border-primary">
       <Select.Value v-slot="{ selectedValue }">
         {{ options.find(opt => opt.id === selectedValue)?.label }}
       </Select.Value>

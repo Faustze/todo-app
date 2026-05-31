@@ -1,9 +1,9 @@
 # TODO-APP — Контекст проекта
 
-> Последнее обновление: 2026-05-30
+> Последнее обновление: 2026-05-31
 > Этот файл читает OWL в начале каждой новой сессии для восстановления контекста.
 
-## Статус: Итерации 1–5 завершены, полировка UX (итерация 6) в процессе
+## Статус: Итерации 1–6 завершены. Детальная страница задачи /task/:id готова. Следующее: типографика, Kanban View, API
 
 ## Технологический стек
 
@@ -20,41 +20,71 @@ src/
   main.ts              — createApp, createPinia, registerPlugins
   App.vue              — <RouterView />
   style.css            — глобальные стили (--v0-*)
-  router/index.ts      — / → MainLayout → pages/index.vue
+  router/index.ts      — / → pages/index.vue, /task/:id → pages/tasks/[id].vue
   layouts/
     MainLayout.vue     — header (DkLogo + ThemeToggle), main, footer
   pages/
-    index.vue          — UiToggle filter + search input + TaskList + CreateTaskModal
-    tasks.vue          — заглушка
+    index.vue          — FilterSelect + SearchInput + UiSortButtons + TaskList + CreateTaskModal
+    tasks/[id].vue     — детальная страница задачи (back button + TaskView)
   components/
     ThemeToggle.vue    — cycle + ViewTransition API
-    UiSortButtons.vue  — сортировка по дате/приоритету (toggle field + direction)
     DkLogo.vue         — SVG логотип (T+D)
     ui/
-      UiButton.vue     — Button.Root + IconLoader spinner + color prop (ThemeColorKey)
+      UiButton.vue     — Button.Root + IconLoader spinner + variant × size + color prop (ThemeColorKey)
       UiCard.vue       — Atom
-      UiToggle.vue     — Single.Root, inheritAttrs:false, class prop, default 'in-progress'
+      UiToggle.vue     — Single.Root, inheritAttrs:false, class prop
       UiModal.vue      — Dialog.Root + Content (responsive)
       UiInput.vue      — Input.Root(:id) + Control + Error, useId() для fieldId
-      UiSelect.vue     — Select.Root + Activator/Content/Item с v-slot="{ attrs }", defineModel хранит id, computed selectedLabel
+      UiField.vue      — layout wrapper для Input
+      UiSelect.vue     — Select.Root + Activator/Content/Item с v-slot="{ attrs }", defineModel
       UiLayout.vue     — useBreakpoints
       index.ts         — barrel export
-    tasks/
-      TaskList.vue     — TransitionGroup + storeToRefs + modals
-      TaskItem.vue     — IconStatus + дата; приоритеты: high=error border+bg tint+bold, middle=warning border, low=muted border+muted title
-      IconStatus.vue   — checkbox toggle in-progress↔done (IconSquare/IconSquareCheck); cancel = static IconBan
-      TaskForm.vue     — Vuelidate + Input.Root(:id) + .sr-only label для статуса + aria-labelledby на Select
-      CreateTaskModal.vue, UpdateTaskModal.vue, DeleteTaskModal.vue
-    common/EmptyState.vue — IconEraser
-  types/task.ts        — Task, TaskStatus, TaskPriority, TaskFilter, TaskFormValues
-  tokens/colors.ts     — lightColors + darkColors (23 ключа, единый источник)
-  constants/           — storageKeys, taskStatuses, taskPriorities
-  stores/useTasks.ts   — Pinia setup store + watch → localStorage, filter default 'in-progress', searchQuery, sortBy/sortDir
-  utils/               — tasks-helpers, task-filters (+searchTasks, +sortTasks), date, task-display (+priorityIcon)
-  plugins/             — index (registerPlugins), vuetify0, todoApp
+    views/
+      list/
+        TaskList.vue       — TransitionGroup + storeToRefs + modals
+        TaskItem.vue       — IconStatus + title + приоритетные стили + TaskItemActions
+        TaskItemActions.vue— edit/delete/show actions
+        TaskView.vue       — детальный просмотр (статус, приоритет, даты)
+        IconStatus.vue     — checkbox toggle in-progress↔done (IconSquare/IconSquareCheck); cancel = static IconBan
+        EmptyState.vue     — IconEraser
+        ui/
+          SearchInput.vue  — SearchInput компонент
+          filter/
+            FilterSelect.vue   — Select.Root фильтр по статусу с вложенными опциями
+            FilterOptionItem.vue — рекурсивный элемент фильтра
+          sort/
+            UiSortButtons.vue — сортировка по дате/приоритету (toggle field + direction)
+          forms/
+            TaskForm.vue       — Vuelidate + Input.Root/Control + UiSelect (edit mode с initial values)
+          modals/
+            CreateTaskModal.vue, UpdateTaskModal.vue, DeleteTaskModal.vue
+  types/
+    task.ts            — Task, TaskStatus, TaskPriority, TaskFilter, TaskFormValues, TaskItemActionOption, CreateTask, UpdateTask
+    filter.ts          — FilterOption (id, label, children?)
+    sort.ts            — SortBy, SortDir
+  tokens/
+    index.ts           — barrel export
+    colors.ts          — lightColors + darkColors (23 ключа, единый источник)
+    radius.ts          — CSS custom properties для скругления
+    spacing.ts         — CSS custom properties для отступов
+    typography.ts      — CSS custom properties для типографики
+  constants/
+    storageKeys.ts     — STORAGE_KEY = 'tasks-sk'
+    taskStatuses.ts    — TASK_STATUSES (Record<TaskStatus, { id, color }>)
+    taskPriorities.ts  — taskPriorities config
+  stores/
+    useTasks.ts        — Pinia setup store + persist plugin + afterHydrate → Date, filter 'in-progress', searchQuery, sortBy/sortDir, getTaskById, create, update, remove
+  utils/
+    tasks-helpers.ts   — save (serialize/deserialize) для localStorage
+    task-filters.ts    — FILTER_OPTIONS, filterTasks, searchTasks, sortTasks, countTasksByStatus, matchesTaskFilter
+    date.ts            — formatDate, formatTime
+    task-display.ts    — statusLabel, priorityLabel, formatDate
+  plugins/
+    index.ts           — registerPlugins
+    vuetify0.ts        — createThemePlugin (default: 'dark', target: 'html')
+    todoApp.ts         — createBreakpointsPlugin + createRulesPlugin
   assets/
-    styles/            — style.css, _tokens.css, main.css (plain CSS, без препроцессоров)
-    icons/             — IconMagnifer.vue
+    styles/            — style.css, _tokens.css, main.css
 ```
 
 ## Ключевые решения
@@ -94,7 +124,19 @@ src/
 - `inheritAttrs: false` + explicit `class` prop
 - `v-bind="attrs"` от Single.Item на кнопку — обязательно для клика
 - Конфликт `mandatory` — убрано
-- Default filter: `'in-progress'`
+
+### FilterSelect (вложенные фильтры)
+
+- `Select.Root` + `Select.Activator` (UiButton) + recursive `FilterOptionItem`
+- `expandedIds: ref<Set<string>>` — ручное управление раскрытием
+- `FILTER_OPTIONS` в task-filters.ts — FilterOption[] с `children[]`
+- v-model хранит выбранный `id` (TaskFilter)
+
+### Pinia Persist
+
+- `pinia-plugin-persistedstate` с `key: 'todo-app-tasks-store'`
+- `afterHydrate` — Date из ISO-строки через `new Date()`
+- `watch(tasks, val => save(val), { deep: true })` для сохранения
 
 ### IconStatus
 

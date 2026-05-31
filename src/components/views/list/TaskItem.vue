@@ -8,35 +8,33 @@
         </h4>
       </div>
     </div>
-    <div class="task-item__meta">
+
+    <!-- <div class="task-item__meta">
       <span class="task-item__date">{{ formatDate(task.createdAtUtc) }}</span>
-    </div>
-    <div class="task-item__actions">
-      <UiButton variant="icon" color="warning" size="sm" @click="emit('edit', task)">
-        <IconEdit size="20" />
-      </UiButton>
-      <UiButton variant="icon" color="error" size="sm" @click="emit('delete', task.id, task.title)">
-        <IconTrash size="20" />
-      </UiButton>
-    </div>
+    </div> -->
+
+    <TaskItemActions
+      :task="task"
+      @edit="emit('edit', task)"
+      @delete="emit('delete', task.id, task.title)"
+      @show="emit('show', task.id)"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import type { Task } from '@/types/task'
-import { IconEdit, IconTrash } from '@tabler/icons-vue'
-import UiButton from '@/components/ui/UiButton.vue'
-import { formatDate } from '@/utils/task-display'
 import IconStatus from './IconStatus.vue'
+import TaskItemActions from './TaskItemActions.vue'
 
 defineProps<{
   task: Task
   number: number
 }>()
-
 const emit = defineEmits<{
   edit: [task: Task]
   delete: [id: string, title: string]
+  show: [id: string]
 }>()
 </script>
 
@@ -133,10 +131,5 @@ const emit = defineEmits<{
   .task-item__date {
     font-size: 0.6rem;
     color: var(--v0-muted);
-  }
-
-  .task-item__actions {
-    display: flex;
-    flex-shrink: 0;
   }
 </style>
