@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="flex flex-col gap-4">
     <div class="flex justify-start">
       <UiButton variant="icon" @click="router.back()">
         <IconArrowLeft size="20" />
@@ -26,11 +26,3 @@ const taskId = route.params.id as string
 const store = useTasks()
 const task = computed(() => store.getTaskById(taskId))
 </script>
-
-<style scoped>
-  .page {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-</style>

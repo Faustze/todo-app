@@ -1,5 +1,5 @@
 import { defineConfig, presetWind4 } from 'unocss'
-import { lightColors, radius, spacing, typography } from './src/tokens'
+import { lightColors, radius, spacing } from './src/tokens'
 
 export default defineConfig({
   presets: [presetWind4()],
@@ -11,15 +11,7 @@ export default defineConfig({
     spacing,
     borderRadius: radius,
     fontFamily: {
-      sans: typography.fontSans,
-      mono: typography.fontMono,
-    },
-    fontSize: {
-      'sm': typography.textSm,
-      'base': typography.textBase,
-      'lg': typography.textLg,
-      'xl': typography.textXl,
-      '2xl': typography.text2xl,
+      mono: '"JetBrains Mono", ui-monospace, Consolas, monospace',
     },
   },
 

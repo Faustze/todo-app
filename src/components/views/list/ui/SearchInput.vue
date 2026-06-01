@@ -7,7 +7,7 @@
   >
     <div class="relative">
       <Input.Control
-        class="w-full pl-10 pr-3 py-2 rounded-md border border-divider bg-surface text-on-surface placeholder:text-on-surface-variant/50 outline-none data-focused:border-primary data-[state=invalid]:border-error transition-colors focus-within:border-primary"
+        class="w-full pl-10 pr-3 py-2.5 rounded-md border border-divider bg-surface text-on-surface placeholder:text-on-surface-variant/50 outline-none data-focused:border-primary data-[state=invalid]:border-error transition-colors focus-within:border-primary"
         :placeholder="placeholder"
       />
 

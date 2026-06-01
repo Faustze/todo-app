@@ -1,33 +1,33 @@
 <template>
   <div v-if="task" class="task-view">
-    <h2 class="task-view__title">
+    <h2 class="task-view__title text-xl font-semibold text-text m-0 leading-tight break-words">
       {{ task.title }}
     </h2>
 
-    <p v-if="task.description" class="task-view__description">
+    <p v-if="task.description" class="task-view__description text-sm text-muted m-0 leading-relaxed">
       {{ task.description }}
     </p>
 
     <div class="task-view__meta">
       <div class="task-view__field">
-        <span class="task-view__label">Статус</span>
-        <span class="task-view__value" :class="`task-view__value--${task.status}`">
+        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Статус</span>
+        <span class="task-view__value" :class="statusClass">
           {{ statusLabel(task.status) }}
         </span>
       </div>
       <div class="task-view__field">
-        <span class="task-view__label">Приоритет</span>
-        <span class="task-view__value" :class="`task-view__value--${task.priority}`">
+        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Приоритет</span>
+        <span class="task-view__value" :class="priorityClass">
           {{ priorityLabel(task.priority) }}
         </span>
       </div>
       <div class="task-view__field">
-        <span class="task-view__label">Создано</span>
-        <span class="task-view__value">{{ formatDate(task.createdAtUtc) }}</span>
+        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Создано</span>
+        <span class="task-view__value text-sm text-text">{{ formatDate(task.createdAtUtc) }}</span>
       </div>
       <div class="task-view__field">
-        <span class="task-view__label">Обновлено</span>
-        <span class="task-view__value">{{ formatDate(task.updatedAtUtc) }}</span>
+        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Обновлено</span>
+        <span class="task-view__value text-sm text-text">{{ formatDate(task.updatedAtUtc) }}</span>
       </div>
     </div>
   </div>
@@ -39,11 +39,30 @@
 
 <script setup lang="ts">
 import type { Task } from '@/types/task'
+import { computed } from 'vue'
 import { formatDate, priorityLabel, statusLabel } from '@/utils/task-display'
 
-defineProps<{
+const props = defineProps<{
   task: Task | undefined
 }>()
+
+const statusClass = computed(() => {
+  const map: Record<string, string> = {
+    'done': 'task-view__value--done',
+    'in-progress': 'task-view__value--in-progress',
+    'cancel': 'task-view__value--cancel',
+  }
+  return props.task ? map[props.task.status] || '' : ''
+})
+
+const priorityClass = computed(() => {
+  const map: Record<string, string> = {
+    high: 'task-view__value--high',
+    middle: 'task-view__value--middle',
+    low: 'task-view__value--low',
+  }
+  return props.task ? map[props.task.priority] || '' : ''
+})
 </script>
 
 <style scoped>
@@ -58,8 +77,6 @@ defineProps<{
   }
 
   .task-view__title {
-    font-size: 1.25rem;
-    font-weight: 600;
     color: var(--v0-text);
     margin: 0;
     line-height: 1.3;
@@ -67,7 +84,6 @@ defineProps<{
   }
 
   .task-view__description {
-    font-size: 0.9375rem;
     color: var(--v0-muted);
     margin: 0;
     line-height: 1.5;
@@ -88,7 +104,6 @@ defineProps<{
   }
 
   .task-view__label {
-    font-size: 0.75rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -96,33 +111,15 @@ defineProps<{
   }
 
   .task-view__value {
-    font-size: 0.875rem;
     color: var(--v0-text);
   }
 
-  .task-view__value--done {
-    color: var(--v0-success);
-  }
-
-  .task-view__value--in-progress {
-    color: var(--v0-warning);
-  }
-
-  .task-view__value--cancel {
-    color: var(--v0-error);
-  }
-
-  .task-view__value--high {
-    color: var(--v0-error);
-  }
-
-  .task-view__value--middle {
-    color: var(--v0-primary);
-  }
-
-  .task-view__value--low {
-    color: var(--v0-muted);
-  }
+  .task-view__value--done { color: var(--v0-success); }
+  .task-view__value--in-progress { color: var(--v0-warning); }
+  .task-view__value--cancel { color: var(--v0-error); }
+  .task-view__value--high { color: var(--v0-error); }
+  .task-view__value--middle { color: var(--v0-primary); }
+  .task-view__value--low { color: var(--v0-muted); }
 
   .task-view__empty {
     padding: 2rem;

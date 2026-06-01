@@ -1,5 +1,7 @@
 import type { FilterOption } from '@/types/filter'
 import type { SortBy, SortDir } from '@/types/sort'
+
+export type { SortBy, SortDir }
 import type { Task, TaskFilter, TaskPriority } from '@/types/task'
 import { TASK_STATUSES } from '@/constants/taskStatuses'
 

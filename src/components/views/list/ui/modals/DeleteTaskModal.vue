@@ -6,15 +6,15 @@
           <IconAlertTriangle size="28" />
         </div>
         <div class="flex flex-row gap-2 items-center">
-          <p class="delete-modal__title">
+          <p class="delete-modal__title text-lg font-semibold text-text leading-snug mb-2">
             Удалить задачу
           </p>
-          <p v-if="taskTitle" class="delete-modal__task">
+          <p v-if="taskTitle" class="delete-modal__task text-base font-semibold text-error leading-normal mb-1.5 break-words">
             «{{ taskTitle }}»?
           </p>
         </div>
 
-        <p class="delete-modal__hint">
+        <p class="delete-modal__hint text-xs text-muted leading-normal mb-6">
           Это действие нельзя отменить
         </p>
       </div>
@@ -103,16 +103,12 @@ const open = defineModel<boolean>({ default: false })
 
   .delete-modal__title {
     color: var(--v0-text);
-    font-size: 1.125rem;
-    font-weight: 600;
     line-height: 1.4;
     margin: 0 0 0.5rem;
   }
 
   .delete-modal__task {
     color: var(--v0-error);
-    font-size: 1rem;
-    font-weight: 600;
     line-height: 1.5;
     margin: 0 0 0.375rem;
     word-break: break-word;
@@ -120,7 +116,6 @@ const open = defineModel<boolean>({ default: false })
 
   .delete-modal__hint {
     color: var(--v0-muted);
-    font-size: 0.8125rem;
     line-height: 1.5;
     margin: 0 0 1.5rem;
   }

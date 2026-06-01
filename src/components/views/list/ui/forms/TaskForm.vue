@@ -12,7 +12,7 @@
         <span
           v-for="error of v$.title.$errors"
           :key="error.$uid"
-          class="task-form__error"
+          class="task-form__error text-xs"
         >
           {{ error.$message }}
         </span>
@@ -36,7 +36,7 @@
         <span
           v-for="error of v$.description.$errors"
           :key="error.$uid"
-          class="task-form__error"
+          class="task-form__error text-xs"
         >
           {{ error.$message }}
         </span>
@@ -221,20 +221,7 @@ async function handleSubmit() {
     border-color: var(--v0-error);
   }
 
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-
   .task-form__error {
-    font-size: 0.8125rem;
     color: var(--v0-error);
   }
 

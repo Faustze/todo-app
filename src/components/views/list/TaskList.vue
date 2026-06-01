@@ -1,6 +1,6 @@
 <template>
-  <div class="task-list">
-    <TransitionGroup name="task" tag="div" class="task-list__items">
+  <div class="flex flex-col gap-3">
+    <TransitionGroup name="task" tag="div" class="flex flex-col gap-3">
       <TaskItem
         v-for="(task, index) in filteredTasks"
         :key="task.id"
@@ -86,33 +86,3 @@ function handleConfirmDelete() {
   deletingTask.value = null
 }
 </script>
-
-<style scoped>
-  .task-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .task-list__items {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .task-move,
-  .task-enter-active,
-  .task-leave-active {
-    transition: all 0.3s ease;
-  }
-
-  .task-enter-from,
-  .task-leave-to {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-
-  .task-leave-active {
-    position: absolute;
-  }
-</style>

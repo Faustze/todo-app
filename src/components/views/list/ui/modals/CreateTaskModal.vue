@@ -1,7 +1,7 @@
 <template>
   <UiModal v-model="open">
     <div class="create-task-modal">
-      <h2 class="create-task-modal__title">
+      <h2 class="create-task-modal__title text-lg font-semibold text-text mb-5">
         Новая задача
       </h2>
       <hr class="border-gray-500 rounded-lg my-4">
@@ -39,8 +39,6 @@ function handleCancel() {
   }
 
   .create-task-modal__title {
-    font-size: 1.125rem;
-    font-weight: 600;
     color: var(--v0-text);
     margin-bottom: 1.25rem;
   }
