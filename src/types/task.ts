@@ -9,12 +9,22 @@ export type TaskFilter = TaskStatus | 'all'
 export type CreateTask = Pick<Task, 'title' | 'priority' | 'description'>
 export type UpdateTask = Partial<Pick<Task, 'title' | 'description' | 'priority' | 'status'>>
 
+// DATE RANGE
+export interface DateRange {
+  from: Date | null
+  to: Date | null
+}
+
+// DATE PRESET
+export type DatePreset = 'today' | 'week' | 'month' | null
+
 // ACTIONS
 export interface TaskItemActionOption {
   id: string
   label: string
   action?: (v?: any) => any
 }
+
 // FORM
 export interface TaskFormValues {
   title: string

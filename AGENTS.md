@@ -1,9 +1,9 @@
 # TODO-APP — Контекст проекта
 
-> Последнее обновление: 2026-05-31
+> Последнее обновление: 2026-06-02
 > Этот файл читает OWL в начале каждой новой сессии для восстановления контекста.
 
-## Статус: Итерации 1–6 завершены. Детальная страница задачи /task/:id готова. Следующее: типографика, Kanban View, API
+## Статус: Панели фильтрации и сортировки готовы. Следующее: полировка UX, Kanban View, API
 
 ## Технологический стек
 
@@ -11,7 +11,6 @@
 - Vuetify0 (@vuetify/v0 ^1.0.0-alpha.4) — headless, стандартный префикс --v0-\*
 - Vue Router 5, Pinia 3 (storeToRefs), Vuelidate 2 (helpers.withMessage)
 - UnoCSS 66, Tabler Icons, CSS, Vite 8
-- devkey reference: `https://github.com/vuetifyjs/devkey/tree/master`
 
 ## Структура файлов
 
@@ -19,12 +18,11 @@
 src/
   main.ts              — createApp, createPinia, registerPlugins
   App.vue              — <RouterView />
-  style.css            — глобальные стили (--v0-*)
   router/index.ts      — / → pages/index.vue, /task/:id → pages/tasks/[id].vue
   layouts/
     MainLayout.vue     — header (DkLogo + ThemeToggle), main, footer
   pages/
-    index.vue          — FilterSelect + SearchInput + UiSortButtons + TaskList + CreateTaskModal
+    index.vue          — FilterPanel + SortPanel + SearchInput + TaskList + CreateTaskModal
     tasks/[id].vue     — детальная страница задачи (back button + TaskView)
   components/
     ThemeToggle.vue    — cycle + ViewTransition API
@@ -50,16 +48,19 @@ src/
         ui/
           SearchInput.vue  — SearchInput компонент
           filter/
-            FilterSelect.vue   — Select.Root фильтр по статусу с вложенными опциями
-            FilterOptionItem.vue — рекурсивный элемент фильтра
+            FilterPanel.vue    — единая панель фильтрации (статус + период)
+            FilterSelect.vue   — [УСТАРЕЛ] вложенный фильтр по статусу, заменён на FilterPanel
+            FilterOptionItem.vue — [УСТАРЕЛ] рекурсивный элемент фильтра
+            DateRangePicker.vue — [УСТАРЕЛ] выбор диапазона дат, заменён на пресеты в FilterPanel
           sort/
-            UiSortButtons.vue — сортировка по дате/приоритету (toggle field + direction)
+            SortPanel.vue      — единая панель сортировки (поле + направление)
+            UiSortButtons.vue  — [УСТАРЕЛ] старые кнопки сортировки, заменены на SortPanel
           forms/
             TaskForm.vue       — Vuelidate + Input.Root/Control + UiSelect (edit mode с initial values)
           modals/
             CreateTaskModal.vue, UpdateTaskModal.vue, DeleteTaskModal.vue
   types/
-    task.ts            — Task, TaskStatus, TaskPriority, TaskFilter, TaskFormValues, TaskItemActionOption, CreateTask, UpdateTask
+    task.ts            — Task, TaskStatus, TaskPriority, TaskFilter, DatePreset, TaskFormValues, CreateTask, UpdateTask
     filter.ts          — FilterOption (id, label, children?)
     sort.ts            — SortBy, SortDir
   tokens/
@@ -73,18 +74,20 @@ src/
     taskStatuses.ts    — TASK_STATUSES (Record<TaskStatus, { id, color }>)
     taskPriorities.ts  — taskPriorities config
   stores/
-    useTasks.ts        — Pinia setup store + persist plugin + afterHydrate → Date, filter 'in-progress', searchQuery, sortBy/sortDir, getTaskById, create, update, remove
+    useTasks.ts        — Pinia setup store + persist plugin + afterHydrate → Date, filter, datePreset, searchQuery, sortBy/sortDir, getTaskById, create, update, remove, setDatePreset, resetFilters
   utils/
     tasks-helpers.ts   — save (serialize/deserialize) для localStorage
-    task-filters.ts    — FILTER_OPTIONS, filterTasks, searchTasks, sortTasks, countTasksByStatus, matchesTaskFilter
-    date.ts            — formatDate, formatTime
-    task-display.ts    — statusLabel, priorityLabel, formatDate
+    task-filters.ts    — filterTasks, filterTasksByPreset, getPresetRange, searchTasks, sortTasks, countTasksByStatus
+    date.ts            — displayDate
   plugins/
     index.ts           — registerPlugins
     vuetify0.ts        — createThemePlugin (default: 'dark', target: 'html')
     todoApp.ts         — createBreakpointsPlugin + createRulesPlugin
   assets/
-    styles/            — style.css, _tokens.css, main.css
+    styles/
+      style.css        — глобальные стили (fonts, panel, reset)
+      _fonts.css       — @font-face для JetBrains Mono
+      panel.css        — переиспользуемые стили для dropdown-панелей (.panel-section, .panel-label, .panel-reset)
 ```
 
 ## Ключевые решения
@@ -125,12 +128,13 @@ src/
 - `v-bind="attrs"` от Single.Item на кнопку — обязательно для клика
 - Конфликт `mandatory` — убрано
 
-### FilterSelect (вложенные фильтры)
+### FilterPanel / SortPanel (dropdown-панели)
 
-- `Select.Root` + `Select.Activator` (UiButton) + recursive `FilterOptionItem`
-- `expandedIds: ref<Set<string>>` — ручное управление раскрытием
-- `FILTER_OPTIONS` в task-filters.ts — FilterOption[] с `children[]`
-- v-model хранит выбранный `id` (TaskFilter)
+- `Select.Root` как контейнер для dropdown (Activator + Content)
+- Содержимое обёрнуто в `<div class="panel-section">` — flex column
+- Chip-кнопки через `UiButton variant="chip"` / `variant="solid"` (активный)
+- Общие стили в `panel.css`: `.panel-section`, `.panel-label`, `.panel-reset`
+- Кнопка-триггер: `text-primary` если фильтр/сортировка активна, иначе `outline`
 
 ### Pinia Persist
 
@@ -165,5 +169,6 @@ src/
 ### Стили
 
 - Plain CSS, без SCSS/sass-embedded
-- Глобальные: `style.css`, `_tokens.css` (CSS custom properties), `main.css` (imports)
-- `vite.config.ts` — без `css.preprocessorOptions`
+- Глобальные: `style.css` (imports: `_fonts.css`, `panel.css`)
+- `panel.css` — переиспользуемые классы для dropdown-панелей
+- Компонентные стили — только специфичные, не дублирующие UnoCSS

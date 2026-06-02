@@ -1,0 +1,39 @@
+/* panel.css — переиспользуемые стили для dropdown-панелей (FilterPanel, SortPanel) */
+
+/* Section wrapper */
+.panel-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Section label — uppercase muted heading */
+.panel-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--v0-muted);
+}
+
+/* Reset button at the bottom */
+.panel-reset {
+  width: 100%;
+  padding: 0.2rem;
+  font-size: 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--v0-muted);
+  cursor: pointer;
+  border-radius: 0.2rem;
+  transition: all 0.15s ease;
+}
+
+.panel-reset:hover:not(:disabled) {
+  color: var(--v0-error);
+  background: color-mix(in srgb, var(--v0-error) 8%, transparent);
+}
+
+.panel-reset:disabled {
+  opacity: 0.4;
+  cursor: default;
+}

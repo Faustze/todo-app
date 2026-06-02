@@ -1,20 +1,26 @@
 import type { SortBy, SortDir } from '@/types/sort'
-import type { CreateTask, Task, TaskFilter, UpdateTask } from '@/types/task'
+import type { CreateTask, DatePreset, DateRange, Task, TaskFilter, UpdateTask } from '@/types/task'
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
-import { countTasksByStatus, filterTasks, searchTasks, sortTasks } from '@/utils/task-filters'
+import { countTasksByStatus, filterTasks, filterTasksByDateRange, filterTasksByPreset, searchTasks, sortTasks } from '@/utils/task-filters'
 import { save } from '@/utils/tasks-helpers'
 
 export const useTasks = defineStore('tasks', () => {
   const tasks = ref<Task[]>([])
   const filter = ref<TaskFilter>('in-progress')
+  const dateRange = ref<DateRange>({ from: null, to: null })
+  const datePreset = ref<DatePreset>(null)
   const searchQuery = ref('')
   const sortBy = ref<SortBy>('date')
   const sortDir = ref<SortDir>('desc')
 
   const filteredTasks = computed(() => {
     const byStatus = filterTasks(tasks.value, filter.value)
-    const bySearch = searchTasks(byStatus, searchQuery.value)
+    const byDateRange = filterTasksByDateRange(byStatus, dateRange.value)
+    const byPreset = datePreset.value
+      ? filterTasksByPreset(byDateRange, datePreset.value)
+      : byDateRange
+    const bySearch = searchTasks(byPreset, searchQuery.value)
     return sortTasks(bySearch, sortBy.value, sortDir.value)
   })
   const totalCount = computed(() => tasks.value.length)
@@ -57,6 +63,20 @@ export const useTasks = defineStore('tasks', () => {
     filter.value = f
   }
 
+  function setDateRange(range: DateRange): void {
+    dateRange.value = range
+  }
+
+  function setDatePreset(preset: DatePreset): void {
+    datePreset.value = preset
+  }
+
+  function resetFilters(): void {
+    filter.value = 'in-progress'
+    dateRange.value = { from: null, to: null }
+    datePreset.value = null
+  }
+
   function setSearchQuery(q: string): void {
     searchQuery.value = q
   }
@@ -74,6 +94,8 @@ export const useTasks = defineStore('tasks', () => {
   return {
     tasks,
     filter,
+    dateRange,
+    datePreset,
     searchQuery,
     sortBy,
     sortDir,
@@ -85,6 +107,9 @@ export const useTasks = defineStore('tasks', () => {
     update,
     remove,
     setFilter,
+    setDateRange,
+    setDatePreset,
+    resetFilters,
     setSearchQuery,
     setSortBy,
     toggleSortDir,

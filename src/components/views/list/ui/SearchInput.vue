@@ -7,7 +7,7 @@
   >
     <div class="relative">
       <Input.Control
-        class="w-full pl-10 pr-3 py-2.5 rounded-md border border-divider bg-surface text-on-surface placeholder:text-on-surface-variant/50 outline-none data-focused:border-primary data-[state=invalid]:border-error transition-colors focus-within:border-primary"
+        class="w-full pl-10 pr-3 py-1.5 rounded-sm border border-divider bg-surface text-on-surface placeholder:text-on-surface-variant/50 outline-none data-focused:border-primary data-[state=invalid]:border-error transition-colors focus-within:border-primary"
         :placeholder="placeholder"
       />
 
@@ -28,7 +28,7 @@
       />
     </div>
 
-    <div class="flex justify-between">
+    <div class="flex justify-between mt-1">
       <Input.Error v-slot="{ errors }" class="text-xs text-error">
         <span v-for="error in errors" :key="error">{{ error }}</span>
       </Input.Error>

@@ -34,8 +34,8 @@ const {
   loading = false,
   disabled = false,
 } = defineProps<{
-  variant?: 'solid' | 'outline' | 'ghost' | 'icon'
-  size?: 'sm' | 'md' | 'lg'
+  variant?: 'solid' | 'outline' | 'ghost' | 'icon' | 'chip'
+  size?: 'sm' | 'md' | 'lg' | 'extra-sm'
   color?: ThemeColorKey
   loading?: boolean
   disabled?: boolean
@@ -69,7 +69,7 @@ const colorStyle = computed(() => {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0.2rem;
+    border-radius: 0.25rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.15s ease;
@@ -90,6 +90,15 @@ const colorStyle = computed(() => {
     border: 1px solid var(--v0-primary);
     &:hover {
       color: var(--v0-primary-dark)
+    }
+  }
+
+  .ui-button[data-variant="chip"] {
+    background: transparent;
+    border: 1px solid var(--v0-divider);
+    &:hover {
+      color: var(--v0-primary-dark);
+      border: 1px solid var(--v0-primary);
     }
   }
 
@@ -131,6 +140,11 @@ const colorStyle = computed(() => {
     &:hover {
       color: var(--btn-color); /* Darker */
     }
+  }
+
+  .ui-button[data-size="extra-sm"] {
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
   }
 
   .ui-button[data-size="sm"] {

@@ -1,5 +1,6 @@
 /* style.css — глобальные стили */
 @import './_fonts';
+@import './panel';
 
 :root {
   --font-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;

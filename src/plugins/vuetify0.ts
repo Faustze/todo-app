@@ -1,8 +1,8 @@
 import type { App } from 'vue'
 import { createThemePlugin } from '@vuetify/v0'
-import { lightColors, darkColors } from '@/tokens/colors'
+import { darkColors, lightColors } from '@/tokens/colors'
 
-export default function vuetify0Plugin(app: App) {
+export default function vuetify0Plugin(app: App): void {
   app.use(
     createThemePlugin({
       default: 'dark',

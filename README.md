@@ -14,7 +14,7 @@ npm run preview  # просмотр билда
 ## Технологический стек
 
 - **Vue 3.5** + **TypeScript 6.0**
-- **Vuetify0** (`@vuetify/v0`) — headless компоненты (Button, Single, Dialog, Input, Atom)
+- **Vuetify0** (`@vuetify/v0`) — headless компоненты (Button, Single, Dialog, Input, Select, Atom)
 - **Pinia 3** — управление состоянием, `storeToRefs` для реактивности
 - **Vuelidate 2** — валидация форм с русскими описаниями ошибок
 - **Tabler Icons** — все иконки централизованно через `@tabler/icons-vue`
@@ -26,9 +26,9 @@ npm run preview  # просмотр билда
 
 - **CRUD** — создание, чтение, редактирование, удаление задач
 - **Валидация** — title: required + minLength(3) + maxLength(200), description: maxLength(500)
-- **Фильтрация** по статусу (Все / В процессе / Выполнено / Отменено) через выпадающий список
+- **Фильтрация** — по статусу (Все / В процессе / Выполнено / Отменено) + по периоду (День / Неделя / Месяц) через единую панель
 - **Поиск** по названию (case-insensitive)
-- **Сортировка** по дате и приоритету (asc/desc)
+- **Сортировка** по дате и приоритету (asc/desc) через единую панель
 - **Персистентность** — localStorage с автоматической синхронизацией (pinia-plugin-persistedstate)
 - **Темы** — light/dark с переключением и ViewTransition API
 - **Статус задачи** — быстрый toggle in-progress ↔ done через checkbox (IconSquare/IconSquareCheck)
@@ -39,9 +39,9 @@ npm run preview  # просмотр билда
 
 ```txt
 pages/index.vue
-  ├── FilterSelect (вложенный фильтр по статусу)
+  ├── FilterPanel (статус + период, dropdown с chip-кнопками)
+  ├── SortPanel (поле + направление, dropdown с chip-кнопками)
   ├── SearchInput (поиск по названию)
-  ├── UiSortButtons (сортировка)
   ├── TaskList (TransitionGroup)
   │   └── TaskItem
   │       ├── IconStatus (checkbox toggle + IconBan)
@@ -58,9 +58,10 @@ pages/tasks/[id].vue (детальная страница)
 Pinia Store (useTasks + persist)
   ├── tasks: ref<Task[]>
   ├── filter: ref<TaskFilter> (default: 'in-progress')
+  ├── datePreset: ref<DatePreset> (today/week/month/null)
   ├── searchQuery: ref<string>
   ├── sortBy/sortDir
-  ├── filteredTasks: computed (filter → search → sort)
+  ├── filteredTasks: computed (filter → datePreset → search → sort)
   ├── getTaskById(id) → Task | undefined
   └── persist: { afterHydrate → Date, watch → save }
 ```
