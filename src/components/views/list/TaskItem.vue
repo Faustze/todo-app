@@ -1,5 +1,5 @@
 <template>
-  <div class="task-item flex items-center justify-between gap-3 px-4 py-3 bg-surface border border-border rounded-sm transition-border-color duration-250 hover:border-primary cursor-pointer" :class="priorityClass">
+  <div class="task-item flex items-center justify-between gap-3 px-4 py-3 bg-surface border border-border rounded-sm transition-[border-color,scale,filter] duration-250 hover:border-primary cursor-pointer" :class="priorityClass">
     <div class="task-item__info flex items-center gap-3 min-w-0 flex-2">
       <IconStatus :task-id="task.id" :status="task.status" />
       <div class="min-w-0">

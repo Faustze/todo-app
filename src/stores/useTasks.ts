@@ -7,7 +7,7 @@ import { countTasksByStatus, filterTasks, filterTasksByDateRange, filterTasksByP
 import { save } from '@/utils/tasks-helpers'
 
 export const useTasks = defineStore('tasks', () => {
-  const { success, info, warning, error } = useSnackbar()
+  const { success, info, error } = useSnackbar()
 
   const tasks = ref<Task[]>([])
   const filter = ref<TaskFilter>('in-progress')

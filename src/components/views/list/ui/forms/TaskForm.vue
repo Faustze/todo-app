@@ -55,7 +55,7 @@
     </div>
 
     <div class="task-form__actions">
-      <UiButton variant="ghost" @click="emit('cancel')">
+      <UiButton variant="ghost" @click="handleCancel">
         Отмена
       </UiButton>
       <UiButton variant="solid" @click="handleSubmit">
@@ -64,7 +64,7 @@
     </div>
 
     <div class="task-form__close_btn">
-      <UiButton variant="ghost" @click="emit('cancel')">
+      <UiButton variant="ghost" @click="handleCancel">
         <IconX size="22" />
       </UiButton>
     </div>
@@ -77,7 +77,7 @@ import { IconX } from '@tabler/icons-vue'
 import { useVuelidate } from '@vuelidate/core'
 import { helpers, maxLength, minLength, required } from '@vuelidate/validators'
 import { Input } from '@vuetify/v0'
-import { computed, reactive } from 'vue'
+import { computed, reactive, watch } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiSelect from '@/components/ui/UiSelect.vue'
 
@@ -148,7 +148,39 @@ async function handleSubmit() {
   if (!valid)
     return
   emit('submit', { ...form })
+  if (props.mode === 'create') {
+    resetForm()
+  }
 }
+
+async function handleCancel() {
+  emit('cancel')
+  if (props.mode === 'create') {
+    resetForm()
+  }
+}
+
+function resetForm() {
+  Object.assign(form, {
+    title: '',
+    description: '',
+    priority: 'middle',
+    status: 'in-progress',
+  })
+  v$.value.$reset()
+}
+
+// Keep form in sync with initial values (e.g. when UpdateTaskModal switches between tasks)
+watch(() => props.initial, (val) => {
+  if (val) {
+    Object.assign(form, {
+      title: val.title ?? '',
+      description: val.description ?? '',
+      status: val.status ?? 'in-progress',
+      priority: val.priority ?? 'middle',
+    })
+  }
+}, { deep: true })
 </script>
 
 <style scoped>

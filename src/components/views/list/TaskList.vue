@@ -1,11 +1,18 @@
 <template>
   <div class="flex flex-col gap-3">
-    <TransitionGroup name="task" tag="div" class="flex flex-col gap-3">
+    <TransitionGroup
+      name="task"
+      tag="div"
+      class="flex flex-col gap-3 task-list"
+      @pointermove="onPointerMove"
+      @pointerleave="onPointerLeave"
+    >
       <TaskItem
         v-for="(task, index) in filteredTasks"
         :key="task.id"
         :task="task"
         :number="index + 1"
+        class="task-list__item"
         @edit="onEdit"
         @delete="onDelete"
         @show="onShow"
@@ -41,11 +48,13 @@ import { useRouter } from 'vue-router'
 import EmptyState from '@/components/views/list/EmptyState.vue'
 import DeleteTaskModal from '@/components/views/list/ui/modals/DeleteTaskModal.vue'
 import UpdateTaskModal from '@/components/views/list/ui/modals/UpdateTaskModal.vue'
+import { useProximity } from '@/composables/useProximity.ts'
 import { useTasks } from '@/stores/useTasks'
 import TaskItem from './TaskItem.vue'
 
 const router = useRouter()
 const tasksStore = useTasks()
+const { onPointerMove, onPointerLeave } = useProximity('task-list__item')
 const { filteredTasks } = storeToRefs(tasksStore)
 const { update, remove } = tasksStore
 
