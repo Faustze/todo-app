@@ -2,10 +2,13 @@ import type { SortBy, SortDir } from '@/types/sort'
 import type { CreateTask, DatePreset, DateRange, Task, TaskFilter, UpdateTask } from '@/types/task'
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
+import { useSnackbar } from '@/composables/useSnackbar'
 import { countTasksByStatus, filterTasks, filterTasksByDateRange, filterTasksByPreset, searchTasks, sortTasks } from '@/utils/task-filters'
 import { save } from '@/utils/tasks-helpers'
 
 export const useTasks = defineStore('tasks', () => {
+  const { success, info, warning, error } = useSnackbar()
+
   const tasks = ref<Task[]>([])
   const filter = ref<TaskFilter>('in-progress')
   const dateRange = ref<DateRange>({ from: null, to: null })
@@ -41,10 +44,12 @@ export const useTasks = defineStore('tasks', () => {
       status: 'in-progress',
     }
     tasks.value.unshift(task)
+    success(`Задача «${payload.title}» создана`)
   }
 
   function update(id: string, payload: UpdateTask): void {
     const idx = tasks.value.findIndex(t => t.id === id)
+    const existing = tasks.value[idx]
     const newTask = {
       id,
       updatedAtUtc: Date.now(),
@@ -52,11 +57,17 @@ export const useTasks = defineStore('tasks', () => {
     }
     if (idx !== -1) {
       Object.assign(tasks.value[idx], newTask)
+      const title = payload.title ?? existing?.title ?? ''
+      info(`Задача «${title}» обновлена`)
     }
   }
 
   function remove(id: string): void {
+    const task = tasks.value.find(t => t.id === id)
     tasks.value = tasks.value.filter(t => t.id !== id)
+    if (task) {
+      error(`Задача «${task.title}» удалена`)
+    }
   }
 
   function setFilter(f: TaskFilter): void {

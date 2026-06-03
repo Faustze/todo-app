@@ -20,7 +20,6 @@
               :key="idx"
               size="extra-sm"
               :variant="(sortBy === opt.id) ? 'solid' : 'chip'"
-              class="justify-start"
               @click="onSortClick(opt.id)"
             >
               <div class="flex flex-row gap-2 items-center">

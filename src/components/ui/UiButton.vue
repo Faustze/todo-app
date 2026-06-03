@@ -73,59 +73,64 @@ const colorStyle = computed(() => {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.15s ease;
+    border: 1px solid transparent;
   }
 
   .ui-button[data-variant="solid"] {
     background: var(--v0-primary);
     color: var(--v0-on-primary);
-    border: none;
-    &:hover {
-      background: var(--v0-primary-dark)
-    }
+    border-color: var(--v0-primary);
   }
 
   .ui-button[data-variant="outline"] {
     background: transparent;
     color: var(--v0-primary);
-    border: 1px solid var(--v0-primary);
-    &:hover {
-      color: var(--v0-primary-dark)
-    }
+    border-color: var(--v0-primary);
   }
 
   .ui-button[data-variant="chip"] {
     background: transparent;
-    border: 1px solid var(--v0-divider);
-    &:hover {
-      color: var(--v0-primary-dark);
-      border: 1px solid var(--v0-primary);
-    }
+    border-color: var(--v0-divider);
   }
 
   .ui-button[data-variant="ghost"] {
     background: transparent;
     color: var(--v0-text);
-    border: none;
-    &:hover {
-      color: var(--v0-primary)
-    }
   }
 
   .ui-button[data-variant="icon"] {
     background: transparent;
     color: var(--v0-text);
-    border: none;
     padding: 0px !important;
-    &:hover {
-      color: var(--v0-primary)
+  }
+
+  @media (hover: hover) {
+    .ui-button[data-variant="solid"]:hover {
+      background: var(--v0-primary-dark);
+      border-color: var(--v0-primary-dark);
+    }
+
+    .ui-button[data-variant="outline"]:hover {
+      color: var(--v0-primary-dark);
+    }
+
+    .ui-button[data-variant="chip"]:hover {
+      color: var(--v0-primary-dark);
+      border-color: var(--v0-primary);
+    }
+
+    .ui-button[data-variant="ghost"]:hover {
+      color: var(--v0-primary);
+    }
+
+    .ui-button[data-variant="icon"]:hover {
+      color: var(--v0-primary);
+    }
+
+    .ui-button--custom[data-variant="icon"]:hover {
+      color: var(--btn-color);
     }
   }
-
-  .ui-button--custom[data-variant="solid"] {
-    background: var(--btn-color);
-    color: var(--btn-on-color);
-  }
-
   .ui-button--custom[data-variant="outline"] {
     color: var(--btn-color);
     border-color: var(--btn-color);
@@ -137,9 +142,6 @@ const colorStyle = computed(() => {
 
   .ui-button--custom[data-variant="icon"] {
     color: var(--btn-color);
-    &:hover {
-      color: var(--btn-color); /* Darker */
-    }
   }
 
   .ui-button[data-size="extra-sm"] {
@@ -160,6 +162,18 @@ const colorStyle = computed(() => {
   .ui-button[data-size="lg"] {
     padding: 0.75rem 1.5rem;
     font-size: 1.125rem;
+  }
+
+  /* Адаптивные кнопки: shrink on mobile */
+  @media (max-width: 599px) {
+    .ui-button[data-size="md"] {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+    }
+    .ui-button[data-size="sm"] {
+      padding: 0.25rem 0.625rem;
+      font-size: 0.75rem;
+    }
   }
 
   .ui-button[data-disabled] {

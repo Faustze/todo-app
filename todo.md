@@ -38,9 +38,9 @@ pages/index.vue → SearchInput + SortPanel + FilterPanel + TaskList
 
 ### P1 — Полировка UX
 
-- [ ] Убрать дёргание UiButton при variant="outline" → variant="solid" (layout shift)
-- [ ] Hover-эффекты для touch-устройств (outline/ghost кнопки)
-- [ ] Toast/notification для CRUD операций (Snackbar v0)
+- [x] Убрать дёргание UiButton при variant="outline" → variant="solid" (layout shift)
+- [x] Toast/notification для CRUD операций (Snackbar v0)
+- [ ] Красивый Scroll bar вместо дефолтного
 
 ### P2 — Kanban View
 
@@ -96,6 +96,7 @@ todo-app/
 
 ## Технический долг
 
+- [x] undefined для кириллицы при UiSnackbar
 - [ ] При обновлении страницы теряется тема из стора (persist не успевает)
 - [ ] Увеличение UI элементов при приближении курсора (pointermove.ts)
 

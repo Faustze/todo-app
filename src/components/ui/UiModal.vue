@@ -18,9 +18,6 @@ const mobile = toRef(() => breakpoints.smAndDown.value)
 
 <style>
   .ui-modal {
-    position: fixed;
-    top: 0%;
-    left: 0%;
     width: 90%;
     max-width: 480px;
     max-height: 85vh;
@@ -32,12 +29,11 @@ const mobile = toRef(() => breakpoints.smAndDown.value)
   }
 
   .ui-modal[data-mobile] {
-    top: auto;
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    transform: none;
-    width: 100%;
+    width: 90%;
     max-width: none;
     max-height: 90vh;
     border-radius: 1rem 1rem 0 0;

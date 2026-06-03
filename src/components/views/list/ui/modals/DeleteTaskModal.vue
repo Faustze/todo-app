@@ -5,12 +5,12 @@
         <div class="delete-modal__icon">
           <IconAlertTriangle size="28" />
         </div>
-        <div class="flex flex-row gap-2 items-center">
+        <div class="flex flex-col gap-2 items-center">
           <p class="delete-modal__title text-lg font-semibold text-text leading-snug mb-2">
-            Удалить задачу
+            Удалить задачу?
           </p>
-          <p v-if="taskTitle" class="delete-modal__task text-base font-semibold text-error leading-normal mb-1.5 break-words">
-            «{{ taskTitle }}»?
+          <p v-if="taskTitle" class="delete-modal__task text-base font-semibold text-error leading-normal mb-1.5 wrap-break-word">
+            «{{ taskTitle }}»
           </p>
         </div>
 

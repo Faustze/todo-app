@@ -75,12 +75,7 @@
 import type { TaskFormValues, TaskPriority, TaskStatus } from '@/types/task'
 import { IconX } from '@tabler/icons-vue'
 import { useVuelidate } from '@vuelidate/core'
-import {
-  helpers,
-  maxLength,
-  minLength,
-  required,
-} from '@vuelidate/validators'
+import { helpers, maxLength, minLength, required } from '@vuelidate/validators'
 import { Input } from '@vuetify/v0'
 import { computed, reactive } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
