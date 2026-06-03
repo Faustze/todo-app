@@ -1,3 +1,5 @@
+import type { TaskTag } from '@/types/tag'
+
 // SUBTYPES
 export type TaskStatus = 'done' | 'in-progress' | 'cancel'
 export type TaskPriority = 'low' | 'middle' | 'high'
@@ -9,13 +11,8 @@ export type TaskFilter = TaskStatus | 'all'
 export type CreateTask = Pick<Task, 'title' | 'priority' | 'description'>
 export type UpdateTask = Partial<Pick<Task, 'title' | 'description' | 'priority' | 'status'>>
 
-// DATE RANGE
-export interface DateRange {
-  from: Date | null
-  to: Date | null
-}
-
-// DATE PRESET
+// DATE
+export interface DateRange { from: Date | null, to: Date | null }
 export type DatePreset = 'today' | 'week' | 'month' | null
 
 // ACTIONS
@@ -36,10 +33,12 @@ export interface TaskFormValues {
 export interface Task {
   id: string
   title: string
-  description?: string
   status: TaskStatus
   priority: TaskPriority
   createdAtUtc: Date
   updatedAtUtc: Date
+
+  description?: string
+  tag?: TaskTag
   // syncAtUtc: Date
 }

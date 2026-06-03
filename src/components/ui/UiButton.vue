@@ -59,6 +59,7 @@ const colorStyle = computed(() => {
   return {
     '--btn-color': `var(--v0-${color})`,
     '--btn-on-color': onColor ? `var(--v0-${onColor})` : `var(--v0-on-surface)`,
+    '--btn-hover-color': `color-mix(in srgb, var(--v0-${color}) 70%, var(--v0-text))`,
   }
 })
 </script>
@@ -110,6 +111,11 @@ const colorStyle = computed(() => {
       border-color: var(--v0-primary-dark);
     }
 
+    .ui-button--custom[data-variant="solid"]:hover {
+      background: color-mix(in srgb, var(--btn-color) 80%, black);
+      border-color: color-mix(in srgb, var(--btn-color) 80%, black);
+    }
+
     .ui-button[data-variant="outline"]:hover {
       color: var(--v0-primary-dark);
     }
@@ -127,10 +133,24 @@ const colorStyle = computed(() => {
       color: var(--v0-primary);
     }
 
+    .ui-button--custom[data-variant="outline"]:hover {
+      color: var(--btn-hover-color);
+    }
+
+    .ui-button--custom[data-variant="ghost"]:hover {
+      color: var(--btn-hover-color);
+    }
+
     .ui-button--custom[data-variant="icon"]:hover {
-      color: var(--btn-color);
+      color: var(--btn-hover-color);
+    }
+
+    .ui-button--custom[data-variant="chip"]:hover {
+      color: var(--btn-hover-color);
+      border-color: var(--btn-hover-color);
     }
   }
+
   .ui-button--custom[data-variant="outline"] {
     color: var(--btn-color);
     border-color: var(--btn-color);
@@ -141,6 +161,10 @@ const colorStyle = computed(() => {
   }
 
   .ui-button--custom[data-variant="icon"] {
+    color: var(--btn-color);
+  }
+
+  .ui-button--custom[data-variant="chip"] {
     color: var(--btn-color);
   }
 

@@ -6,7 +6,7 @@
 | ---------------------------------------------------------- | ------------ |
 | CRUD (create/read/update/delete)                           | ✅ Готово    |
 | Pinia store + persist (localStorage)                       | ✅ Готово    |
-| Тема (light/dark) + ViewTransition                         | ✅ Готово    |
+| Тема (light/dark) + ViewTransition + persist + FOUC-fix    | ✅ Готово    |
 | Валидация (Vuelidate)                                      | ✅ Готово    |
 | Поиск по названию                                          | ✅ Готово    |
 | Сортировка (SortPanel dropdown)                            | ✅ Готово    |
@@ -15,6 +15,10 @@
 | Детальная страница (/task/:id)                             | ✅ Готово    |
 | Типографика (JetBrains Mono, адаптивный базовый размер)    | ✅ Готово    |
 | Vuetify0 компоненты (Button, Input, Select, Modal, Toggle) | ✅ Готово    |
+| Toast/notification (Snackbar v0 + useSnackbar)             | ✅ Готово    |
+| UiButton: layout-shift fix + custom color + responsive     | ✅ Готово    |
+| TaskForm: reset + watch(initial) sync                      | ✅ Готово    |
+| Proximity highlight (TaskList pointermove)                  | ✅ Готово    |
 | Полировка UX (hover, empty state, focus styles)            | 🔧 Частично  |
 | Kanban View                                                | ⬜ Не начато |
 | API + Deploy (Vercel + Neon)                               | ⬜ Не начато |
@@ -24,32 +28,48 @@
 ```txt
 pages/index.vue → SearchInput + SortPanel + FilterPanel + TaskList
                         ↓
-                  useTasks() — Pinia store (persist: localeStorage)
+                  useTasks() — Pinia store (persist: localeStorage) + useSnackbar()
                         ↓
                   task-filters.ts → filterTasks, filterTasksByPreset, searchTasks, sortTasks
 ```
 
-**Устаревшие компоненты (в коде, не используются):**
-
-- `FilterSelect.vue` / `FilterOptionItem.vue` — закомментированы, заменены на FilterPanel
-- `DateRangePicker.vue` — закомментирован, заменён на пресеты в FilterPanel
-
 ## Активные задачи
 
-### P1 — Полировка UX
+### Global
+
+- [x] Теги init
+- [ ] Теги: название тега и border-right + tag color для визуального объединения задач
+- [ ] Теги: edit color, name via TagPanel
+- [ ] Теги: create dashed border
+- [ ] Теги: Компонент выбора цвета тега (палитра) (TagColorPicker)
+
+### P1 — UI List
+
+- [ ] Переключение на Grid Layout из flex-col
+
+### P2 — Полировка UX
 
 - [x] Убрать дёргание UiButton при variant="outline" → variant="solid" (layout shift)
 - [x] Toast/notification для CRUD операций (Snackbar v0)
+- [x] Hover эффекты только на desktop — @media (hover: hover)
+- [x] Адаптивные кнопки (shrink на мобилке)
+- [x] UiModal центрирование через native dialog (не position/transform)
+- [x] UiButton custom color (prop color) для всех variants включая hover
+- [x] TagColorPicker: CSS custom properties вместо UnoCSS dynamic classes
 - [ ] Красивый Scroll bar вместо дефолтного
 
-### P2 — Kanban View
+### P3 — Kanban View
 
 - [ ] Toggle-кнопка переключения List ↔ Kanban
 - [ ] 3 колонки: «В работе» / «Завершённые» / «Отменённые»
 - [ ] Drag'n'drop перемещение между колонками (смена статуса)
 - [ ] TaskItem в колонке — без действий (только drag handle + контент)
 
-### P3 — API + Deploy
+### P4 — Calendary View
+
+- [ ] Calendar component
+
+### P5 — API + Deploy
 
 **Стек:** Vercel Serverless + Neon Postgres + Drizzle ORM
 **Стратегия:** offline-first, переключение через `VITE_API_URL`
@@ -96,9 +116,13 @@ todo-app/
 
 ## Технический долг
 
-- [x] undefined для кириллицы при UiSnackbar
-- [x] При обновлении страницы теряется тема из стора (persist не успевает)
-- [x] Увеличение UI элементов при приближении курсора (useProximity)
+- [x] undefined для кириллицы при UiSnackbar → createNotificationsPlugin() не был подключён
+- [x] При обновлении страницы теряется тема (persist не включён) → createThemePlugin({ persist: true }) + createStoragePlugin() + inline script FOUC-fix
+- [x] Увеличение UI элементов при приближении курсора (useProximity) → pointermove на TaskList
+- [x] UiButton hover не работает с prop color → --btn-hover-color + --custom hover для всех variants
+- [x] TaskForm не синхронизируется с props.initial → watch(props.initial) + resetForm only for create
+- [x] Store update() не видит title при toggleStatus → fallback title из existing task
+- [x] UnoCSS dynamic classes не работают → CSS custom properties
 
 ## На подумать
 
@@ -117,3 +141,14 @@ CRUD, тема, store+persist, Vuetify0 компоненты, формы, вал
 ### Итерация 8 — Единые панели фильтрации и сортировки
 
 FilterPanel (статус + период) + SortPanel (поле + направление) — dropdown с chip-кнопками, общий panel.css
+
+### Итерация 9 — Snackbar, Theme persist, UiButton polish, Proximity
+
+- Snackbar: useSnackbar composable + UiSnackbar (Portal+Queue) + createNotificationsPlugin
+- Theme persist: createStoragePlugin + createThemePlugin({ persist: true }) + FOUC-fix inline script
+- UiButton: border 1px transparent (no layout shift), custom color (--btn-color/--btn-on-color/--btn-hover-color) для всех variants, responsive shrink, @media (hover: hover) для всех hover
+- UiModal: нативное центрирование через <dialog> showModal()
+- TaskForm: watch(props.initial) sync, resetForm() only for create, v$.$reset()
+- Store update(): fallback title из existing task
+- Proximity highlight: pointermove на TaskList, (hover: hover) guard, transition-[scale,filter]
+- UnoCSS dynamic classes → CSS custom properties (TagColorPicker)

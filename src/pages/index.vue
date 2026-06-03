@@ -14,6 +14,7 @@
       <div class="flex flex-row gap-2 items-start">
         <SortPanel />
         <FilterPanel />
+        <TagPanel />
       </div>
     </div>
     <TaskList />
@@ -33,6 +34,7 @@ import FilterPanel from '@/components/views/list/ui/filter/FilterPanel.vue'
 import CreateTaskModal from '@/components/views/list/ui/modals/CreateTaskModal.vue'
 import SearchInput from '@/components/views/list/ui/SearchInput.vue'
 import SortPanel from '@/components/views/list/ui/sort/SortPanel.vue'
+import TagPanel from '@/components/views/list/ui/tag/TagPanel.vue'
 import { useTasks } from '@/stores/useTasks'
 
 const tasksStore = useTasks()

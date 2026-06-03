@@ -1,5 +1,5 @@
 import type { Task } from '@/types/task'
-import { STORAGE_KEY } from '@/constants/storageKeys'
+import { TASKS_STORAGE_KEY } from '@/constants/storageKeys'
 
 function serialize(tasks: Task[]): string {
   return JSON.stringify(tasks)
@@ -14,7 +14,7 @@ function deserialize(raw: string): Task[] {
 }
 
 function save(tasks: Task[]): void {
-  localStorage.setItem(STORAGE_KEY, serialize(tasks))
+  localStorage.setItem(TASKS_STORAGE_KEY, serialize(tasks))
 }
 
 export { deserialize, save, serialize }
@@ -22,7 +22,7 @@ export { deserialize, save, serialize }
 // фукнции для не persist store
 // function load(): Task[] {
 //   try {
-//     const raw = localStorage.getItem(STORAGE_KEY)
+//     const raw = localStorage.getItem(TASKS_STORAGE_KEY)
 //     return raw ? deserialize(raw) : mockTasks
 //   }
 //   catch {
