@@ -1,3 +1,4 @@
+/** Все токены темы (для CSS vars и т.д.) */
 export const TagColorMap = {
   'primary': '#6366f1',
   'primary-dark': '#4f46e5',
@@ -15,5 +16,17 @@ export const TagColorMap = {
   'border': '#e2e8f0',
   'divider': '#c8d2de',
 }
+
+/** Только насыщенные цвета, пригодные для меток тегов */
+export const TagColorPalette = {
+  'primary': '#6366f1',
+  'primary-dark': '#4f46e5',
+  'secondary': '#3b82f6',
+  'error': '#ef4444',
+  'info': '#0ea5e9',
+  'success': '#22c55e',
+  'warning': '#f59e0b',
+  'muted': '#64748b',
+} as const
 
 export type TagColorKey = keyof typeof TagColorMap

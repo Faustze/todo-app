@@ -18,7 +18,7 @@
 | Toast/notification (Snackbar v0 + useSnackbar)             | ✅ Готово    |
 | UiButton: layout-shift fix + custom color + responsive     | ✅ Готово    |
 | TaskForm: reset + watch(initial) sync                      | ✅ Готово    |
-| Proximity highlight (TaskList pointermove)                  | ✅ Готово    |
+| Proximity highlight (TaskList pointermove)                 | ✅ Готово    |
 | Полировка UX (hover, empty state, focus styles)            | 🔧 Частично  |
 | Kanban View                                                | ⬜ Не начато |
 | API + Deploy (Vercel + Neon)                               | ⬜ Не начато |
@@ -39,9 +39,12 @@ pages/index.vue → SearchInput + SortPanel + FilterPanel + TaskList
 
 - [x] Теги init
 - [ ] Теги: название тега и border-right + tag color для визуального объединения задач
-- [ ] Теги: edit color, name via TagPanel
+- [x] Теги: edit color, name via TagPanel
 - [ ] Теги: create dashed border
-- [ ] Теги: Компонент выбора цвета тега (палитра) (TagColorPicker)
+- [x] Теги: Компонент выбора цвета тега (палитра) (TagColorPicker)
+- [x] Теги: Сетка палитры цветов для тегов TagColorPalette
+- [x] Теги: Модалка для выбора цвета TagColorPaletteModal
+- [x] Теги: Палитра использует CSS vars вместо hex (корректные цвета на тёмной/светлой теме)
 
 ### P1 — UI List
 

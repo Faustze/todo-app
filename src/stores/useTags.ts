@@ -5,7 +5,7 @@ import { useSnackbar } from '@/composables/useSnackbar'
 import { save } from '@/utils/tags-helpers'
 
 export const useTags = defineStore('tags', () => {
-  const { success, info, error } = useSnackbar()
+  const { success, info, warning, error } = useSnackbar()
 
   const tags = ref<TaskTag[]>([
     {
@@ -30,24 +30,43 @@ export const useTags = defineStore('tags', () => {
   }
 
   function create(payload: CreateTaskTag): void {
+    const name = payload.name.trim()
+
+    // Финальная проверка дубликата (race condition protection)
+    const duplicate = tags.value.find(t => t.name.toLowerCase() === name.toLowerCase())
+    if (duplicate) {
+      warning(`Тег «${name}» уже существует`)
+      return
+    }
+
     const tag: TaskTag = {
       id: crypto.randomUUID(),
-      name: payload.name,
+      name,
       color: payload.color,
     }
     tags.value.unshift(tag)
-    success(`Тег «${payload.name}» создан`)
+    success(`Тег «${name}» создан`)
   }
 
   function update(id: string, payload: UpdateTaskTag): void {
     const idx = tags.value.findIndex(t => t.id === id)
-    const existing = tags.value[idx]
-    const newTag = { id, ...payload }
-    if (idx !== -1) {
-      Object.assign(tags.value[idx], newTag)
-      const name = payload.name ?? existing?.name ?? ''
-      info(`Тег «${name}» обновлён`)
+    if (idx === -1) {
+      error(`Тег не найден`)
+      return
     }
+
+    const existing = tags.value[idx]
+    const name = payload.name?.trim() ?? existing.name
+
+    // Финальная проверка дубликата (race condition protection)
+    const duplicate = tags.value.find(t => t.id !== id && t.name.toLowerCase() === name.toLowerCase())
+    if (duplicate) {
+      warning(`Тег «${name}» уже существует`)
+      return
+    }
+
+    Object.assign(tags.value[idx], { ...payload, name })
+    info(`Тег «${name}» обновлён`)
   }
 
   function remove(id: string): void {
