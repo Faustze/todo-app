@@ -42,8 +42,6 @@ import { IconAlertTriangle, IconX } from '@tabler/icons-vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiModal from '@/components/ui/UiModal.vue'
 
-defineOptions({ name: 'DeleteTaskModal' })
-
 defineProps<{
   taskTitle?: string
 }>()

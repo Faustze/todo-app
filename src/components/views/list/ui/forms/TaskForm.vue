@@ -54,11 +54,16 @@
       </div>
     </div>
 
+    <div class="task-form__field">
+      <label :for="tagIdId" class="task-form__label">Тег</label>
+      <UiSelect v-model="form.tagId" :options="tagOptions" placeholder="Выберите тег..." />
+    </div>
+
     <div class="task-form__actions">
-      <UiButton variant="ghost" @click="handleCancel">
+      <UiButton variant="ghost" size="sm" @click="handleCancel">
         Отмена
       </UiButton>
-      <UiButton variant="solid" @click="handleSubmit">
+      <UiButton variant="solid" size="sm" @click="handleSubmit">
         {{ mode === 'create' ? 'Создать' : 'Сохранить' }}
       </UiButton>
     </div>
@@ -72,6 +77,7 @@
 </template>
 
 <script setup lang="ts">
+import type { TaskTag } from '@/types/tag'
 import type { TaskFormValues, TaskPriority, TaskStatus } from '@/types/task'
 import { IconX } from '@tabler/icons-vue'
 import { useVuelidate } from '@vuelidate/core'
@@ -86,6 +92,7 @@ defineOptions({ name: 'TaskForm' })
 const props = defineProps<{
   mode: 'create' | 'edit'
   initial?: Partial<TaskFormValues>
+  tags?: TaskTag[]
 }>()
 
 const emit = defineEmits<{
@@ -98,13 +105,20 @@ const titleId = computed(() => `${uid.value}-title`)
 const descId = computed(() => `${uid.value}-description`)
 const priorityId = computed(() => `${uid.value}-priority`)
 const statusId = computed(() => `${uid.value}-status-label`)
+const tagIdId = computed(() => `${uid.value}-tag`)
 
 const form = reactive<TaskFormValues>({
   title: props.initial?.title ?? '',
   description: props.initial?.description ?? '',
   status: props.initial?.status ?? 'in-progress',
   priority: props.initial?.priority ?? 'middle',
+  tagId: props.initial?.tagId,
 })
+
+const tagOptions = computed(() => [
+  { id: '', label: 'Без тега' },
+  ...(props.tags ?? []).map(t => ({ id: t.id, label: t.name })),
+])
 
 const rules = {
   title: {
@@ -166,6 +180,7 @@ function resetForm() {
     description: '',
     priority: 'middle',
     status: 'in-progress',
+    tagId: undefined,
   })
   v$.value.$reset()
 }
@@ -178,6 +193,7 @@ watch(() => props.initial, (val) => {
       description: val.description ?? '',
       status: val.status ?? 'in-progress',
       priority: val.priority ?? 'middle',
+      tagId: val.tagId,
     })
   }
 }, { deep: true })

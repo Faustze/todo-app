@@ -38,13 +38,13 @@ pages/index.vue → SearchInput + SortPanel + FilterPanel + TaskList
 ### Global
 
 - [x] Теги init
-- [ ] Теги: название тега и border-right + tag color для визуального объединения задач
+- [x] Теги: название тега и border-right + tag color для визуального объединения задач
 - [x] Теги: edit color, name via TagPanel
-- [ ] Теги: create dashed border
 - [x] Теги: Компонент выбора цвета тега (палитра) (TagColorPicker)
 - [x] Теги: Сетка палитры цветов для тегов TagColorPalette
 - [x] Теги: Модалка для выбора цвета TagColorPaletteModal
 - [x] Теги: Палитра использует CSS vars вместо hex (корректные цвета на тёмной/светлой теме)
+- [ ] showConfirm (С подтверждением в поле текста), showModal (обычная модалка) логика + Ui с помощью v0 UiModal
 
 ### P1 — UI List
 

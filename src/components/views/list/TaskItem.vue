@@ -1,5 +1,9 @@
 <template>
-  <div class="task-item flex items-center justify-between gap-3 px-4 py-3 bg-surface border border-border rounded-sm transition-[border-color,scale,filter] duration-250 hover:border-primary cursor-pointer" :class="priorityClass">
+  <div
+    class="task-item flex items-center justify-between gap-3 pa-2 bg-surface border border-border rounded-sm transition-[border-color,scale,filter] duration-250 hover:border-primary cursor-pointer"
+    :class="priorityClass"
+    :data-tag="task.tag ? '' : undefined"
+  >
     <div class="task-item__info flex items-center gap-3 min-w-0 flex-2">
       <IconStatus :task-id="task.id" :status="task.status" />
       <div class="min-w-0">
@@ -9,29 +13,36 @@
       </div>
     </div>
 
-    <TaskItemActions
-      :task="task"
-      @edit="emit('edit', task)"
-      @delete="emit('delete', task.id, task.title)"
-      @show="emit('show', task.id)"
-    />
+    <div class="flex flex-row gap-2">
+      <UiChip v-if="task.tag" :color="task.tag?.color">
+        {{ task.tag?.name }}
+      </UiChip>
+
+      <TaskItemActions
+        :task="task"
+        @edit="emit('edit', task)"
+        @delete="emit('delete', task.id)"
+        @show="emit('show', task.id)"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Task } from '@/types/task'
+import type { TaskWithTag } from '@/types/task'
 import { computed } from 'vue'
+import UiChip from '@/components/ui/UiChip.vue'
 import IconStatus from './IconStatus.vue'
 import TaskItemActions from './TaskItemActions.vue'
 
 const props = defineProps<{
-  task: Task
+  task: TaskWithTag
   number: number
 }>()
 
 const emit = defineEmits<{
-  edit: [task: Task]
-  delete: [id: string, title: string]
+  edit: [task: TaskWithTag]
+  delete: [id: string]
   show: [id: string]
 }>()
 

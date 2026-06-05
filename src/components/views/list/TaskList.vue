@@ -1,14 +1,14 @@
 <template>
-  <div class="flex flex-col gap-3">
+  <div class="flex flex-col">
     <TransitionGroup
       name="task"
       tag="div"
-      class="flex flex-col gap-3 task-list"
+      class="flex flex-col gap-2 task-list"
       @pointermove="onPointerMove"
       @pointerleave="onPointerLeave"
     >
       <TaskItem
-        v-for="(task, index) in filteredTasks"
+        v-for="(task, index) in tasks"
         :key="task.id"
         :task="task"
         :number="index + 1"
@@ -19,7 +19,7 @@
       />
     </TransitionGroup>
 
-    <EmptyState v-if="filteredTasks.length === 0">
+    <EmptyState v-if="tasks.length === 0">
       <p class="text-muted">
         Задачи не найдены
       </p>
@@ -28,70 +28,75 @@
     <UpdateTaskModal
       v-model="editOpen"
       :task="editingTask"
+      :tags="tags"
       @update="handleUpdate"
     />
 
     <DeleteTaskModal
       v-model="deleteOpen"
       :task-title="deletingTask?.title"
-      @confirm="handleConfirmDelete"
+      @confirm="handleDelete"
       @cancel="deleteOpen = false; deletingTask = null"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Task, TaskFormValues } from '@/types/task'
-import { storeToRefs } from 'pinia'
+import type { TaskTag } from '@/types/tag.ts'
+import type { TaskFormValues, TaskWithTag } from '@/types/task'
 import { ref, shallowRef } from 'vue'
 import { useRouter } from 'vue-router'
 import EmptyState from '@/components/views/list/EmptyState.vue'
 import DeleteTaskModal from '@/components/views/list/ui/modals/DeleteTaskModal.vue'
 import UpdateTaskModal from '@/components/views/list/ui/modals/UpdateTaskModal.vue'
 import { useProximity } from '@/composables/useProximity.ts'
-import { useTasks } from '@/stores/useTasks'
 import TaskItem from './TaskItem.vue'
 
-const router = useRouter()
-const tasksStore = useTasks()
-const { onPointerMove, onPointerLeave } = useProximity('task-list__item')
-const { filteredTasks } = storeToRefs(tasksStore)
-const { update, remove } = tasksStore
+const props = defineProps<{
+  tasks: TaskWithTag[]
+  tags: TaskTag[]
+}>()
 
-const editingTask = shallowRef<Task | null>(null)
+const emits = defineEmits<{
+  edit: [id: string, values: TaskFormValues]
+  delete: [id: string]
+  show: [id: string]
+}>()
+const router = useRouter()
+const { onPointerMove, onPointerLeave } = useProximity('task-list__item')
+
+const editingTask = shallowRef<TaskWithTag | null>(null)
 const editOpen = ref(false)
 
 const deletingTask = shallowRef<{ id: string, title: string } | null>(null)
 const deleteOpen = ref(false)
 
-function onEdit(task: Task) {
+function onEdit(task: TaskWithTag) {
   editingTask.value = task
   editOpen.value = true
 }
 
-function onDelete(id: string, title: string) {
-  deletingTask.value = { id, title }
-  deleteOpen.value = true
+function handleUpdate(id: string, values: TaskFormValues) {
+  emits('edit', id, values)
+  editOpen.value = false
+}
+
+function handleDelete() {
+  if (deletingTask.value) {
+    emits('delete', deletingTask.value.id)
+  }
+  deleteOpen.value = false
+}
+
+function onDelete(id: string) {
+  const task = props.tasks.find(t => t.id === id)
+  if (task) {
+    deletingTask.value = { id: task.id, title: task.title }
+    deleteOpen.value = true
+  }
 }
 
 function onShow(id: string) {
   router.push({ path: `/task/${id}` })
-}
-
-function handleUpdate(id: string, values: TaskFormValues) {
-  update(id, {
-    title: values.title,
-    description: values.description,
-    priority: values.priority,
-    status: values.status,
-  })
-}
-
-function handleConfirmDelete() {
-  if (deletingTask.value) {
-    remove(deletingTask.value.id)
-  }
-  deleteOpen.value = false
-  deletingTask.value = null
 }
 </script>

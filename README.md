@@ -34,6 +34,7 @@ npm run preview  # просмотр билда
 - **Темы** — light/dark с persist через Vuetify0 storage + FOUC-prevention inline script
 - **Статус задачи** — быстрый toggle in-progress ↔ done через checkbox; cancel = static
 - **Приоритеты** — визуальная иерархия (high=red+tint+bold, middle=primary, low=muted)
+- **Теги** — цветовая маркировка задач с визуальным индикатором справа (border-right через inset box-shadow)
 - **Детальная страница** — /task/:id с полной информацией
 - **Proximity highlight** — элементы рядом с курсором подсвечиваются (desktop only)
 

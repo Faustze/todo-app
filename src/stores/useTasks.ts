@@ -1,13 +1,15 @@
 import type { SortBy, SortDir } from '@/types/sort'
-import type { CreateTask, DatePreset, DateRange, Task, TaskFilter, UpdateTask } from '@/types/task'
+import type { CreateTask, DatePreset, DateRange, Task, TaskFilter, TaskWithTag, UpdateTask } from '@/types/task'
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import { useSnackbar } from '@/composables/useSnackbar'
 import { countTasksByStatus, filterTasks, filterTasksByDateRange, filterTasksByPreset, searchTasks, sortTasks } from '@/utils/task-filters'
 import { save } from '@/utils/tasks-helpers'
+import { useTags } from './useTags'
 
 export const useTasks = defineStore('tasks', () => {
   const { success, info, error } = useSnackbar()
+  const tagsStore = useTags()
 
   const tasks = ref<Task[]>([])
   const filter = ref<TaskFilter>('in-progress')
@@ -17,8 +19,16 @@ export const useTasks = defineStore('tasks', () => {
   const sortBy = ref<SortBy>('date')
   const sortDir = ref<SortDir>('desc')
 
+  // Добавляем tag к задачам из store тегов
+  const tasksWithTag = computed(() => {
+    return tasks.value.map(task => ({
+      ...task,
+      tag: task.tagId ? tagsStore.tags.find(t => t.id === task.tagId) : undefined,
+    })) as TaskWithTag[]
+  })
+
   const filteredTasks = computed(() => {
-    const byStatus = filterTasks(tasks.value, filter.value)
+    const byStatus = filterTasks(tasksWithTag.value, filter.value)
     const byDateRange = filterTasksByDateRange(byStatus, dateRange.value)
     const byPreset = datePreset.value
       ? filterTasksByPreset(byDateRange, datePreset.value)
@@ -30,7 +40,13 @@ export const useTasks = defineStore('tasks', () => {
   const doneCount = computed(() => countTasksByStatus(tasks.value, 'done'))
 
   function getTaskById(id: string): Task | undefined {
-    return tasks.value.find(t => t.id === id)
+    const task = tasks.value.find(t => t.id === id)
+    if (!task)
+      return undefined
+    return {
+      ...task,
+      tag: task.tagId ? tagsStore.tags.find(t => t.id === task.tagId) : undefined,
+    } as Task
   }
 
   function create(payload: CreateTask): void {
@@ -42,8 +58,9 @@ export const useTasks = defineStore('tasks', () => {
       createdAtUtc: new Date(),
       updatedAtUtc: new Date(),
       status: 'in-progress',
+      tagId: payload.tagId,
     }
-    tasks.value.unshift(task)
+    tasks.value.push(task)
     success(`Задача «${payload.title}» создана`)
   }
 
@@ -52,7 +69,7 @@ export const useTasks = defineStore('tasks', () => {
     const existing = tasks.value[idx]
     const newTask = {
       id,
-      updatedAtUtc: Date.now(),
+      updatedAtUtc: new Date(),
       ...payload,
     }
     if (idx !== -1) {

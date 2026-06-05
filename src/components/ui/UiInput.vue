@@ -64,7 +64,7 @@ const fieldId = useId()
   }
 
   .ui-input__control {
-    padding: 0.3rem;
+    padding: 0.5rem;
     border: 1px solid var(--v0-border);
     border-radius: 0.5rem;
     background: var(--v0-surface);

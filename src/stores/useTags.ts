@@ -11,17 +11,17 @@ export const useTags = defineStore('tags', () => {
     {
       id: '123',
       name: 'tag1',
-      color: 'primary',
+      color: 'tag-1',
     },
     {
       id: '1234',
       name: 'tag2',
-      color: 'primary',
+      color: 'tag-2',
     },
     {
       id: '1235',
-      name: 'tag2',
-      color: 'primary',
+      name: 'tag3',
+      color: 'tag-3',
     },
   ])
 
@@ -44,7 +44,7 @@ export const useTags = defineStore('tags', () => {
       name,
       color: payload.color,
     }
-    tags.value.unshift(tag)
+    tags.value.push(tag)
     success(`Тег «${name}» создан`)
   }
 

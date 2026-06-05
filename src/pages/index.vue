@@ -17,8 +17,8 @@
         <TagPanel />
       </div>
     </div>
-    <TaskList />
-    <CreateTaskModal v-model="createOpen" @create="handleCreate" />
+    <TaskList :tasks="filteredTasks" :tags="tags" @edit="handleEdit" @delete="handleDelete" />
+    <CreateTaskModal v-model="createOpen" :tags="tags" @create="handleCreate" />
   </div>
 </template>
 
@@ -35,13 +35,17 @@ import CreateTaskModal from '@/components/views/list/ui/modals/CreateTaskModal.v
 import SearchInput from '@/components/views/list/ui/SearchInput.vue'
 import SortPanel from '@/components/views/list/ui/sort/SortPanel.vue'
 import TagPanel from '@/components/views/list/ui/tag/TagPanel.vue'
+import { useTags } from '@/stores/useTags'
 import { useTasks } from '@/stores/useTasks'
 
 const tasksStore = useTasks()
-const loading = ref(false)
-const { searchQuery } = storeToRefs(tasksStore)
-const { create, setDateRange } = tasksStore
+const tagsStore = useTags()
+const { filteredTasks, searchQuery } = storeToRefs(tasksStore)
+const { tags } = storeToRefs(tagsStore)
+const { create, setDateRange, update, remove } = tasksStore
 
+const createOpen = shallowRef(false)
+const loading = ref(false)
 const dateRangePicker = ref<InstanceType<typeof DateRangePicker> | null>(null)
 
 watch(
@@ -54,14 +58,27 @@ watch(
   { deep: true },
 )
 
-const createOpen = shallowRef(false)
-
 function handleCreate(values: TaskFormValues): void {
   create({
     title: values.title,
     description: values.description,
     priority: values.priority,
+    tagId: values.tagId,
   })
+}
+
+function handleEdit(id: string, values: TaskFormValues) {
+  update(id, {
+    title: values.title,
+    description: values.description,
+    priority: values.priority,
+    status: values.status,
+    tagId: values.tagId,
+  })
+}
+
+function handleDelete(id: string) {
+  remove(id)
 }
 </script>
 

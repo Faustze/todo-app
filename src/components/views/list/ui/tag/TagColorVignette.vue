@@ -1,11 +1,8 @@
 <template>
   <IconVignette
-    size="20"
+    :size="size"
     class="tag-color-picker"
-    :style="{
-      '--tag-color': `var(--v0-${color})`,
-      '--tag-hover-color': `var(--v0-${hoverColor})`,
-    }"
+    :style="{ '--tag-color': `var(--v0-${color})` }"
   />
 </template>
 
@@ -14,10 +11,11 @@ import type { TagColorKey } from '@/constants/tag'
 import { IconVignette } from '@tabler/icons-vue'
 
 withDefaults(defineProps<{
-  color: TagColorKey
-  hoverColor?: TagColorKey
+  color?: TagColorKey
+  size?: string
 }>(), {
-  hoverColor: 'warning',
+  color: 'tag-6',
+  size: '20',
 })
 </script>
 
@@ -25,11 +23,5 @@ withDefaults(defineProps<{
   .tag-color-picker {
     color: var(--tag-color);
     transition: color 0.15s ease;
-  }
-
-  @media (hover: hover) {
-    .tag-color-picker:hover {
-      color: var(--tag-hover-color);
-    }
   }
 </style>

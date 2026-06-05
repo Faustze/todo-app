@@ -1,7 +1,7 @@
 export const lightColors = {
   'primary': '#6366f1',
   'primary-dark': '#4f46e5',
-  'secondary': '#3b82f6',
+  'secondary': '#2DF7AB',
   'error': '#ef4444',
   'info': '#0ea5e9',
   'success': '#22c55e',
@@ -23,12 +23,19 @@ export const lightColors = {
   'on-background': '#0f172a',
   'on-surface': '#0f172a',
   'on-surface-variant': '#475569',
+  'tag-1': '#6366f1',
+  'tag-2': '#3b82f6',
+  'tag-3': '#ef4444',
+  'tag-4': '#0ea5e9',
+  'tag-5': '#22c55e',
+  'tag-6': '#f59e0b',
+  'tag-7': '#64748b',
 } as const
 
 export const darkColors = {
   'primary': '#818cf8',
   'primary-dark': '#6366f1',
-  'secondary': '#fbbf24',
+  'secondary': '#27E89E',
   'error': '#f87171',
   'info': '#38bdf8',
   'success': '#4ade80',
@@ -50,6 +57,13 @@ export const darkColors = {
   'on-background': '#e0e0e0',
   'on-surface': '#e0e0e0',
   'on-surface-variant': '#a0a0a0',
+  'tag-1': '#818cf8',
+  'tag-2': '#60a5fa',
+  'tag-3': '#f87171',
+  'tag-4': '#38bdf8',
+  'tag-5': '#4ade80',
+  'tag-6': '#fb923c',
+  'tag-7': '#94a3b8',
 } as const
 
 export type ThemeColors = typeof lightColors

@@ -1,7 +1,7 @@
 <template>
   <UiModal v-model="open">
-    <div class="update-task-modal">
-      <h2 class="update-task-modal__title text-lg font-semibold text-text mb-5">
+    <div class="pa-4">
+      <h2 class="text-lg font-semibold text-text mb-5">
         Редактирование задачи
       </h2>
       <hr class="border-gray-500 rounded-lg my-4">
@@ -9,6 +9,7 @@
         :key="task?.id"
         mode="edit"
         :initial="initialValues"
+        :tags="effectiveTags"
         @submit="handleSubmit"
         @cancel="handleCancel"
       />
@@ -17,15 +18,17 @@
 </template>
 
 <script setup lang="ts">
-import type { Task, TaskFormValues } from '@/types/task'
+import type { TaskTag } from '@/types/tag'
+import type { TaskFormValues, TaskWithTag } from '@/types/task'
+import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import UiModal from '@/components/ui/UiModal.vue'
 import TaskForm from '@/components/views/list/ui/forms/TaskForm.vue'
-
-defineOptions({ name: 'UpdateTaskModal' })
+import { useTags } from '@/stores/useTags'
 
 const props = defineProps<{
-  task: Task | null
+  task: TaskWithTag | null
+  tags?: TaskTag[]
 }>()
 
 const emit = defineEmits<{
@@ -34,12 +37,20 @@ const emit = defineEmits<{
 
 const open = defineModel<boolean>({ default: false })
 
-const initialValues = computed<TaskFormValues>(() => ({
-  title: props.task?.title ?? '',
-  description: props.task?.description ?? '',
-  status: props.task?.status ?? 'in-progress',
-  priority: props.task?.priority ?? 'middle',
-}))
+// Используем теги из store, если не переданы через props
+const tagsStore = useTags()
+const { tags: storeTags } = storeToRefs(tagsStore)
+const effectiveTags = computed(() => props.tags ?? storeTags.value)
+
+const initialValues = computed((): TaskFormValues => {
+  return {
+    title: props.task?.title ?? '',
+    description: props.task?.description ?? '',
+    status: props.task?.status ?? 'in-progress',
+    priority: props.task?.priority ?? 'middle',
+    tagId: props.task?.tag?.id,
+  }
+})
 
 function handleSubmit(values: TaskFormValues) {
   if (!props.task)
@@ -52,14 +63,3 @@ function handleCancel() {
   open.value = false
 }
 </script>
-
-<style scoped>
-  .update-task-modal {
-    padding: 1.5rem;
-  }
-
-  .update-task-modal__title {
-    color: var(--v0-text);
-    margin-bottom: 1.25rem;
-  }
-</style>
