@@ -1,7 +1,7 @@
 <template>
   <Select.Root v-model="isOpen">
     <Select.Activator v-slot="{ attrs }">
-      <UiButton variant="outline" v-bind="attrs">
+      <UiButton variant="outline" color="primary" size="md" v-bind="attrs">
         <IconArrowsSort size="20" />
       </UiButton>
     </Select.Activator>
@@ -19,6 +19,7 @@
               v-for="(opt, idx) in sortOptions"
               :key="idx"
               size="extra-sm"
+              color="primary"
               :variant="(sortBy === opt.id) ? 'solid' : 'chip'"
               @click="onSortClick(opt.id)"
             >

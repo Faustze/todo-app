@@ -9,10 +9,10 @@
         @select="selectedColor = $event"
       />
       <div class="flex justify-end gap-2 mt-4">
-        <UiButton variant="ghost" @click="open = false">
+        <UiButton variant="text" color="text" @click="open = false">
           Отмена
         </UiButton>
-        <UiButton variant="solid" @click="emit('confirm', selectedColor)">
+        <UiButton variant="solid" color="primary" @click="emit('confirm', selectedColor)">
           Применить
         </UiButton>
       </div>
@@ -26,10 +26,9 @@ import UiButton from '@/components/ui/UiButton.vue'
 import UiModal from '@/components/ui/UiModal.vue'
 import TagColorPalette from './TagColorPalette.vue'
 
-const open = defineModel<boolean>({ default: false })
-const selectedColor = defineModel<TagColorKey>('selectedColor', { required: true })
-
 const emit = defineEmits<{
   confirm: [color: TagColorKey]
 }>()
+const open = defineModel<boolean>({ default: false })
+const selectedColor = defineModel<TagColorKey>('selectedColor', { required: true })
 </script>

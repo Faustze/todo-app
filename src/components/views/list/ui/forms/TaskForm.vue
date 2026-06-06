@@ -60,17 +60,19 @@
     </div>
 
     <div class="task-form__actions">
-      <UiButton variant="ghost" size="sm" @click="handleCancel">
-        Отмена
+      <UiButton variant="text" color="text" size="sm" @click="handleCancel">
+        <p class="text-text hover:text-primary">
+          Отмена
+        </p>
       </UiButton>
-      <UiButton variant="solid" size="sm" @click="handleSubmit">
+      <UiButton variant="solid" color="primary" size="sm" @click="handleSubmit">
         {{ mode === 'create' ? 'Создать' : 'Сохранить' }}
       </UiButton>
     </div>
 
     <div class="task-form__close_btn">
-      <UiButton variant="ghost" @click="handleCancel">
-        <IconX size="22" />
+      <UiButton variant="text" color="text" @click="handleCancel">
+        <IconX class="text-text hover:text-primary" size="22" />
       </UiButton>
     </div>
   </form>
@@ -276,6 +278,6 @@ watch(() => props.initial, (val) => {
   .task-form__close_btn {
     position: absolute;
     top: 1rem;
-    right: 0.5rem;
+    right: 1rem;
   }
 </style>

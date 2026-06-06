@@ -5,6 +5,7 @@
         variant="outline"
         size="sm"
         v-bind="attrs"
+        color="primary"
         :data-active="hasRange"
       >
         <IconCalendar size="20" />

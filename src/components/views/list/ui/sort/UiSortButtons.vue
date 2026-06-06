@@ -1,6 +1,6 @@
 <template>
   <!-- Activator -->
-  <UiButton variant="outline">
+  <UiButton variant="outline" color="primary">
     <div class="flex flex-row items-center gap-2">
       <IconArrowsSort size="16" />
     </div>
@@ -8,7 +8,8 @@
 
   <!-- Select items -->
   <UiButton
-    :variant="sortBy === 'date' ? 'solid' : 'ghost'"
+    :variant="sortBy === 'date' ? 'solid' : 'text'"
+    color="primary"
     size="sm"
     @click="toggle('date')"
   >
@@ -20,7 +21,8 @@
   </UiButton>
 
   <UiButton
-    :variant="sortBy === 'priority' ? 'solid' : 'ghost'"
+    :variant="sortBy === 'priority' ? 'solid' : 'text'"
+    color="primary"
     size="sm"
     @click="toggle('priority')"
   >

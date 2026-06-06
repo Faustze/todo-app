@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <header class="flex flex-row gap-2 justify-end">
-      <UiButton variant="solid" @click="createOpen = true">
+      <UiButton variant="solid" color="primary" size="md" @click="createOpen = true">
         <IconPlus size="20" />
       </UiButton>
     </header>

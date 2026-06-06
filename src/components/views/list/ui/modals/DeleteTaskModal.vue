@@ -19,10 +19,12 @@
         </p>
       </div>
       <div class="delete-modal__actions">
-        <UiButton variant="ghost" @click="emit('cancel')">
-          Отмена
+        <UiButton variant="text" color="text" size="md" @click="emit('cancel')">
+          <p class="text-text hover:text-primary">
+            Отмена
+          </p>
         </UiButton>
-        <UiButton variant="solid" color="error" @click="emit('confirm')">
+        <UiButton variant="solid" color="error" size="md" @click="emit('confirm')">
           Удалить
         </UiButton>
         <button
@@ -30,7 +32,7 @@
           type="button"
           @click="emit('cancel')"
         >
-          <IconX size="22" />
+          <IconX class="text-text hover:text-primary" size="22" />
         </button>
       </div>
     </div>

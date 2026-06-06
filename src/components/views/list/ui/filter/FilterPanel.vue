@@ -1,7 +1,7 @@
 <template>
   <Select.Root v-model="isOpen">
     <Select.Activator v-slot="{ attrs }">
-      <UiButton variant="outline" v-bind="attrs">
+      <UiButton variant="outline" color="primary" size="md" v-bind="attrs">
         <IconFilter size="20" />
       </UiButton>
     </Select.Activator>
@@ -21,6 +21,7 @@
               v-for="opt in statusOptions"
               :key="opt.id"
               size="extra-sm"
+              color="primary"
               :variant="(statusFilter === opt.id) ? 'solid' : 'chip'"
               @click="statusFilter = opt.id"
             >
@@ -39,6 +40,7 @@
               v-for="(preset, idx) in presetOptions"
               :key="idx"
               size="extra-sm"
+              color="primary"
               :variant="(activePreset === preset.id) ? 'solid' : 'chip'"
               @click="togglePreset(preset.id)"
             >

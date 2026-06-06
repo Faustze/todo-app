@@ -44,7 +44,8 @@ pages/index.vue → SearchInput + SortPanel + FilterPanel + TaskList
 - [x] Теги: Сетка палитры цветов для тегов TagColorPalette
 - [x] Теги: Модалка для выбора цвета TagColorPaletteModal
 - [x] Теги: Палитра использует CSS vars вместо hex (корректные цвета на тёмной/светлой теме)
-- [ ] showConfirm (С подтверждением в поле текста), showModal (обычная модалка) логика + Ui с помощью v0 UiModal
+- [ ] Теги: Модальное окно подтверждение удаление тега
+- [ ] Общие модальные окна: showConfirm (c подтверждением в поле текста), showModal (обычная модалка)
 
 ### P1 — UI List
 
@@ -59,7 +60,6 @@ pages/index.vue → SearchInput + SortPanel + FilterPanel + TaskList
 - [x] UiModal центрирование через native dialog (не position/transform)
 - [x] UiButton custom color (prop color) для всех variants включая hover
 - [x] TagColorPicker: CSS custom properties вместо UnoCSS dynamic classes
-- [ ] Красивый Scroll bar вместо дефолтного
 
 ### P3 — Kanban View
 

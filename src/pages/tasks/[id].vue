@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex justify-start">
-      <UiButton variant="icon" @click="router.back()">
+      <UiButton variant="icon" color="text" @click="router.back()">
         <IconArrowLeft size="20" />
       </UiButton>
     </div>

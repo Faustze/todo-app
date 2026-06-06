@@ -1,7 +1,7 @@
 <template>
   <Select.Root v-model="model">
     <Select.Activator v-slot="{ attrs }">
-      <UiButton variant="outline" size="sm" v-bind="attrs">
+      <UiButton variant="outline" color="primary" size="sm" v-bind="attrs">
         <IconFilter size="20" />
       </UiButton>
     </Select.Activator>

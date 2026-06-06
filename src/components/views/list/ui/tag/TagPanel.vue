@@ -1,7 +1,7 @@
 <template>
   <Select.Root v-model="isOpen">
     <Select.Activator v-slot="{ attrs }">
-      <UiButton variant="outline" v-bind="attrs">
+      <UiButton variant="outline" color="primary" size="md" v-bind="attrs">
         <IconTag size="20" />
       </UiButton>
     </Select.Activator>
@@ -24,7 +24,7 @@
       </div>
 
       <div class="panel-section border-t border-divider mt-4 pt-4">
-        <UiButton variant="outline" class="w-full" size="sm" @click="createOpen = true">
+        <UiButton variant="outline" color="primary" class="w-full" size="sm" @click="createOpen = true">
           Добавить тег
         </UiButton>
       </div>

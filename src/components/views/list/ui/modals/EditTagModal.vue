@@ -25,10 +25,10 @@
       </div>
 
       <div class="flex justify-end gap-2 mt-5">
-        <UiButton variant="ghost" size="sm" @click="cancel">
+        <UiButton variant="text" color="text" size="sm" @click="cancel">
           Отмена
         </UiButton>
-        <UiButton variant="solid" size="sm" @click="submit">
+        <UiButton variant="solid" color="primary" size="sm" @click="submit">
           Сохранить
         </UiButton>
       </div>

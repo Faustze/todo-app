@@ -2,8 +2,8 @@
   <Select.Root v-model="model">
     <Select.Activator v-slot="{ attrs }">
       <div class="flex items-center shrink-0">
-        <UiButton variant="icon" v-bind="attrs">
-          <IconDotsVertical size="20" />
+        <UiButton variant="icon" color="text" v-bind="attrs">
+          <IconDotsVertical class="text-text hover:text-primary" size="20" />
         </UiButton>
       </div>
     </Select.Activator>

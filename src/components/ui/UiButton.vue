@@ -1,7 +1,6 @@
 <template>
   <Button.Root
     class="ui-button"
-    :class="{ 'ui-button--custom': color }"
     :loading="loading"
     :disabled="disabled"
     :data-variant="variant"
@@ -27,34 +26,27 @@ import { IconLoader } from '@tabler/icons-vue'
 import { Button } from '@vuetify/v0'
 import { computed } from 'vue'
 
-const {
-  variant = 'solid',
-  size = 'md',
-  color,
-  loading = false,
-  disabled = false,
-} = defineProps<{
-  variant?: 'solid' | 'outline' | 'ghost' | 'icon' | 'chip'
+const { variant = 'solid', color } = defineProps<{
+  variant?: 'solid' | 'outline' | 'text' | 'icon' | 'chip'
   size?: 'sm' | 'md' | 'lg' | 'extra-sm'
-  color?: ThemeColorKey
+  color: ThemeColorKey
   loading?: boolean
   disabled?: boolean
 }>()
 
+const onMap: Record<string, string> = {
+  'primary': 'on-primary',
+  'secondary': 'on-secondary',
+  'error': 'on-error',
+  'info': 'on-info',
+  'success': 'on-success',
+  'warning': 'on-warning',
+  'background': 'on-background',
+  'surface': 'on-surface',
+  'surface-variant': 'on-surface-variant',
+}
+
 const colorStyle = computed(() => {
-  if (!color)
-    return {}
-  const onMap: Record<string, string> = {
-    'primary': 'on-primary',
-    'secondary': 'on-secondary',
-    'error': 'on-error',
-    'info': 'on-info',
-    'success': 'on-success',
-    'warning': 'on-warning',
-    'background': 'on-background',
-    'surface': 'on-surface',
-    'surface-variant': 'on-surface-variant',
-  }
   const onColor = onMap[color]
   return {
     '--btn-color': `var(--v0-${color})`,
@@ -77,95 +69,57 @@ const colorStyle = computed(() => {
     border: 1px solid transparent;
   }
 
+  /* === SOLID === */
   .ui-button[data-variant="solid"] {
-    background: var(--v0-primary);
-    color: var(--v0-on-primary);
-    border-color: var(--v0-primary);
+    background: var(--btn-color);
+    color: var(--btn-on-color);
+    border-color: var(--btn-color);
   }
 
+  /* === OUTLINE === */
   .ui-button[data-variant="outline"] {
     background: transparent;
-    color: var(--v0-primary);
-    border-color: var(--v0-primary);
-  }
-
-  .ui-button[data-variant="chip"] {
-    background: transparent;
-    border-color: var(--v0-divider);
-  }
-
-  .ui-button[data-variant="ghost"] {
-    background: transparent;
-    color: var(--v0-text);
-  }
-
-  .ui-button[data-variant="icon"] {
-    background: transparent;
-    color: var(--v0-text);
-    padding: 0px !important;
-  }
-
-  @media (hover: hover) {
-    .ui-button[data-variant="solid"]:hover {
-      background: var(--v0-primary-dark);
-      border-color: var(--v0-primary-dark);
-    }
-
-    .ui-button--custom[data-variant="solid"]:hover {
-      background: color-mix(in srgb, var(--btn-color) 80%, black);
-      border-color: color-mix(in srgb, var(--btn-color) 80%, black);
-    }
-
-    .ui-button[data-variant="outline"]:hover {
-      color: var(--v0-primary-dark);
-    }
-
-    .ui-button[data-variant="chip"]:hover {
-      color: var(--v0-primary-dark);
-      border-color: var(--v0-primary);
-    }
-
-    .ui-button[data-variant="ghost"]:hover {
-      color: var(--v0-primary);
-    }
-
-    .ui-button[data-variant="icon"]:hover {
-      color: var(--v0-primary);
-    }
-
-    .ui-button--custom[data-variant="outline"]:hover {
-      color: var(--btn-hover-color);
-    }
-
-    .ui-button--custom[data-variant="ghost"]:hover {
-      color: var(--btn-hover-color);
-    }
-
-    .ui-button--custom[data-variant="icon"]:hover {
-      color: var(--btn-hover-color);
-    }
-
-    .ui-button--custom[data-variant="chip"]:hover {
-      color: var(--btn-hover-color);
-      border-color: var(--btn-hover-color);
-    }
-  }
-
-  .ui-button--custom[data-variant="outline"] {
     color: var(--btn-color);
     border-color: var(--btn-color);
   }
 
-  .ui-button--custom[data-variant="ghost"] {
+  /* === TEXT === */
+  .ui-button[data-variant="text"] {
+    background: transparent;
     color: var(--btn-color);
   }
 
-  .ui-button--custom[data-variant="icon"] {
+  /* === ICON === */
+  .ui-button[data-variant="icon"] {
+    background: transparent;
     color: var(--btn-color);
+    padding: 0;
   }
 
-  .ui-button--custom[data-variant="chip"] {
+  /* === CHIP === */
+  .ui-button[data-variant="chip"] {
+    background: transparent;
     color: var(--btn-color);
+    border-color: var(--btn-color);
+  }
+
+  /* === HOVER === */
+  @media (hover: hover) {
+    .ui-button[data-variant="solid"]:hover {
+      background: color-mix(in srgb, var(--btn-color) 80%, black);
+      border-color: color-mix(in srgb, var(--btn-color) 80%, black);
+    }
+
+    .ui-button[data-variant="outline"]:hover,
+    .ui-button[data-variant="chip"]:hover {
+      color: var(--btn-hover-color);
+      border-color: var(--btn-hover-color);
+    }
+
+    .ui-button[data-variant="text"]:hover,
+    .ui-button[data-variant="icon"]:hover {
+      color: var(--btn-hover-color);
+    }
   }
 
   .ui-button[data-size="extra-sm"] {
