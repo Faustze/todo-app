@@ -1,5 +1,5 @@
 <template>
-  <UiModal v-model="open">
+  <UiModal v-model="open" blocking>
     <div class="pa-4">
       <h2 class="text-lg font-semibold text-text mb-5">
         Редактирование задачи
@@ -21,7 +21,7 @@
 import type { TaskTag } from '@/types/tag'
 import type { TaskFormValues, TaskWithTag } from '@/types/task'
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import UiModal from '@/components/ui/UiModal.vue'
 import TaskForm from '@/components/views/list/ui/forms/TaskForm.vue'
 import { useTags } from '@/stores/useTags'
@@ -62,4 +62,8 @@ function handleSubmit(values: TaskFormValues) {
 function handleCancel() {
   open.value = false
 }
+
+watch(open, (val) => {
+  console.log('modal open:', val)
+})
 </script>

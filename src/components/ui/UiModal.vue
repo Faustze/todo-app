@@ -1,6 +1,11 @@
 <template>
-  <Dialog.Root v-model="open">
-    <Dialog.Content class="ui-modal" :data-mobile="mobile || undefined">
+  <Dialog.Root :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)">
+    <Dialog.Content
+      class="ui-modal"
+      :data-mobile="mobile || undefined"
+      :blocking="blocking"
+      :close-on-click-outside="!blocking"
+    >
       <slot />
     </Dialog.Content>
   </Dialog.Root>
@@ -10,7 +15,16 @@
 import { Dialog, useBreakpoints } from '@vuetify/v0'
 import { toRef } from 'vue'
 
-const open = defineModel<boolean>({ default: false })
+defineProps<{
+  modelValue?: boolean
+  blocking?: boolean
+}>()
+
+defineEmits<{
+  'update:modelValue': [value: boolean]
+}>()
+
+// const open = defineModel<boolean>({ default: false })
 
 const breakpoints = useBreakpoints()
 const mobile = toRef(() => breakpoints.smAndDown.value)

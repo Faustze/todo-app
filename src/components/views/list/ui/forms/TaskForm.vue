@@ -87,8 +87,6 @@ import { computed, reactive, watch } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiSelect from '@/components/ui/UiSelect.vue'
 
-defineOptions({ name: 'TaskForm' })
-
 const props = defineProps<{
   mode: 'create' | 'edit'
   initial?: Partial<TaskFormValues>
