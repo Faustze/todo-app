@@ -11,9 +11,9 @@
       :style="{ minWidth: '180px' }"
     >
       <div class="panel-section">
-        <!-- Сортировка по полю -->
+        <!-- Sort by field -->
         <div>
-          <span class="panel-label flex justify-center">Сортировка</span>
+          <span class="panel-label flex justify-center">Sort</span>
           <div class="flex flex-col gap-1 mt-2">
             <UiButton
               v-for="(opt, idx) in sortOptions"
@@ -46,7 +46,7 @@
           :disabled="!hasSorting"
           @click="onReset"
         >
-          Сбросить
+          Reset
         </button>
       </div>
     </Select.Content>
@@ -69,8 +69,8 @@ const { setSortBy, toggleSortDir } = store
 const isOpen = ref<string>('false')
 
 const sortOptions = [
-  { id: 'date' as SortBy, label: 'Дата', icon: IconCalendar },
-  { id: 'priority' as SortBy, label: 'Приоритет', icon: IconFlag },
+  { id: 'date' as SortBy, label: 'Date', icon: IconCalendar },
+  { id: 'priority' as SortBy, label: 'Priority', icon: IconFlag },
 ]
 
 const sortDirIcon = computed(() =>

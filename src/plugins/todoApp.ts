@@ -1,15 +1,15 @@
+import type { App } from 'vue'
 import {
   createBreakpointsPlugin,
   createNotificationsPlugin,
   createRulesPlugin,
 } from '@vuetify/v0'
-import type { App } from 'vue'
 
 export default function todoAppPlugins(app: App) {
   app.use(
     createRulesPlugin({
       aliases: {
-        required: v => !!v || 'Обязательное поле',
+        required: v => !!v || 'This field is required',
       },
     }),
   )

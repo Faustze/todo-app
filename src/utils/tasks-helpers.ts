@@ -19,7 +19,7 @@ function save(tasks: Task[]): void {
 
 export { deserialize, save, serialize }
 
-// фукнции для не persist store
+// functions for non-persist store
 // function load(): Task[] {
 //   try {
 //     const raw = localStorage.getItem(TASKS_STORAGE_KEY)

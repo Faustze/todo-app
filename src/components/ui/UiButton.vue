@@ -142,7 +142,7 @@ const colorStyle = computed(() => {
     font-size: 1.125rem;
   }
 
-  /* Адаптивные кнопки: shrink on mobile */
+  /* Responsive buttons: shrink on mobile */
   @media (max-width: 599px) {
     .ui-button[data-size="md"] {
       padding: 0.375rem 0.75rem;

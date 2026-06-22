@@ -2,7 +2,7 @@
   <UiModal v-model="open" blocking>
     <div class="pa-4">
       <h2 class="text-lg font-semibold text-text mb-5">
-        Редактирование задачи
+        Edit task
       </h2>
       <hr class="border-gray-500 rounded-lg my-4">
       <TaskForm
@@ -37,7 +37,7 @@ const emit = defineEmits<{
 
 const open = defineModel<boolean>({ default: false })
 
-// Используем теги из store, если не переданы через props
+// Use tags from store if not passed via props
 const tagsStore = useTags()
 const { tags: storeTags } = storeToRefs(tagsStore)
 const effectiveTags = computed(() => props.tags ?? storeTags.value)

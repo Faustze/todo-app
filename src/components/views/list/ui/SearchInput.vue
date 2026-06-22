@@ -34,7 +34,7 @@
       </Input.Error>
 
       <!-- <span v-if="query.length >= 2" class="text-xs text-on-surface-variant">
-        {{ count }} результат{{ count === 1 ? '' : 'а' }}
+        {{ count }} result{{ count === 1 ? '' : 's' }}
       </span> -->
     </div>
   </Input.Root>
@@ -53,7 +53,7 @@ const query = defineModel<string>('query', { default: '' })
 
 function minLengthRule(v: unknown): string | true {
   return typeof v === 'string' && v.length > 0 && v.length < 2
-    ? 'Должно быть минимум 2 символа'
+    ? 'Must be at least 2 characters'
     : true
 }
 </script>

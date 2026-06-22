@@ -6,7 +6,7 @@ interface TaskPriorityConfig {
 }
 
 export const TASK_PRIORITIES: Record<TaskPriority, TaskPriorityConfig> = {
-  'low': { label: 'Низкий', color: 'primary' },
-  'middle': { label: 'Средний', color: 'warning' },
-  'high': { label: 'Высокий', color: 'error' },
+  low: { label: 'Low', color: 'primary' },
+  middle: { label: 'Medium', color: 'warning' },
+  high: { label: 'High', color: 'error' },
 }

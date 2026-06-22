@@ -1,4 +1,4 @@
-/* style.css — глобальные стили */
+/* style.css — global styles */
 @import './_fonts';
 @import './panel';
 
@@ -16,7 +16,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Адаптивный базовый размер — масштабирует ВСЕ rem в проекте */
+/* Responsive base size — scales ALL rem in the project */
 html {
   font-family: var(--font-mono);
   font-size: clamp(14px, calc(14px + 2 * ((100vw - 375px) / (1280 - 375))), 16px);
@@ -36,13 +36,13 @@ body {
   color: var(--v0-text);
 }
 
-/* Заголовки — размеры через UnoCSS классы в шаблонах */
+/* Headings — sizes via UnoCSS classes in templates */
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.3;
   margin: 0;
 }
 
-/* Мелкий текст */
+/* Small text */
 small {
   font-size: 0.75rem;
 }

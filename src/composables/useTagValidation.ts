@@ -8,10 +8,10 @@ export interface TagFormValues {
 }
 
 /**
- * Валидация формы тега (create / inline edit).
+ * Tag form validation (create / inline edit).
  *
- * @param originalName — оригинальное имя редактируемого тега (для исключения из проверки дубликатов)
- * @param allNames     — имена всех тегов (реактивная ссылка из store)
+ * @param originalName — original name of the tag being edited (to exclude from duplicate check)
+ * @param allNames     — names of all tags (reactive reference from store)
  */
 export function useTagValidation(originalName?: Ref<string>, allNames?: Ref<string[]>): {
   form: Ref<TagFormValues>
@@ -23,11 +23,11 @@ export function useTagValidation(originalName?: Ref<string>, allNames?: Ref<stri
 
   const rules = computed(() => ({
     name: {
-      required: helpers.withMessage('Название обязательно', required),
-      minLength: helpers.withMessage('Минимум 2 символа', minLength(2)),
-      maxLength: helpers.withMessage('Максимум 20 символов', maxLength(20)),
+      required: helpers.withMessage('Name is required', required),
+      minLength: helpers.withMessage('Minimum 2 characters', minLength(2)),
+      maxLength: helpers.withMessage('Maximum 20 characters', maxLength(20)),
       unique: helpers.withMessage(
-        'Тег с таким именем уже существует',
+        'A tag with this name already exists',
         (value: string) => {
           if (!value || !allNames?.value)
             return true
@@ -35,7 +35,7 @@ export function useTagValidation(originalName?: Ref<string>, allNames?: Ref<stri
           const origLower = originalName?.value?.toLowerCase()
           return !allNames.value.some((n) => {
             const nLower = n.toLowerCase()
-            // Пропускаем оригинальное имя редактируемого тега
+            // Skip the original name of the tag being edited
             if (nLower === origLower)
               return false
             return nLower === lower

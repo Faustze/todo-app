@@ -13,7 +13,7 @@
     </Select.Activator>
 
     <Select.Content class="date-picker p-3 rounded-lg border border-divider bg-surface shadow-lg" :style="{ minWidth: '280px' }">
-      <!-- Header: выбор месяцев -->
+      <!-- Header: month selection -->
       <div class="flex items-center justify-between mb-3">
         <button type="button" class="p-1 rounded hover:bg-background" @click="prevMonth">
           <IconChevronLeft size="18" />
@@ -24,7 +24,7 @@
         </button>
       </div>
 
-      <!-- Недели headers -->
+      <!-- Weekday headers -->
       <div class="date-picker__grid mb-1">
         <span
           v-for="day in weekdays"
@@ -35,7 +35,7 @@
         </span>
       </div>
 
-      <!-- Сетка дней -->
+      <!-- Day grid -->
       <div class="date-picker__grid">
         <button
           v-for="cell in calendarCells"
@@ -56,14 +56,14 @@
         </button>
       </div>
 
-      <!-- Отображение отрезка + очистка -->
+      <!-- Range display + clear -->
       <div class="flex items-center justify-between mt-3 pt-2 border-t border-divider">
         <span class="text-xs text-muted">
           <template v-if="range.from || range.to">
             {{ formatRange() }}
           </template>
           <template v-else>
-            Выберите период
+            Select a period
           </template>
         </span>
         <button
@@ -72,7 +72,7 @@
           class="text-xs text-primary hover:underline"
           @click="clearRange"
         >
-          Сбросить
+          Reset
         </button>
       </div>
     </Select.Content>
@@ -104,19 +104,19 @@ const todayStr = toDateStr(today)
 
 const isOpen = defineModel<string>({ default: 'false' })
 
-// Внутреннее хранилище диапазона
+// Internal range storage
 const range = ref<{ from: Date | null, to: Date | null }>({ from: null, to: null })
 
-// Навигация месяцев (0-индекс)
+// Month navigation (0-indexed)
 const currentMonth = ref(today.getMonth())
 const currentYear = ref(today.getFullYear())
 
-const WEEKDAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 const weekdays = WEEKDAYS
 
 const monthLabel = computed(() => {
-  const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   return `${months[currentMonth.value]} ${currentYear.value}`
 })
 
@@ -139,7 +139,7 @@ const calendarCells = computed(() => {
   const firstOfMonth = new Date(year, month, 1)
   const lastOfMonth = new Date(year, month + 1, 0)
 
-  // Понедельник как база: Пон=0 ... Вос=6
+  // Monday as base: Mon=0 ... Sun=6
   const startDow = (firstOfMonth.getDay() + 6) % 7
 
   const from = range.value.from ? stripTime(range.value.from) : null
@@ -149,7 +149,7 @@ const calendarCells = computed(() => {
 
   const cells: DateCell[] = []
 
-  // Отступ к предыдущему месяцу
+  // Padding from previous month
   const prevMonthLastDay = new Date(year, month, 0).getDate()
   for (let i = startDow - 1; i >= 0; i--) {
     const d = new Date(year, month - 1, prevMonthLastDay - i)
@@ -167,7 +167,7 @@ const calendarCells = computed(() => {
     })
   }
 
-  // Нынешний месяц
+  // Current month
   for (let day = 1; day <= lastOfMonth.getDate(); day++) {
     const d = new Date(year, month, day)
     const dStr = toDateStr(d)
@@ -194,7 +194,7 @@ const calendarCells = computed(() => {
     })
   }
 
-  // Отступ для следующего месяца
+  // Padding for next month
   const remaining = 42 - cells.length
   for (let i = 1; i <= remaining; i++) {
     const d = new Date(year, month + 1, i)
@@ -228,11 +228,11 @@ function onDayClick(cell: DateCell): void {
   const to = range.value.to ? stripTime(range.value.to) : null
 
   if (!from || (from && to)) {
-    // Начинаем новый отрезок
+    // Start a new range
     range.value = { from: clicked, to: null }
   }
   else if (from && !to) {
-    // Имеем начало, выбираем конец
+    // Have start, selecting end
     if (clicked < from) {
       range.value = { from: clicked, to: null }
     }
@@ -241,7 +241,7 @@ function onDayClick(cell: DateCell): void {
     }
     else {
       range.value = { from, to: clicked }
-      // Закрыть выбор когда отрезок выбран
+      // Close selection when range is chosen
       isOpen.value = 'false'
     }
   }
@@ -256,9 +256,9 @@ function formatRange(): string {
   if (from && to)
     return `${displayDate(from)} — ${displayDate(to)}`
   if (from)
-    return `от ${displayDate(from)}`
+    return `from ${displayDate(from)}`
   if (to)
-    return `до ${displayDate(to)}`
+    return `to ${displayDate(to)}`
   return ''
 }
 
@@ -282,7 +282,7 @@ function nextMonth(): void {
   }
 }
 
-// Отобразить диапазон для родительского элемента
+// Expose range to parent element
 defineExpose({ range, clearRange })
 </script>
 
@@ -356,7 +356,7 @@ defineExpose({ range, clearRange })
     border-radius: 0.2rem;
   }
 
-  /* Активное состояние кнопки фильтра при установке диапазона */
+  /* Active filter button state when range is set */
   [data-active="true"] {
     border-color: var(--v0-primary);
     color: var(--v0-primary);

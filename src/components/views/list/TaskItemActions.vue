@@ -46,9 +46,9 @@ const emit = defineEmits<{
 }>()
 
 const options: TaskItemActionOption[] = [
-  { id: 'show', label: 'Открыть', action: () => emit('show', props.task.id) },
-  { id: 'edit', label: 'Редактировать', action: () => emit('edit', props.task) },
-  { id: 'delete', label: 'Удалить', action: () => emit('delete', props.task.id, props.task.title) },
+  { id: 'show', label: 'Open', action: () => emit('show', props.task.id) },
+  { id: 'edit', label: 'Edit', action: () => emit('edit', props.task) },
+  { id: 'delete', label: 'Delete', action: () => emit('delete', props.task.id, props.task.title) },
 ]
 
 const model = defineModel<string>()

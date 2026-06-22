@@ -32,10 +32,10 @@ export const useTags = defineStore('tags', () => {
   function create(payload: CreateTaskTag): void {
     const name = payload.name.trim()
 
-    // Финальная проверка дубликата (race condition protection)
+    // Final duplicate check (race condition protection)
     const duplicate = tags.value.find(t => t.name.toLowerCase() === name.toLowerCase())
     if (duplicate) {
-      warning(`Тег «${name}» уже существует`)
+      warning(`Tag "${name}" already exists`)
       return
     }
 
@@ -45,35 +45,35 @@ export const useTags = defineStore('tags', () => {
       color: payload.color,
     }
     tags.value.push(tag)
-    success(`Тег «${name}» создан`)
+    success(`Tag "${name}" created`)
   }
 
   function update(id: string, payload: UpdateTaskTag): void {
     const idx = tags.value.findIndex(t => t.id === id)
     if (idx === -1) {
-      error(`Тег не найден`)
+      error(`Tag not found`)
       return
     }
 
     const existing = tags.value[idx]
     const name = payload.name?.trim() ?? existing.name
 
-    // Финальная проверка дубликата (race condition protection)
+    // Final duplicate check (race condition protection)
     const duplicate = tags.value.find(t => t.id !== id && t.name.toLowerCase() === name.toLowerCase())
     if (duplicate) {
-      warning(`Тег «${name}» уже существует`)
+      warning(`Tag "${name}" already exists`)
       return
     }
 
     Object.assign(tags.value[idx], { ...payload, name })
-    info(`Тег «${name}» обновлён`)
+    info(`Tag "${name}" updated`)
   }
 
   function remove(id: string): void {
     const tag = tags.value.find(t => t.id === id)
     tags.value = tags.value.filter(t => t.id !== id)
     if (tag) {
-      error(`Тег «${tag.name}» удалён`)
+      error(`Tag "${tag.name}" deleted`)
     }
   }
 

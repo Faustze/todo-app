@@ -3,7 +3,7 @@
     v-if="localStatus === 'in-progress' || localStatus === 'done'"
     type="button"
     class="inline-flex items-center justify-center cursor-pointer bg-transparent border-none p-0 leading-none"
-    :title="localStatus === 'in-progress' ? 'Отметить выполненным' : 'Вернуть в процесс'"
+    :title="localStatus === 'in-progress' ? 'Mark as done' : 'Return to progress'"
     @click="toggleStatus"
   >
     <IconSquare
@@ -41,19 +41,19 @@ const props = defineProps<{
 
 const tasksStore = useTasks()
 
-// Локальный статус для мгновенного визуального отклика
+// Local status for instant visual feedback
 const localStatus = ref<TaskStatus>(props.status)
 
-// Синхронизация при внешнем изменении (например, из другого компонента)
+// Sync on external change (e.g. from another component)
 watch(() => props.status, (newStatus) => {
   localStatus.value = newStatus
 })
 
 function toggleStatus() {
-  // Мгновенно переключаем локальный статус — анимация видна сразу
+  // Instantly toggle local status — animation is visible immediately
   localStatus.value = localStatus.value === 'in-progress' ? 'done' : 'in-progress'
 
-  // Откладываем реальное обновление стора, чтобы анимация успела отработать
+  // Defer actual store update so animation has time to play
   setTimeout(() => {
     tasksStore.update(props.taskId, { status: localStatus.value })
   }, 200)

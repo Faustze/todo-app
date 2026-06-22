@@ -7,7 +7,7 @@
         </div>
         <div class="flex flex-col gap-2 items-center">
           <p class="delete-modal__title text-lg font-semibold text-text leading-snug mb-2">
-            Удалить задачу?
+            Delete task?
           </p>
           <p v-if="taskTitle" class="delete-modal__task text-base font-semibold text-error leading-normal mb-1.5 wrap-break-word">
             «{{ taskTitle }}»
@@ -15,17 +15,17 @@
         </div>
 
         <p class="delete-modal__hint text-xs text-muted leading-normal mb-6">
-          Это действие нельзя отменить
+          This action cannot be undone
         </p>
       </div>
       <div class="delete-modal__actions">
         <UiButton variant="text" color="text" size="md" @click="emit('cancel')">
           <p class="text-text hover:text-primary">
-            Отмена
+            Cancel
           </p>
         </UiButton>
         <UiButton variant="solid" color="error" size="md" @click="emit('confirm')">
-          Удалить
+          Delete
         </UiButton>
         <button
           class="delete-modal__close-btn"

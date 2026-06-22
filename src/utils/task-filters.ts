@@ -6,9 +6,9 @@ import { TASK_STATUSES } from '@/constants/taskStatuses'
 export const FILTER_OPTIONS: FilterOption[] = [
   {
     id: 'status-group',
-    label: 'Статус',
+    label: 'Status',
     children: [
-      { id: 'all', label: 'Все' },
+      { id: 'all', label: 'All' },
       ...Object.entries(TASK_STATUSES).map(([id, config]) => ({
         id,
         label: config.id,

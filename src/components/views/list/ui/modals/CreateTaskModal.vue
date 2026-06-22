@@ -2,7 +2,7 @@
   <UiModal v-model="open">
     <div class="pa-4">
       <h2 class="text-lg font-semibold text-text mb-5">
-        Новая задача
+        New task
       </h2>
       <hr class="border-gray-500 rounded-lg my-4">
       <TaskForm mode="create" :tags="props.tags" @submit="handleSubmit" @cancel="handleCancel" />

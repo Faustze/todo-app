@@ -11,11 +11,11 @@
       :style="{ minWidth: '220px' }"
     >
       <div class="panel-section">
-        <span class="panel-label flex justify-center">Фильтрация</span>
+        <span class="panel-label flex justify-center">Filter</span>
 
-        <!-- Выбор статуса -->
+        <!-- Status selection -->
         <div class="mt-2">
-          <span class="panel-label">Статус</span>
+          <span class="panel-label">Status</span>
           <div class="flex flex-wrap gap-1 mt-1">
             <UiButton
               v-for="opt in statusOptions"
@@ -32,9 +32,9 @@
 
         <div class="border-t border-divider my-2" />
 
-        <!-- Выбор периода -->
+        <!-- Period selection -->
         <div>
-          <span class="panel-label">Период</span>
+          <span class="panel-label">Period</span>
           <div class="flex flex-wrap gap-1 mt-1">
             <UiButton
               v-for="(preset, idx) in presetOptions"
@@ -57,7 +57,7 @@
           :disabled="!hasActiveFilters"
           @click="onReset"
         >
-          Сбросить
+          Reset
         </button>
       </div>
     </Select.Content>
@@ -81,7 +81,7 @@ const { setFilter, setDatePreset, resetFilters } = store
 const isOpen = ref<string>('false')
 
 const statusOptions = [
-  { id: 'all' as TaskFilter, label: 'Все' },
+  { id: 'all' as TaskFilter, label: 'All' },
   ...Object.entries(TASK_STATUSES).map(([id, config]) => ({
     id: id as TaskFilter,
     label: config.id,
@@ -89,9 +89,9 @@ const statusOptions = [
 ]
 
 const presetOptions = [
-  { id: 'today' as DatePreset, label: 'День' },
-  { id: 'week' as DatePreset, label: 'Неделя' },
-  { id: 'month' as DatePreset, label: 'Месяц' },
+  { id: 'today' as DatePreset, label: 'Day' },
+  { id: 'week' as DatePreset, label: 'Week' },
+  { id: 'month' as DatePreset, label: 'Month' },
 ]
 
 const statusFilter = computed<TaskFilter>({

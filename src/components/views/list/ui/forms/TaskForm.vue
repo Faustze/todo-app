@@ -6,8 +6,8 @@
       :error="v$.title.$error"
       class="task-form__field"
     >
-      <label :for="titleId" class="task-form__label">Название</label>
-      <Input.Control class="task-form__input" placeholder="Введите название задачи" />
+      <label :for="titleId" class="task-form__label">Title</label>
+      <Input.Control class="task-form__input" placeholder="Enter task title" />
       <Input.Error>
         <span
           v-for="error of v$.title.$errors"
@@ -25,11 +25,11 @@
       :error="v$.description.$error"
       class="task-form__field"
     >
-      <label :for="descId" class="task-form__label">Описание</label>
+      <label :for="descId" class="task-form__label">Description</label>
       <Input.Control
         as="textarea"
         class="task-form__textarea"
-        placeholder="Описание задачи (необязательно)"
+        placeholder="Task description (optional)"
         rows="3"
       />
       <Input.Error>
@@ -45,28 +45,28 @@
 
     <div class="task-form__row">
       <div class="task-form__field">
-        <label :for="statusId" class="task-form__label">Статус</label>
-        <UiSelect v-model="form.status" :options="statusOptions" placeholder="Выберите статус..." />
+        <label :for="statusId" class="task-form__label">Status</label>
+        <UiSelect v-model="form.status" :options="statusOptions" placeholder="Select status..." />
       </div>
       <div class="task-form__field">
-        <label :for="priorityId" class="task-form__label">Приоритет</label>
-        <UiSelect v-model="form.priority" :options="priorityOptions" placeholder="Выберите приоритет..." />
+        <label :for="priorityId" class="task-form__label">Priority</label>
+        <UiSelect v-model="form.priority" :options="priorityOptions" placeholder="Select priority..." />
       </div>
     </div>
 
     <div class="task-form__field">
-      <label :for="tagIdId" class="task-form__label">Тег</label>
-      <UiSelect v-model="form.tagId" :options="tagOptions" placeholder="Выберите тег..." />
+      <label :for="tagIdId" class="task-form__label">Tag</label>
+      <UiSelect v-model="form.tagId" :options="tagOptions" placeholder="Select tag..." />
     </div>
 
     <div class="task-form__actions">
       <UiButton variant="text" color="text" size="sm" @click="handleCancel">
         <p class="text-text hover:text-primary">
-          Отмена
+          Cancel
         </p>
       </UiButton>
       <UiButton variant="solid" color="primary" size="sm" @click="handleSubmit">
-        {{ mode === 'create' ? 'Создать' : 'Сохранить' }}
+        {{ mode === 'create' ? 'Create' : 'Save' }}
       </UiButton>
     </div>
 
@@ -116,28 +116,28 @@ const form = reactive<TaskFormValues>({
 })
 
 const tagOptions = computed(() => [
-  { id: '', label: 'Без тега' },
+  { id: '', label: 'No tag' },
   ...(props.tags ?? []).map(t => ({ id: t.id, label: t.name })),
 ])
 
 const rules = {
   title: {
     required: helpers.withMessage(
-      'Поле обязательно для заполнения',
+      'This field is required',
       required,
     ),
     minLength: helpers.withMessage(
-      'Название должно содержать минимум 3 символа',
+      'Title must be at least 3 characters',
       minLength(3),
     ),
     maxLength: helpers.withMessage(
-      ({ $params }) => `Название не должно превышать ${$params.max} символов`,
+      ({ $params }) => `Title must not exceed ${$params.max} characters`,
       maxLength(200),
     ),
   },
   description: {
     maxLength: helpers.withMessage(
-      ({ $params }) => `Описание не должно превышать ${$params.max} символов`,
+      ({ $params }) => `Description must not exceed ${$params.max} characters`,
       maxLength(500),
     ),
   },
@@ -146,15 +146,15 @@ const rules = {
 const v$ = useVuelidate(rules, form)
 
 const statusOptions: Array<{ id: TaskStatus, label: string }> = [
-  { id: 'in-progress', label: 'В процессе' },
-  { id: 'done', label: 'Выполнено' },
-  { id: 'cancel', label: 'Отменено' },
+  { id: 'in-progress', label: 'In Progress' },
+  { id: 'done', label: 'Done' },
+  { id: 'cancel', label: 'Cancelled' },
 ]
 
 const priorityOptions: Array<{ id: TaskPriority, label: string }> = [
-  { id: 'low', label: 'Низкий' },
-  { id: 'middle', label: 'Средний' },
-  { id: 'high', label: 'Высокий' },
+  { id: 'low', label: 'Low' },
+  { id: 'middle', label: 'Medium' },
+  { id: 'high', label: 'High' },
 ]
 
 async function handleSubmit() {

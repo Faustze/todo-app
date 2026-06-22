@@ -2,7 +2,7 @@
   <UiModal v-model="open">
     <div class="p-4">
       <h3 class="text-base font-medium text-text mb-3">
-        Выберите цвет тега
+        Choose tag color
       </h3>
       <TagColorPalette
         :model-value="selectedColor"
@@ -10,10 +10,10 @@
       />
       <div class="flex justify-end gap-2 mt-4">
         <UiButton variant="text" color="text" @click="open = false">
-          Отмена
+          Cancel
         </UiButton>
         <UiButton variant="solid" color="primary" @click="emit('confirm', selectedColor)">
-          Применить
+          Apply
         </UiButton>
       </div>
     </div>

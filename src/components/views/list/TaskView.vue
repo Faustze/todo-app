@@ -10,30 +10,30 @@
 
     <div class="task-view__meta">
       <div class="task-view__field">
-        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Статус</span>
+        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Status</span>
         <span class="task-view__value" :class="statusClass">
           {{ statusLabel(task.status) }}
         </span>
       </div>
       <div class="task-view__field">
-        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Приоритет</span>
+        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Priority</span>
         <span class="task-view__value" :class="priorityClass">
           {{ priorityLabel(task.priority) }}
         </span>
       </div>
       <div class="task-view__field">
-        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Создано</span>
+        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Created</span>
         <span class="task-view__value text-sm text-text">{{ formatDate(task.createdAtUtc) }}</span>
       </div>
       <div class="task-view__field">
-        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Обновлено</span>
+        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Updated</span>
         <span class="task-view__value text-sm text-text">{{ formatDate(task.updatedAtUtc) }}</span>
       </div>
     </div>
   </div>
 
   <div v-else class="task-view__empty">
-    Задача не найдена
+    Task not found
   </div>
 </template>
 

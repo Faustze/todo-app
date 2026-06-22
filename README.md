@@ -1,50 +1,50 @@
 # todo-app
 
-Клиентское Todo-приложение на Vue 3 + TypeScript с UI на Vuetify0 (headless), полным CRUD, валидацией форм, уведомлениями и хранением в localStorage.
+A client-side Todo application built with Vue 3 + TypeScript, UI on Vuetify0 (headless), full CRUD, form validation, notifications, and localStorage persistence.
 
-## Запуск
+## Getting Started
 
 ```bash
 npm install
-npm run dev      # dev-сервер
-npm run build    # production сборка
-npm run preview  # просмотр билда
+npm run dev      # dev server
+npm run build    # production build
+npm run preview  # preview build
 ```
 
-## Технологический стек
+## Tech Stack
 
 - **Vue 3.5** + **TypeScript 6.0**
-- **Vuetify0** (`@vuetify/v0`) — headless компоненты (Button, Single, Dialog, Input, Select, Atom, Snackbar)
-- **Pinia 3** — управление состоянием, `storeToRefs` для реактивности
-- **Vuelidate 2** — валидация форм с русскими описаниями ошибок
-- **Tabler Icons** — все иконки централизованно через `@tabler/icons-vue`
-- **UnoCSS** — утилитарные стили (статические классы только, dynamic → CSS custom properties)
-- **CSS** — компонентные стили (plain CSS, без препроцессоров)
-- **Vite 8** — сборка
+- **Vuetify0** (`@vuetify/v0`) — headless components (Button, Single, Dialog, Input, Select, Atom, Snackbar)
+- **Pinia 3** — state management, `storeToRefs` for reactivity
+- **Vuelidate 2** — form validation with English error descriptions
+- **Tabler Icons** — all icons via `@tabler/icons-vue`
+- **UnoCSS** — utility styles (static classes only, dynamic → CSS custom properties)
+- **CSS** — component styles (plain CSS, no preprocessors)
+- **Vite 8** — build tool
 
-## Функциональность
+## Features
 
-- **CRUD** — создание, чтение, редактирование, удаление задач
-- **Уведомления** — Snackbar toast при каждой CRUD-операции (success/error/info)
-- **Валидация** — title: required + minLength(3) + maxLength(200), description: maxLength(500)
-- **Фильтрация** — по статусу (Все / В процессе / Выполнено / Отменено) + по периоду (День / Неделя / Месяц)
-- **Поиск** по названию (case-insensitive)
-- **Сортировка** по дате и приоритету (asc/desc)
-- **Персистентность** — localStorage с автоматической синхронизацией (pinia-plugin-persistedstate)
-- **Темы** — light/dark с persist через Vuetify0 storage + FOUC-prevention inline script
-- **Статус задачи** — быстрый toggle in-progress ↔ done через checkbox; cancel = static
-- **Приоритеты** — визуальная иерархия (high=red+tint+bold, middle=primary, low=muted)
-- **Теги** — цветовая маркировка задач с визуальным индикатором справа (border-right через inset box-shadow)
-- **Детальная страница** — /task/:id с полной информацией
-- **Proximity highlight** — элементы рядом с курсором подсвечиваются (desktop only)
+- **CRUD** — create, read, update, delete tasks
+- **Notifications** — Snackbar toast on every CRUD operation (success/error/info)
+- **Validation** — title: required + minLength(3) + maxLength(200), description: maxLength(500)
+- **Filtering** — by status (All / In Progress / Done / Cancelled) + by period (Day / Week / Month)
+- **Search** by title (case-insensitive)
+- **Sorting** by date and priority (asc/desc)
+- **Persistence** — localStorage with automatic sync (pinia-plugin-persistedstate)
+- **Themes** — light/dark with persist via Vuetify0 storage + FOUC-prevention inline script
+- **Task status** — quick toggle in-progress ↔ done via checkbox; cancel = static
+- **Priorities** — visual hierarchy (high=red+tint+bold, middle=primary, low=muted)
+- **Tags** — color-coded task labeling with visual indicator on the right (border-right via inset box-shadow)
+- **Detail page** — /task/:id with full information
+- **Proximity highlight** — elements near the cursor are highlighted (desktop only)
 
-## Архитектура
+## Architecture
 
 ```txt
 pages/index.vue
-  ├── FilterPanel (статус + период)
-  ├── SortPanel (поле + направление)
-  ├── SearchInput (поиск)
+  ├── FilterPanel (status + period)
+  ├── SortPanel (field + direction)
+  ├── SearchInput (search)
   ├── TaskList (TransitionGroup + proximity highlight)
   │   └── TaskItem (IconStatus + title + priority styles + actions)
   ├── CreateTaskModal → TaskForm (mode=create, resetForm on submit/cancel)
@@ -63,9 +63,9 @@ Pinia Store (useTasks + persist + useSnackbar)
   └── remove → snackbar.error
 
 Plugins (vuetify0.ts + todoApp.ts)
-  ├── createStoragePlugin() — ДО theme (persist зависит от storage)
-  ├── createThemePlugin({ persist: true }) — restore из localStorage
+  ├── createStoragePlugin() — BEFORE theme (persist depends on storage)
+  ├── createThemePlugin({ persist: true }) — restore from localStorage
   ├── createBreakpointsPlugin()
   ├── createRulesPlugin()
-  └── createNotificationsPlugin() — для useNotifications/useSnackbar
+  └── createNotificationsPlugin() — for useNotifications/useSnackbar
 ```

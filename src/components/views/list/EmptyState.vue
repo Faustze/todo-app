@@ -2,10 +2,10 @@
   <div class="flex flex-col items-center justify-center py-12 px-6 text-center gap-3">
     <IconEraser size="48" class="text-muted opacity-50" />
     <h3 class="text-lg font-semibold text-text">
-      Задач пока нет
+      No tasks yet
     </h3>
     <p class="text-sm text-muted">
-      Создайте первую задачу, чтобы начать
+      Create your first task to get started
     </p>
     <slot />
   </div>

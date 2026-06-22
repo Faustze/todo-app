@@ -11,7 +11,7 @@
       :style="{ minWidth: '220px' }"
     >
       <div class="panel-section">
-        <span class="panel-label flex justify-center">Теги</span>
+        <span class="panel-label flex justify-center">Tags</span>
 
         <div class="flex flex-col gap-2 mt-2">
           <TagItem
@@ -25,7 +25,7 @@
 
       <div class="panel-section border-t border-divider mt-4 pt-4">
         <UiButton variant="outline" color="primary" class="w-full" size="sm" @click="createOpen = true">
-          Добавить тег
+          Add tag
         </UiButton>
       </div>
 

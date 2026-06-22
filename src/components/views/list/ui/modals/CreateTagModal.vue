@@ -2,13 +2,13 @@
   <UiModal v-model="open">
     <div class="pa-4">
       <h2 class="text-lg font-semibold text-text mb-3">
-        Новый тег
+        New tag
       </h2>
 
       <UiField :error-message="v$.name.$errors[0]?.$message">
         <UiInput
           v-model="form.name"
-          placeholder="Название тега"
+          placeholder="Tag name"
           @keydown.enter.prevent="submit"
           @blur="touch"
         />
@@ -16,7 +16,7 @@
 
       <div class="mt-4">
         <div class="text-sm text-muted mb-2">
-          Цвет тега
+          Tag color
         </div>
         <TagColorPalette
           :model-value="selectedColor"
@@ -26,10 +26,10 @@
 
       <div class="flex justify-end gap-2 mt-5">
         <UiButton variant="text" color="text" size="sm" @click="cancel">
-          Отмена
+          Cancel
         </UiButton>
         <UiButton variant="solid" color="primary" size="sm" @click="submit">
-          Создать
+          Create
         </UiButton>
       </div>
     </div>

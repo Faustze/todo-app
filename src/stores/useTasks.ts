@@ -19,7 +19,7 @@ export const useTasks = defineStore('tasks', () => {
   const sortBy = ref<SortBy>('date')
   const sortDir = ref<SortDir>('desc')
 
-  // Добавляем tag к задачам из store тегов
+  // Add tag to tasks from tags store
   const tasksWithTag = computed(() => {
     return tasks.value.map(task => ({
       ...task,
@@ -61,7 +61,7 @@ export const useTasks = defineStore('tasks', () => {
       tagId: payload.tagId,
     }
     tasks.value.push(task)
-    success(`Задача «${payload.title}» создана`)
+    success(`Task "${payload.title}" created`)
   }
 
   function update(id: string, payload: UpdateTask): void {
@@ -75,7 +75,7 @@ export const useTasks = defineStore('tasks', () => {
     if (idx !== -1) {
       Object.assign(tasks.value[idx], newTask)
       const title = payload.title ?? existing?.title ?? ''
-      info(`Задача «${title}» обновлена`)
+      info(`Task "${title}" updated`)
     }
   }
 
@@ -83,7 +83,7 @@ export const useTasks = defineStore('tasks', () => {
     const task = tasks.value.find(t => t.id === id)
     tasks.value = tasks.value.filter(t => t.id !== id)
     if (task) {
-      error(`Задача «${task.title}» удалена`)
+      error(`Task "${task.title}" deleted`)
     }
   }
 
@@ -144,7 +144,7 @@ export const useTasks = defineStore('tasks', () => {
   }
 }, { persist: {
   key: 'todo-app-tasks-store',
-  // восстанавливаем Date из ISO-строк после гидрации из localStorage
+  // restore Date from ISO strings after hydration from localStorage
   afterHydrate(ctx) {
     ctx.store.tasks = ctx.store.tasks.map((t: Task) => ({
       ...t,

@@ -21,7 +21,7 @@
 
     <EmptyState v-if="tasks.length === 0">
       <p class="text-muted">
-        Задачи не найдены
+        No tasks found
       </p>
     </EmptyState>
 

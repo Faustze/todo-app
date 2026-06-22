@@ -8,8 +8,8 @@
 
     <div class="flex flex-row gap-2">
       <div class="grow">
-        <label for="task-search" class="sr-only">Поиск по названию</label>
-        <SearchInput v-model="searchQuery" :loading="loading" :count="1" placeholder="Поиск по названию..." />
+        <label for="task-search" class="sr-only">Search by title</label>
+        <SearchInput v-model="searchQuery" :loading="loading" :count="1" placeholder="Search by title..." />
       </div>
       <div class="flex flex-row gap-2 items-start">
         <SortPanel />

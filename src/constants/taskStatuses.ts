@@ -6,7 +6,7 @@ interface TaskStatusConfig {
 }
 
 export const TASK_STATUSES: Record<TaskStatus, TaskStatusConfig> = {
-  'in-progress': { id: 'В процессе', color: 'warning' },
-  'done': { id: 'Выполнено', color: 'success' },
-  'cancel': { id: 'Отменено', color: 'error' },
+  'in-progress': { id: 'In Progress', color: 'warning' },
+  'done': { id: 'Done', color: 'success' },
+  'cancel': { id: 'Cancelled', color: 'error' },
 }

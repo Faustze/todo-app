@@ -15,7 +15,7 @@
   >
     <div class="flex flex-row items-center gap-2">
       <IconCalendar size="16" />
-      <span>Дата</span>
+      <span>Date</span>
       <component :is="dirIcon(sortDir)" v-if="sortBy === 'date'" size="14" />
     </div>
   </UiButton>
@@ -28,7 +28,7 @@
   >
     <div class="flex flex-row items-center gap-2">
       <IconFlag size="16" />
-      <span>Приоритет</span>
+      <span>Priority</span>
       <component :is="dirIcon(sortDir)" v-if="sortBy === 'priority'" size="14" />
     </div>
   </UiButton>
