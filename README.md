@@ -5,10 +5,10 @@ A client-side Todo application built with Vue 3 + TypeScript, UI on Vuetify0 (he
 ## Getting Started
 
 ```bash
-npm install
-npm run dev      # dev server
-npm run build    # production build
-npm run preview  # preview build
+pnpm install
+pnpm dev      # dev server
+pnpm build    # production build
+pnpm preview  # preview build
 ```
 
 ## Tech Stack

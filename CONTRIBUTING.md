@@ -6,14 +6,14 @@ Thank you for your interest in contributing! This document outlines the guidelin
 
 1. Fork the repository
 2. Clone your fork: `git clone https://github.com/your-username/todo-app.git`
-3. Install dependencies: `npm install`
+3. Install dependencies: `pnpm install`
 4. Create a branch: `git checkout -b feature/your-feature-name`
 
 ## Development Workflow
 
 1. Make your changes in a feature branch
-2. Ensure the project builds: `npm run build`
-3. Ensure there are no type errors: `npm run build` (runs vue-tsc)
+2. Ensure the project builds: `pnpm build`
+3. Ensure there are no type errors: `pnpm build` (runs vue-tsc)
 4. Commit your changes with a clear commit message
 5. Push to your fork and open a Pull Request
 
