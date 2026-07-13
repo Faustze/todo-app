@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e0e11;
+      --surface: #16161a;
+      --surface-2: #1c1c21;
+      --seg-active: #26262d;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #26262c;
+      --border-strong: #3a3a42;
+      --primary: #818cf8;
+      --primary-deep: #6366f1;
+      --mint: #27e89e;
+      --error: #f87171;
+      --warning: #fb923c;
+      --check-ink: #052e1f;
+      --tag-feature: #60a5fa;
+      --tag-bug: #f87171;
+      --tag-study: #818cf8;
+      --tag-docs: #38bdf8;
+      --tag-refactor: #4ade80;
+      --btn-glow: 0 0 24px color-mix(in srgb, var(--primary) 40%, transparent), 0 2px 8px rgba(0,0,0,.35);
+      --item-glow: 0 0 0 1px color-mix(in srgb, var(--primary) 16%, transparent), 0 6px 24px -6px color-mix(in srgb, var(--primary) 30%, transparent);
+      --mint-glow: 0 0 12px color-mix(in srgb, var(--mint) 50%, transparent);
+      --modal-shadow: 0 24px 80px -12px rgba(0,0,0,.6);
+      --orb-o: .15;
+    }
+    :root[data-theme='light'] {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-2: #f1f5f9;
+      --seg-active: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --border-strong: #c9d3e0;
+      --primary: #6366f1;
+      --primary-deep: #4f46e5;
+      --mint: #0fbe83;
+      --error: #ef4444;
+      --warning: #f59e0b;
+      --check-ink: #ffffff;
+      --tag-feature: #3b82f6;
+      --tag-bug: #ef4444;
+      --tag-study: #6366f1;
+      --tag-docs: #0ea5e9;
+      --tag-refactor: #22c55e;
+      --btn-glow: 0 8px 20px -6px color-mix(in srgb, var(--primary) 55%, transparent);
+      --item-glow: 0 0 0 1px color-mix(in srgb, var(--primary) 20%, transparent), 0 8px 24px -8px color-mix(in srgb, var(--primary) 35%, transparent);
+      --mint-glow: 0 0 10px color-mix(in srgb, var(--mint) 40%, transparent);
+      --modal-shadow: 0 24px 64px -12px rgba(15,23,42,.25);
+      --orb-o: .10;
+    }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+    body { font-family: 'Geist', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { color: color-mix(in srgb, var(--primary) 70%, var(--text)); }
+    ::selection { background: color-mix(in srgb, var(--primary) 32%, transparent); }
+    input::placeholder, textarea::placeholder { color: color-mix(in srgb, var(--muted) 65%, transparent); }
+    button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    *::-webkit-scrollbar { width: 10px; height: 10px; }
+    *::-webkit-scrollbar-track { background: transparent; }
+    *::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 99px; border: 3px solid transparent; background-clip: padding-box; }
+    [data-row]:hover [data-actions] { opacity: 1 !important; transform: none !important; }
+    @media (hover: none) { [data-actions] { opacity: 1 !important; transform: none !important; } }
+    @keyframes taskIn { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(16px) scale(.96); } to { opacity: 1; transform: none; } }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(16px) scale(.96); } to { opacity: 1; transform: none; } }
+    @keyframes toastBar { from { width: 100%; } to { width: 0%; } }
+    @keyframes popCheck { 0% { transform: scale(.8); } 55% { transform: scale(1.14); } 100% { transform: scale(1); } }
+    @keyframes orbA { from { transform: translate(0, 0) scale(1); } to { transform: translate(60px, 40px) scale(1.15); } }
+    @keyframes orbB { from { transform: translate(0, 0) scale(1.1); } to { transform: translate(-70px, -30px) scale(1); } }
+    ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+    html[data-theme-transition='dark']::view-transition-old(root) { z-index: 1; }
+    html[data-theme-transition='dark']::view-transition-new(root) { z-index: 2147483646; }
+    html[data-theme-transition='light']::view-transition-old(root) { z-index: 2147483646; }
+    html[data-theme-transition='light']::view-transition-new(root) { z-index: 1; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</helmet>
+
+<div data-screen-label="Task List — Redesign" style="display: flex; height: 100dvh; overflow: hidden; position: relative; background: var(--bg); color: var(--text); font-family: 'Geist', system-ui, sans-serif; {{ glowVars }}">
+
+  <div aria-hidden="true" style="position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; display: {{ orbDisplay }};">
+    <div style="position: absolute; top: -180px; left: 18%; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(circle, var(--primary-deep), transparent 65%); opacity: var(--orb-o); filter: blur(90px); animation: orbA 26s ease-in-out infinite alternate;"></div>
+    <div style="position: absolute; bottom: -220px; right: -80px; width: 480px; height: 480px; border-radius: 50%; background: radial-gradient(circle, var(--mint), transparent 65%); opacity: calc(var(--orb-o) * .7); filter: blur(100px); animation: orbB 32s ease-in-out infinite alternate;"></div>
+  </div>
+
+  <aside style="width: 264px; flex-shrink: 0; display: flex; flex-direction: column; gap: 18px; padding: 20px 14px; border-right: 1px solid var(--border); background: color-mix(in srgb, var(--surface) 72%, transparent); backdrop-filter: blur(14px); position: relative; z-index: 2; box-sizing: border-box;">
+
+    <div style="display: flex; align-items: center; gap: 10px; padding: 2px 6px;">
+      <div style="width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--primary-deep), var(--mint)); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 16px color-mix(in srgb, var(--primary) 35%, transparent); flex-shrink: 0;">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="display: block;"><polyline points="3,7.5 6,10.5 11,4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+        <span style="font-size: 14px; font-weight: 650; letter-spacing: -0.01em;">todo-app</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .08em;">V2 · REDESIGN</span>
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 14px; padding: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px;">
+      <div style="position: relative; width: 60px; height: 60px; flex-shrink: 0;">
+        <svg width="60" height="60" viewBox="0 0 60 60" style="transform: rotate(-90deg); display: block;">
+          <circle cx="30" cy="30" r="26" fill="none" stroke="var(--border)" stroke-width="5.5"></circle>
+          <circle cx="30" cy="30" r="26" fill="none" stroke="var(--mint)" stroke-width="5.5" stroke-linecap="round" style="stroke-dasharray: {{ ringDash }}; transition: stroke-dasharray .8s cubic-bezier(.2,.8,.2,1); filter: drop-shadow(0 0 5px color-mix(in srgb, var(--mint) 55%, transparent));"></circle>
+        </svg>
+        <span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Geist Mono', monospace; font-size: 12.5px; font-weight: 600;">{{ pctLabel }}</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: .12em; color: var(--muted);">PROGRESS</span>
+        <span style="font-size: 13.5px; font-weight: 550;">{{ progressLine }}</span>
+        <span style="font-size: 11.5px; color: var(--muted);">this week</span>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: .12em; color: var(--muted); padding: 2px 8px 6px;">VIEWS</span>
+      <sc-for list="{{ navItems }}" as="nv" hint-placeholder-count="4">
+        <button type="button" onClick="{{ nv.onClick }}" style="display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid {{ nv.border }}; background: {{ nv.bg }}; color: {{ nv.color }}; font-size: 13.5px; font-weight: {{ nv.weight }}; font-family: inherit; cursor: pointer; transition: background .18s ease, color .18s ease, border-color .18s ease; text-align: left; box-sizing: border-box;" style-hover="background: color-mix(in srgb, var(--text) 6%, transparent); color: var(--text);">
+          <span style="width: 8px; height: 8px; border-radius: 3px; background: {{ nv.dot }}; box-shadow: {{ nv.dotGlow }}; flex-shrink: 0; transition: box-shadow .25s ease;"></span>
+          <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ nv.label }}</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: {{ nv.countColor }}; background: {{ nv.countBg }}; padding: 1px 7px; border-radius: 99px; border: 1px solid transparent;">{{ nv.count }}</span>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: .12em; color: var(--muted); padding: 2px 8px 8px;">TAGS</span>
+      <sc-for list="{{ tagRows }}" as="tg" hint-placeholder-count="5">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-radius: 8px; font-size: 13px; color: var(--muted); transition: background .18s ease, color .18s ease; cursor: default;" style-hover="background: color-mix(in srgb, var(--text) 5%, transparent); color: var(--text);">
+          <span style="width: 8px; height: 8px; border-radius: 99px; background: {{ tg.color }}; box-shadow: 0 0 8px color-mix(in srgb, {{ tg.color }} 45%, transparent); flex-shrink: 0;"></span>
+          <span style="flex: 1;">{{ tg.label }}</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 11px;">{{ tg.count }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 12px;">
+      <div style="border-top: 1px solid var(--border);"></div>
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 0 4px 2px;">
+        <a href="https://github.com/Faustze/todo-app" target="_blank" rel="noopener noreferrer" style="font-family: 'Geist Mono', monospace; font-size: 11.5px; color: var(--muted); display: inline-flex; align-items: center; gap: 5px;" style-hover="color: var(--primary);">GitHub ↗</a>
+        <button type="button" onClick="{{ onToggleTheme }}" title="Toggle theme" style="display: inline-flex; align-items: center; gap: 8px; padding: 7px 11px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-family: 'Geist Mono', monospace; font-size: 11px; cursor: pointer; transition: border-color .2s ease, color .2s ease, box-shadow .2s ease;" style-hover="border-color: color-mix(in srgb, var(--primary) 50%, var(--border)); color: var(--text); box-shadow: 0 0 12px color-mix(in srgb, var(--primary) 20%, transparent);">
+          <span style="position: relative; width: 16px; height: 16px; display: inline-block;">
+            <svg width="16" height="16" viewBox="0 0 20 20" style="position: absolute; inset: 0; transition: opacity .3s ease, transform .4s cubic-bezier(.2,.8,.2,1); {{ sunStyle }}">
+              <circle cx="10" cy="10" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6"></circle>
+              <line x1="10" y1="2.6" x2="10" y2="4.9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line>
+              <line x1="10" y1="15.1" x2="10" y2="17.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line>
+              <line x1="2.6" y1="10" x2="4.9" y2="10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line>
+              <line x1="15.1" y1="10" x2="17.4" y2="10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line>
+              <line x1="4.8" y1="4.8" x2="6.3" y2="6.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line>
+              <line x1="13.7" y1="13.7" x2="15.2" y2="15.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line>
+              <line x1="4.8" y1="15.2" x2="6.3" y2="13.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line>
+              <line x1="13.7" y1="6.3" x2="15.2" y2="4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line>
+            </svg>
+            <svg width="16" height="16" viewBox="0 0 20 20" style="position: absolute; inset: 0; transition: opacity .3s ease, transform .4s cubic-bezier(.2,.8,.2,1); {{ moonStyle }}">
+              <circle cx="10" cy="10" r="6" fill="currentColor"></circle>
+              <circle cx="13" cy="7.4" r="5.2" fill="var(--surface)"></circle>
+            </svg>
+          </span>
+          <span>{{ themeLabel }}</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex: 1; overflow-y: auto; position: relative; z-index: 1;">
+    <div style="max-width: 780px; margin: 0 auto; padding: 40px 32px 90px; box-sizing: border-box;">
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 22px;">
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <h1 style="margin: 0; font-size: 23px; font-weight: 680; letter-spacing: -0.02em;">Tasks</h1>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 11.5px; color: var(--muted);">{{ subtitle }}</span>
+        </div>
+        <button type="button" onClick="{{ onOpenCreate }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 9px; border: 1px solid color-mix(in srgb, var(--primary) 60%, transparent); background: linear-gradient(180deg, var(--primary), var(--primary-deep)); color: #ffffff; font-family: inherit; font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em; cursor: pointer; box-shadow: var(--btn-glow); transition: transform .18s ease, box-shadow .25s ease, filter .2s ease;" style-hover="transform: translateY(-1px); filter: brightness(1.07); box-shadow: 0 0 32px color-mix(in srgb, var(--primary) 55%, transparent), 0 4px 14px rgba(0,0,0,.3);" style-active="transform: scale(.97);">
+          <svg width="14" height="14" viewBox="0 0 14 14" style="display: block;"><line x1="7" y1="2" x2="7" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></line><line x1="2" y1="7" x2="12" y2="7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></line></svg>
+          New task
+        </button>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px; flex-wrap: wrap;">
+        <div style="position: relative; flex: 1; min-width: 220px; max-width: 330px;">
+          <svg width="15" height="15" viewBox="0 0 16 16" style="position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none;"><circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.5"></circle><line x1="10.6" y1="10.6" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></line></svg>
+          <input value="{{ search }}" onChange="{{ onSearch }}" ref="{{ searchRef }}" placeholder="Search tasks…" style="width: 100%; box-sizing: border-box; padding: 9px 56px 9px 34px; border-radius: 9px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: inherit; font-size: 13px; outline: none; transition: border-color .2s ease, box-shadow .25s ease;" style-focus="border-color: color-mix(in srgb, var(--primary) 65%, var(--border)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent), 0 0 18px color-mix(in srgb, var(--primary) 15%, transparent);">
+          <span style="position: absolute; right: 9px; top: 50%; transform: translateY(-50%); font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--muted); border: 1px solid var(--border); background: var(--surface-2); border-radius: 6px; padding: 2px 6px; pointer-events: none;">⌘K</span>
+        </div>
+
+        <button type="button" onClick="{{ onToggleSort }}" title="Toggle sort direction" style="display: inline-flex; align-items: center; gap: 7px; padding: 9px 13px; border-radius: 9px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-family: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer; transition: border-color .2s ease, color .2s ease, box-shadow .2s ease;" style-hover="border-color: color-mix(in srgb, var(--primary) 45%, var(--border)); color: var(--text); box-shadow: 0 0 14px color-mix(in srgb, var(--primary) 15%, transparent);" style-active="transform: scale(.97);">
+          Date <span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--primary);">{{ sortArrow }}</span>
+        </button>
+
+        <div style="display: inline-flex; align-items: center; gap: 2px; padding: 3px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface);">
+          <sc-for list="{{ periodChips }}" as="pc" hint-placeholder-count="3">
+            <button type="button" onClick="{{ pc.onClick }}" style="padding: 6px 13px; border-radius: 7px; border: none; background: {{ pc.bg }}; color: {{ pc.color }}; font-family: inherit; font-size: 12.5px; font-weight: {{ pc.weight }}; cursor: pointer; transition: background .2s ease, color .2s ease, box-shadow .2s ease; box-shadow: {{ pc.shadow }};" style-hover="color: var(--text);" style-active="transform: scale(.96);">{{ pc.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div onPointerMove="{{ onListMove }}" onPointerLeave="{{ onListLeave }}" style="display: flex; flex-direction: column;">
+        <sc-for list="{{ visibleTasks }}" as="item" hint-placeholder-count="5">
+          <div data-row="true" data-prox="true" style="position: relative; display: flex; align-items: center; gap: 12px; padding: 13px 16px; margin-bottom: 8px; background: var(--surface); border: 1px solid var(--border); border-left: 2px solid {{ item.accent }}; border-radius: 10px; max-height: 120px; box-sizing: border-box; animation: taskIn .5s cubic-bezier(.16,.84,.3,1) both; animation-delay: {{ item.delay }}; transition: border-color .25s ease, box-shadow .25s ease, opacity .3s ease, transform .3s cubic-bezier(.2,.8,.2,1), max-height .32s ease, padding .32s ease, margin .32s ease; {{ item.dyn }}" style-hover="border-color: color-mix(in srgb, var(--primary) 50%, var(--border)); box-shadow: var(--item-glow); transform: translateY(-1px);">
+
+            <button type="button" onClick="{{ item.onToggle }}" title="{{ item.checkTitle }}" style="width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0; display: {{ item.checkDisplay }}; align-items: center; justify-content: center; cursor: pointer; padding: 0; background: {{ item.checkBg }}; border: 1.5px solid {{ item.checkBorder }}; transition: background .25s ease, border-color .25s ease, box-shadow .25s ease; {{ item.checkAnim }}" style-hover="border-color: var(--mint); box-shadow: var(--mint-glow);">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="display: block;"><polyline points="2.4,6.4 5,9 9.6,3.2" stroke="var(--check-ink)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray: 14; stroke-dashoffset: {{ item.checkDash }}; transition: stroke-dashoffset .32s cubic-bezier(.2,.8,.2,1) .05s;"></polyline></svg>
+            </button>
+            <span title="Cancelled" style="width: 22px; height: 22px; flex-shrink: 0; display: {{ item.banDisplay }}; align-items: center; justify-content: center;">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.4" stroke="var(--error)" stroke-width="1.5"></circle><line x1="4.9" y1="4.9" x2="15.1" y2="15.1" stroke="var(--error)" stroke-width="1.5"></line></svg>
+            </span>
+
+            <div style="min-width: 0; flex: 1; display: flex; align-items: center;">
+              <span style="position: relative; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; letter-spacing: -0.01em; font-weight: {{ item.weight }}; color: {{ item.titleColor }}; transition: color .25s ease;" style-after="content: ''; position: absolute; left: 0; top: 50%; height: 1px; background: var(--muted); width: {{ item.strike }}; transition: width .35s cubic-bezier(.2,.8,.2,1);">{{ item.title }}</span>
+            </div>
+
+            <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--muted); flex-shrink: 0;">{{ item.date }}</span>
+            <span title="{{ item.priorityLabel }}" style="font-family: 'Geist Mono', monospace; font-size: 13px; font-weight: 600; color: {{ item.arrowColor }}; width: 14px; text-align: center; flex-shrink: 0;">{{ item.arrow }}</span>
+            <span style="display: {{ item.tagDisplay }}; align-items: center; padding: 2px 9px; border-radius: 99px; font-size: 11.5px; font-weight: 500; color: {{ item.tagColor }}; border: 1px solid color-mix(in srgb, {{ item.tagColor }} 45%, transparent); background: color-mix(in srgb, {{ item.tagColor }} 10%, transparent); flex-shrink: 0;">{{ item.tagName }}</span>
+
+            <div data-actions="true" style="display: flex; gap: 4px; flex-shrink: 0; opacity: 0; transform: translateX(4px); transition: opacity .2s ease, transform .2s ease;">
+              <button type="button" onClick="{{ item.onEdit }}" title="Edit task" style="width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; border: none; background: transparent; color: var(--muted); cursor: pointer; padding: 0; transition: background .18s ease, color .18s ease;" style-hover="background: color-mix(in srgb, var(--text) 8%, transparent); color: var(--text);">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M11.3 2.7l2 2L5.6 12.4l-2.7.7.7-2.7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </button>
+              <button type="button" onClick="{{ item.onDelete }}" title="Delete task" style="width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; border: none; background: transparent; color: var(--muted); cursor: pointer; padding: 0; transition: background .18s ease, color .18s ease;" style-hover="background: color-mix(in srgb, var(--error) 14%, transparent); color: var(--error);">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M6.3 4.5V3h3.4v1.5M4.5 4.5l.6 8.2h5.8l.6-8.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </button>
+            </div>
+          </div>
+        </sc-for>
+
+        <sc-if value="{{ listEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="border: 1px dashed var(--border-strong); border-radius: 12px; padding: 40px 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; animation: fadeIn .4s ease both;">
+            <span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--muted);">No tasks match your filters</span>
+            <button type="button" onClick="{{ onResetFilters }}" style="padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer; transition: border-color .2s ease, box-shadow .2s ease;" style-hover="border-color: color-mix(in srgb, var(--primary) 50%, var(--border)); box-shadow: 0 0 14px color-mix(in srgb, var(--primary) 18%, transparent);">Reset filters</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </main>
+
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 24px;">
+      <div onClick="{{ onCloseModal }}" style="position: absolute; inset: 0; background: color-mix(in srgb, var(--bg) 55%, transparent); backdrop-filter: blur(8px); animation: fadeIn .25s ease both;"></div>
+      <div role="dialog" aria-modal="true" style="position: relative; width: min(440px, 100%); box-sizing: border-box; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 14px; padding: 22px; box-shadow: var(--modal-shadow); animation: modalIn .32s cubic-bezier(.16,.84,.3,1) both;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+          <span style="font-size: 16px; font-weight: 650; letter-spacing: -0.01em;">{{ modalTitle }}</span>
+          <button type="button" onClick="{{ onCloseModal }}" title="Close" style="width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; border: none; background: transparent; color: var(--muted); cursor: pointer; padding: 0; transition: background .18s ease, color .18s ease;" style-hover="background: color-mix(in srgb, var(--text) 8%, transparent); color: var(--text);">
+            <svg width="12" height="12" viewBox="0 0 12 12"><line x1="2" y1="2" x2="10" y2="10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line><line x1="10" y1="2" x2="2" y2="10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line></svg>
+          </button>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: .1em; color: var(--muted);">TITLE</label>
+            <input value="{{ fTitle }}" onChange="{{ onFTitle }}" placeholder="What needs to be done?" style="width: 100%; box-sizing: border-box; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-family: inherit; font-size: 13.5px; outline: none; transition: border-color .2s ease, box-shadow .25s ease;" style-focus="border-color: color-mix(in srgb, var(--primary) 65%, var(--border)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);">
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: .1em; color: var(--muted);">DESCRIPTION</label>
+            <textarea value="{{ fDesc }}" onChange="{{ onFDesc }}" rows="2" placeholder="Optional details…" style="width: 100%; box-sizing: border-box; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-family: inherit; font-size: 13px; outline: none; resize: vertical; transition: border-color .2s ease, box-shadow .25s ease;" style-focus="border-color: color-mix(in srgb, var(--primary) 65%, var(--border)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);"></textarea>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: .1em; color: var(--muted);">PRIORITY</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+              <sc-for list="{{ priorityOptions }}" as="po" hint-placeholder-count="3">
+                <button type="button" onClick="{{ po.onClick }}" style="padding: 8px 0; border-radius: 8px; border: 1px solid {{ po.border }}; background: {{ po.bg }}; color: {{ po.color }}; font-family: inherit; font-size: 12.5px; font-weight: 550; cursor: pointer; transition: background .2s ease, border-color .2s ease, color .2s ease;" style-active="transform: scale(.97);">{{ po.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: .1em; color: var(--muted);">TAG</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <sc-for list="{{ tagOptions }}" as="to" hint-placeholder-count="5">
+                <button type="button" onClick="{{ to.onClick }}" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px; border-radius: 99px; border: 1px solid {{ to.border }}; background: {{ to.bg }}; color: {{ to.color }}; font-family: inherit; font-size: 11.5px; font-weight: 500; cursor: pointer; transition: background .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease; box-shadow: {{ to.shadow }};" style-active="transform: scale(.96);">{{ to.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 4px;">
+            <button type="button" onClick="{{ onCloseModal }}" style="padding: 8px 14px; border-radius: 8px; border: none; background: transparent; color: var(--muted); font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: color .18s ease;" style-hover="color: var(--text);">Cancel</button>
+            <button type="button" onClick="{{ onSubmitForm }}" style="padding: 9px 16px; border-radius: 8px; border: 1px solid color-mix(in srgb, var(--primary) 60%, transparent); background: linear-gradient(180deg, var(--primary), var(--primary-deep)); color: #ffffff; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: var(--btn-glow); transition: transform .18s ease, filter .2s ease, opacity .2s ease; {{ submitStyle }}" style-hover="filter: brightness(1.07); transform: translateY(-1px);" style-active="transform: scale(.97);">{{ submitLabel }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="position: fixed; bottom: 20px; right: 20px; z-index: 60; display: flex; flex-direction: column; gap: 8px;">
+    <sc-for list="{{ toasts }}" as="ts" hint-placeholder-count="0">
+      <div style="position: relative; width: 290px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 11px 14px; background: var(--surface-2); border: 1px solid {{ ts.border }}; border-radius: 10px; box-shadow: 0 10px 30px -8px rgba(0,0,0,.4); animation: toastIn .35s cubic-bezier(.16,.84,.3,1) both; overflow: hidden;">
+        <span style="width: 8px; height: 8px; border-radius: 99px; background: {{ ts.color }}; box-shadow: 0 0 10px {{ ts.color }}; flex-shrink: 0;"></span>
+        <span style="font-size: 13px; font-weight: 500; flex: 1;">{{ ts.msg }}</span>
+        <div style="position: absolute; left: 0; bottom: 0; height: 2px; background: {{ ts.color }}; animation: toastBar 3.2s linear forwards; border-radius: 99px;"></div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;startTheme&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;dark&quot;, &quot;light&quot;], &quot;default&quot;: &quot;dark&quot;, &quot;tsType&quot;: &quot;'dark' | 'light'&quot;, &quot;section&quot;: &quot;Theme&quot; },
+  &quot;glowEffects&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Effects&quot; },
+  &quot;ambientOrbs&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Effects&quot; }
+}">
+class Component extends DCLogic {
+  state = {
+    theme: 'dark',
+    filter: 'all',
+    period: null,
+    search: '',
+    sortDir: 'desc',
+    epoch: 0,
+    tasks: [
+      { id: 't1', title: 'Add drag-and-drop task reordering', status: 'in-progress', priority: 'high', tag: 'feature', daysAgo: 0, date: 'Today' },
+      { id: 't2', title: 'Fix FOUC when restoring dark theme in Safari', status: 'in-progress', priority: 'high', tag: 'bug', daysAgo: 0, date: 'Today' },
+      { id: 't3', title: 'Add date range picker to FilterPanel', status: 'in-progress', priority: 'middle', tag: 'feature', daysAgo: 1, date: 'Yesterday' },
+      { id: 't4', title: 'Write unit tests for task-filters utils', status: 'in-progress', priority: 'middle', tag: 'study', daysAgo: 2, date: 'Jul 10' },
+      { id: 't5', title: 'Document Vuetify0 theme plugin setup', status: 'done', priority: 'middle', tag: 'docs', daysAgo: 3, date: 'Jul 9' },
+      { id: 't6', title: 'Refactor TaskForm validation messages', status: 'done', priority: 'low', tag: 'refactor', daysAgo: 5, date: 'Jul 7' },
+      { id: 't7', title: 'Extract SortPanel into a headless composable', status: 'done', priority: 'low', tag: 'refactor', daysAgo: 6, date: 'Jul 6' },
+      { id: 't8', title: 'Sync tasks to a REST backend', status: 'cancel', priority: 'low', tag: 'feature', daysAgo: 12, date: 'Jun 30' },
+    ],
+    removing: {},
+    modalOpen: false,
+    editingId: null,
+    fTitle: '',
+    fDesc: '',
+    fPriority: 'middle',
+    fTag: null,
+    toasts: [],
+  };
+
+  TAGS = [
+    { id: 'feature', label: 'Feature', color: 'var(--tag-feature)' },
+    { id: 'bug', label: 'Bug', color: 'var(--tag-bug)' },
+    { id: 'study', label: 'Study', color: 'var(--tag-study)' },
+    { id: 'docs', label: 'Docs', color: 'var(--tag-docs)' },
+    { id: 'refactor', label: 'Refactor', color: 'var(--tag-refactor)' },
+  ];
+
+  PRI = {
+    high: { accent: 'var(--error)', weight: 620, arrow: '↑', arrowColor: 'var(--error)', label: 'High priority', segColor: 'var(--error)' },
+    middle: { accent: 'var(--primary)', weight: 500, arrow: '→', arrowColor: 'var(--primary)', label: 'Medium priority', segColor: 'var(--warning)' },
+    low: { accent: 'var(--border-strong)', weight: 430, arrow: '↓', arrowColor: 'var(--muted)', label: 'Low priority', segColor: 'var(--primary)' },
+  };
+
+  _toastN = 0;
+
+  componentDidMount() {
+    const t = this.props.startTheme ?? 'dark';
+    this.applyTheme(t);
+    if (t !== this.state.theme) this.setState({ theme: t });
+    this._onKey = (ev) => {
+      if ((ev.metaKey || ev.ctrlKey) && ev.key && ev.key.toLowerCase() === 'k') {
+        ev.preventDefault();
+        if (this._searchEl) this._searchEl.focus();
+      } else if (ev.key === 'Escape' && this.state.modalOpen) {
+        this.setState({ modalOpen: false });
+      }
+    };
+    window.addEventListener('keydown', this._onKey);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this._onKey);
+  }
+
+  componentDidUpdate(prevProps) {
+    const t = this.props.startTheme ?? 'dark';
+    const pt = (prevProps && prevProps.startTheme) ?? 'dark';
+    if (t !== pt) {
+      this.applyTheme(t);
+      this.setState({ theme: t });
+    }
+  }
+
+  applyTheme(t) {
+    if (typeof document !== 'undefined') document.documentElement.setAttribute('data-theme', t);
+  }
+
+  toggleTheme = (e) => {
+    const next = this.state.theme === 'dark' ? 'light' : 'dark';
+    const doSwitch = () => { this.applyTheme(next); this.setState({ theme: next }); };
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!document.startViewTransition || reduce) { doSwitch(); return; }
+    const x = e && e.clientX ? e.clientX : window.innerWidth / 2;
+    const y = e && e.clientY ? e.clientY : window.innerHeight / 2;
+    const r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    const root = document.documentElement;
+    root.setAttribute('data-theme-transition', next);
+    const vt = document.startViewTransition(doSwitch);
+    vt.ready.then(() => {
+      const clip = ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + r + 'px at ' + x + 'px ' + y + 'px)'];
+      const opts = { duration: 520, easing: 'ease-in-out', fill: 'both' };
+      const anim = next === 'dark'
+        ? root.animate({ clipPath: clip }, Object.assign({}, opts, { pseudoElement: '::view-transition-new(root)' }))
+        : root.animate({ clipPath: clip.slice().reverse() }, Object.assign({}, opts, { pseudoElement: '::view-transition-old(root)' }));
+      anim.finished.finally(() => root.removeAttribute('data-theme-transition'));
+    }).catch(() => { root.removeAttribute('data-theme-transition'); });
+  };
+
+  toast(type, msg) {
+    const id = ++this._toastN;
+    const colors = { success: 'var(--mint)', info: 'var(--primary)', error: 'var(--error)' };
+    const t = { id, msg, color: colors[type], border: 'color-mix(in srgb, ' + colors[type] + ' 35%, var(--border))' };
+    this.setState(s => ({ toasts: [...s.toasts.slice(-2), t] }));
+    setTimeout(() => this.setState(s => ({ toasts: s.toasts.filter(x => x.id !== id) })), 3300);
+  }
+
+  matches(t, s) {
+    const st = s || this.state;
+    const q = st.search.trim().toLowerCase();
+    const okStatus = st.filter === 'all' || t.status === st.filter;
+    const lim = st.period === 'today' ? 0 : st.period === 'week' ? 7 : 31;
+    const okPeriod = !st.period || t.daysAgo <= lim;
+    const okSearch = !q || t.title.toLowerCase().includes(q);
+    return okStatus && okPeriod && okSearch;
+  }
+
+  toggleTask(id) {
+    const task = this.state.tasks.find(t => t.id === id);
+    if (!task || task.status === 'cancel') return;
+    const next = task.status === 'in-progress' ? 'done' : 'in-progress';
+    const tasks = this.state.tasks.map(t => t.id === id ? Object.assign({}, t, { status: next }) : t);
+    this.setState({ tasks });
+    this.toast('info', next === 'done' ? 'Marked as done' : 'Returned to progress');
+    const stillVisible = this.matches(Object.assign({}, task, { status: next }));
+    if (!stillVisible) {
+      setTimeout(() => {
+        this.setState(s => ({ removing: Object.assign({}, s.removing, { [id]: true }) }));
+        setTimeout(() => this.setState(s => {
+          const rm = Object.assign({}, s.removing); delete rm[id];
+          return { removing: rm };
+        }), 380);
+      }, 550);
+    }
+  }
+
+  deleteTask(id) {
+    this.setState(s => ({ removing: Object.assign({}, s.removing, { [id]: true }) }));
+    setTimeout(() => {
+      this.setState(s => {
+        const rm = Object.assign({}, s.removing); delete rm[id];
+        return { tasks: s.tasks.filter(t => t.id !== id), removing: rm };
+      });
+      this.toast('error', 'Task deleted');
+    }, 340);
+  }
+
+  openEdit(task) {
+    this.setState({ modalOpen: true, editingId: task.id, fTitle: task.title, fDesc: task.description || '', fPriority: task.priority, fTag: task.tag || null });
+  }
+
+  submitForm = () => {
+    const { fTitle, fDesc, fPriority, fTag, editingId } = this.state;
+    if (fTitle.trim().length < 3) return;
+    if (editingId) {
+      const tasks = this.state.tasks.map(t => t.id === editingId
+        ? Object.assign({}, t, { title: fTitle.trim(), description: fDesc, priority: fPriority, tag: fTag })
+        : t);
+      this.setState({ tasks, modalOpen: false, editingId: null });
+      this.toast('info', 'Task updated');
+    } else {
+      const nt = { id: 't' + Date.now(), title: fTitle.trim(), description: fDesc, status: 'in-progress', priority: fPriority, tag: fTag, daysAgo: 0, date: 'Today' };
+      this.setState(s => ({ tasks: [nt, ...s.tasks], modalOpen: false }));
+      this.toast('success', 'Task created');
+    }
+  };
+
+  onListMove = (e) => {
+    if (!(window.matchMedia && window.matchMedia('(hover: hover)').matches)) return;
+    const items = e.currentTarget.querySelectorAll('[data-prox]');
+    const y = e.clientY;
+    items.forEach(el => {
+      const r = el.getBoundingClientRect();
+      const t = Math.max(0, 1 - Math.abs(y - (r.top + r.height / 2)) / 160);
+      el.style.scale = String(1 + t * 0.02);
+      el.style.filter = t > 0 ? 'brightness(' + (1 + t * 0.06) + ')' : '';
+    });
+  };
+
+  onListLeave = (e) => {
+    e.currentTarget.querySelectorAll('[data-prox]').forEach(el => { el.style.scale = ''; el.style.filter = ''; });
+  };
+
+  renderVals() {
+    const s = this.state;
+    const glow = this.props.glowEffects ?? true;
+    const orbs = this.props.ambientOrbs ?? true;
+
+    const glowVars = glow ? '' : '--btn-glow: 0 2px 6px rgba(0,0,0,.25); --item-glow: 0 4px 14px -4px rgba(0,0,0,.25); --mint-glow: none; --orb-o: .06;';
+    const orbDisplay = orbs ? 'block' : 'none';
+
+    const list = s.tasks
+      .filter(t => s.removing[t.id] || this.matches(t))
+      .sort((a, b) => s.sortDir === 'desc' ? a.daysAgo - b.daysAgo : b.daysAgo - a.daysAgo);
+
+    const tagMap = {};
+    this.TAGS.forEach(t => { tagMap[t.id] = t; });
+
+    const visibleTasks = list.map((t, i) => {
+      const p = this.PRI[t.priority];
+      const isDone = t.status === 'done';
+      const isCancel = t.status === 'cancel';
+      const rem = !!s.removing[t.id];
+      let dyn = '';
+      if (t.priority === 'high' && !isDone && !isCancel) dyn += 'background-image: linear-gradient(90deg, color-mix(in srgb, var(--error) 6%, transparent), transparent 45%);';
+      if (isDone) dyn += 'opacity: .6;';
+      if (isCancel) dyn += 'opacity: .5;';
+      if (rem) dyn = 'opacity: 0; transform: translateX(36px); max-height: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; border-top-width: 0; border-bottom-width: 0; overflow: hidden; pointer-events: none;';
+      const tag = t.tag ? tagMap[t.tag] : null;
+      return {
+        key: s.epoch + '-' + t.id,
+        title: t.title,
+        date: t.date,
+        delay: Math.min(i * 40, 360) + 'ms',
+        accent: p.accent,
+        weight: p.weight,
+        arrow: p.arrow,
+        arrowColor: p.arrowColor,
+        priorityLabel: p.label,
+        titleColor: (isDone || isCancel) ? 'var(--muted)' : 'var(--text)',
+        strike: isDone ? '100%' : '0%',
+        checkDisplay: isCancel ? 'none' : 'inline-flex',
+        banDisplay: isCancel ? 'inline-flex' : 'none',
+        checkBg: isDone ? 'var(--mint)' : 'transparent',
+        checkBorder: isDone ? 'var(--mint)' : 'var(--border-strong)',
+        checkDash: isDone ? 0 : 14,
+        checkAnim: isDone ? 'animation: popCheck .35s cubic-bezier(.2,.8,.2,1);' : '',
+        checkTitle: isDone ? 'Return to progress' : 'Mark as done',
+        tagDisplay: tag ? 'inline-flex' : 'none',
+        tagName: tag ? tag.label : '',
+        tagColor: tag ? tag.color : 'var(--muted)',
+        dyn,
+        onToggle: () => this.toggleTask(t.id),
+        onDelete: () => this.deleteTask(t.id),
+        onEdit: () => this.openEdit(t),
+      };
+    });
+
+    const count = st => s.tasks.filter(t => t.status === st).length;
+    const doneN = count('done'), progN = count('in-progress'), cancelN = count('cancel');
+    const total = s.tasks.length;
+    const pct = total ? doneN / total : 0;
+
+    const navDefs = [
+      { id: 'all', label: 'All tasks', dot: 'var(--primary)', count: total },
+      { id: 'in-progress', label: 'In Progress', dot: 'var(--warning)', count: progN },
+      { id: 'done', label: 'Done', dot: 'var(--mint)', count: doneN },
+      { id: 'cancel', label: 'Cancelled', dot: 'var(--error)', count: cancelN },
+    ];
+    const navItems = navDefs.map(n => {
+      const active = s.filter === n.id;
+      return {
+        key: n.id, label: n.label, dot: n.dot, count: n.count,
+        bg: active ? 'color-mix(in srgb, var(--primary) 13%, transparent)' : 'transparent',
+        border: active ? 'color-mix(in srgb, var(--primary) 32%, transparent)' : 'transparent',
+        color: active ? 'var(--text)' : 'var(--muted)',
+        weight: active ? 560 : 440,
+        dotGlow: active ? '0 0 8px ' + n.dot : 'none',
+        countColor: active ? 'var(--text)' : 'var(--muted)',
+        countBg: active ? 'color-mix(in srgb, var(--primary) 18%, transparent)' : 'var(--surface-2)',
+        onClick: () => { if (s.filter !== n.id) this.setState({ filter: n.id, epoch: s.epoch + 1 }); },
+      };
+    });
+
+    const tagRows = this.TAGS.map(t => ({
+      key: t.id, label: t.label, color: t.color,
+      count: s.tasks.filter(x => x.tag === t.id).length,
+    }));
+
+    const periodDefs = [{ id: 'today', label: 'Day' }, { id: 'week', label: 'Week' }, { id: 'month', label: 'Month' }];
+    const periodChips = periodDefs.map(p => {
+      const active = s.period === p.id;
+      return {
+        key: p.id, label: p.label,
+        bg: active ? 'var(--seg-active)' : 'transparent',
+        color: active ? 'var(--text)' : 'var(--muted)',
+        weight: active ? 560 : 450,
+        shadow: active ? '0 1px 3px rgba(0,0,0,.25), 0 0 0 1px var(--border)' : 'none',
+        onClick: () => this.setState({ period: active ? null : p.id, epoch: s.epoch + 1 }),
+      };
+    });
+
+    const priorityOptions = [{ id: 'low', label: 'Low' }, { id: 'middle', label: 'Medium' }, { id: 'high', label: 'High' }].map(p => {
+      const active = s.fPriority === p.id;
+      const c = this.PRI[p.id].segColor;
+      return {
+        key: p.id, label: p.label,
+        border: active ? 'color-mix(in srgb, ' + c + ' 55%, transparent)' : 'var(--border)',
+        bg: active ? 'color-mix(in srgb, ' + c + ' 13%, transparent)' : 'transparent',
+        color: active ? 'var(--text)' : 'var(--muted)',
+        onClick: () => this.setState({ fPriority: p.id }),
+      };
+    });
+
+    const tagOptions = this.TAGS.map(t => {
+      const active = s.fTag === t.id;
+      return {
+        key: t.id, label: t.label,
+        border: active ? t.color : 'color-mix(in srgb, ' + t.color + ' 35%, transparent)',
+        bg: active ? 'color-mix(in srgb, ' + t.color + ' 16%, transparent)' : 'transparent',
+        color: active ? 'var(--text)' : 'color-mix(in srgb, ' + t.color + ' 80%, var(--muted))',
+        shadow: active ? '0 0 10px color-mix(in srgb, ' + t.color + ' 30%, transparent)' : 'none',
+        onClick: () => this.setState({ fTag: active ? null : t.id }),
+      };
+    });
+
+    const C = 163.4;
+    const dark = s.theme === 'dark';
+
+    return {
+      glowVars, orbDisplay,
+      visibleTasks,
+      listEmpty: visibleTasks.length === 0,
+      navItems, tagRows, periodChips, priorityOptions, tagOptions,
+      ringDash: (pct * C).toFixed(1) + ' ' + C,
+      pctLabel: Math.round(pct * 100) + '%',
+      progressLine: doneN + ' of ' + total + ' done',
+      subtitle: visibleTasks.length + ' shown · ' + progN + ' active · ' + doneN + ' done',
+      search: s.search,
+      onSearch: (e) => this.setState({ search: e.target.value }),
+      searchRef: (el) => { this._searchEl = el; },
+      sortArrow: s.sortDir === 'desc' ? '↓' : '↑',
+      onToggleSort: () => this.setState({ sortDir: s.sortDir === 'desc' ? 'asc' : 'desc', epoch: s.epoch + 1 }),
+      onResetFilters: () => this.setState({ filter: 'all', period: null, search: '', epoch: s.epoch + 1 }),
+      onListMove: this.onListMove,
+      onListLeave: this.onListLeave,
+      modalOpen: s.modalOpen,
+      modalTitle: s.editingId ? 'Edit task' : 'New task',
+      submitLabel: s.editingId ? 'Save changes' : 'Create task',
+      submitStyle: s.fTitle.trim().length < 3 ? 'opacity: .45; pointer-events: none;' : '',
+      onOpenCreate: () => this.setState({ modalOpen: true, editingId: null, fTitle: '', fDesc: '', fPriority: 'middle', fTag: null }),
+      onCloseModal: () => this.setState({ modalOpen: false }),
+      onSubmitForm: this.submitForm,
+      fTitle: s.fTitle,
+      fDesc: s.fDesc,
+      onFTitle: (e) => this.setState({ fTitle: e.target.value }),
+      onFDesc: (e) => this.setState({ fDesc: e.target.value }),
+      toasts: s.toasts,
+      onToggleTheme: this.toggleTheme,
+      themeLabel: dark ? 'Dark' : 'Light',
+      sunStyle: dark ? 'opacity: 0; transform: rotate(90deg) scale(.5);' : 'opacity: 1; transform: none;',
+      moonStyle: dark ? 'opacity: 1; transform: none;' : 'opacity: 0; transform: rotate(-90deg) scale(.5);',
+    };
+  }
+}
+</script>
+</body>
+</html>
