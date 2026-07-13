@@ -15,13 +15,6 @@ export type UpdateTask = Partial<Pick<Task, 'title' | 'description' | 'priority'
 export interface DateRange { from: Date | null, to: Date | null }
 export type DatePreset = 'today' | 'week' | 'month' | null
 
-// ACTIONS
-export interface TaskItemActionOption {
-  id: string
-  label: string
-  action?: (v?: any) => any
-}
-
 // FORM
 export interface TaskFormValues {
   title: string

@@ -1,16 +1,31 @@
 <template>
-  <div class="flex flex-col items-center justify-center py-12 px-6 text-center gap-3">
-    <IconEraser size="48" class="text-muted opacity-50" />
-    <h3 class="text-lg font-semibold text-text">
-      No tasks yet
-    </h3>
-    <p class="text-sm text-muted">
-      Create your first task to get started
+  <div class="empty">
+    <p class="empty__text mono">
+      <slot>No tasks match your filters</slot>
     </p>
-    <slot />
+    <slot name="action" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { IconEraser } from '@tabler/icons-vue'
+defineOptions({ name: 'EmptyState' })
 </script>
+
+<style scoped>
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 40px 24px;
+  border: 1px dashed var(--v0-border-strong);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.empty__text {
+  font-size: 12px;
+  color: var(--v0-muted);
+}
+</style>

@@ -38,6 +38,23 @@ export const useTasks = defineStore('tasks', () => {
   })
   const totalCount = computed(() => tasks.value.length)
   const doneCount = computed(() => countTasksByStatus(tasks.value, 'done'))
+  const donePercent = computed(() => totalCount.value ? doneCount.value / totalCount.value : 0)
+  const statusCounts = computed(() => ({
+    'all': totalCount.value,
+    'in-progress': countTasksByStatus(tasks.value, 'in-progress'),
+    'done': doneCount.value,
+    'cancel': countTasksByStatus(tasks.value, 'cancel'),
+  }))
+  const tagCounts = computed(() => {
+    const counts: Record<string, number> = {}
+    for (const task of tasks.value) {
+      if (!task.tagId)
+        continue
+      counts[task.tagId] = (counts[task.tagId] ?? 0) + 1
+    }
+    return counts
+  })
+  const activeCount = computed(() => countTasksByStatus(tasks.value, 'in-progress'))
 
   function getTaskById(id: string): Task | undefined {
     const task = tasks.value.find(t => t.id === id)
@@ -130,6 +147,10 @@ export const useTasks = defineStore('tasks', () => {
     filteredTasks,
     totalCount,
     doneCount,
+    donePercent,
+    statusCounts,
+    tagCounts,
+    activeCount,
     getTaskById,
     create,
     update,

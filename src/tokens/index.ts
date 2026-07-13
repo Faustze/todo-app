@@ -1,3 +1,3 @@
-export { lightColors, darkColors } from './colors'
+export { darkColors, lightColors } from './colors'
 export { radius } from './radius'
 export { spacing } from './spacing'

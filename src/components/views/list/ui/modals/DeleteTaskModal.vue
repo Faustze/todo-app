@@ -58,7 +58,6 @@ const open = defineModel<boolean>({ default: false })
 
 <style scoped>
   .delete-modal {
-    padding: 1rem;
     position: relative;
     display: flex;
     flex-direction: column;

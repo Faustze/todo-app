@@ -5,6 +5,7 @@
       :data-mobile="mobile || undefined"
       :blocking="blocking"
       :close-on-click-outside="!blocking"
+      @keydown.esc="$emit('update:modelValue', false)"
     >
       <slot />
     </Dialog.Content>
@@ -24,32 +25,84 @@ defineEmits<{
   'update:modelValue': [value: boolean]
 }>()
 
-// const open = defineModel<boolean>({ default: false })
-
 const breakpoints = useBreakpoints()
-const mobile = toRef(() => breakpoints.smAndDown.value)
+// Fullscreen sheet on phones and tablets, centered card from desktop up
+const mobile = toRef(() => breakpoints.mdAndDown.value)
 </script>
 
 <style>
   .ui-modal {
-    width: 90%;
-    max-width: 480px;
+    position: relative;
+    width: min(440px, 100%);
     max-height: 85vh;
+    padding: 22px;
     background: var(--v0-surface);
-    border: 1px solid var(--v0-border);
-    border-radius: 0.75rem;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
-    overflow: hidden;
+    border: 1px solid var(--v0-border-strong);
+    border-radius: 14px;
+    box-shadow: 0 24px 80px -12px rgba(0, 0, 0, 0.6);
+    overflow: auto;
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+    transition:
+      opacity 0.25s ease,
+      transform 0.32s cubic-bezier(0.16, 0.84, 0.3, 1),
+      overlay 0.32s allow-discrete,
+      display 0.32s allow-discrete;
+  }
+
+  .ui-modal[open] {
+    opacity: 1;
+    transform: none;
+  }
+
+  @starting-style {
+    .ui-modal[open] {
+      opacity: 0;
+      transform: translateY(16px) scale(0.96);
+    }
+  }
+
+  .ui-modal::backdrop {
+    background: color-mix(in srgb, #000 55%, transparent);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.25s ease, overlay 0.25s allow-discrete, display 0.25s allow-discrete;
+  }
+
+  .ui-modal[open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .ui-modal[open]::backdrop {
+      opacity: 0;
+    }
   }
 
   .ui-modal[data-mobile] {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 90%;
+    inset: 0;
+    width: 100%;
     max-width: none;
-    max-height: 90vh;
-    border-radius: 1rem 1rem 0 0;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    transform: translateY(24px);
+  }
+
+  .ui-modal[data-mobile][open] {
+    transform: none;
+  }
+
+  @starting-style {
+    .ui-modal[data-mobile][open] {
+      transform: translateY(24px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-modal {
+      transition: none;
+    }
   }
 </style>

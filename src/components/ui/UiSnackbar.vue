@@ -3,18 +3,20 @@
     <Snackbar.Queue v-slot="{ items }">
       <TransitionGroup name="snackbar" tag="div" class="snackbar-container">
         <Snackbar.Root
-          v-for="item in items"
+          v-for="item in items.slice(0, 3)"
           :id="item.id"
           :key="item.id"
           class="snackbar"
           :class="`snackbar--${item.severity || 'info'}`"
         >
+          <span class="snackbar__dot" />
           <Snackbar.Content class="snackbar__content">
             <span class="snackbar__text">{{ item.subject }}</span>
           </Snackbar.Content>
           <Snackbar.Close class="snackbar__close">
-            <IconX size="16" />
+            <IconX size="14" />
           </Snackbar.Close>
+          <span class="snackbar__progress" />
         </Snackbar.Root>
       </TransitionGroup>
     </Snackbar.Queue>
@@ -34,7 +36,7 @@ import { Snackbar } from '@vuetify/v0'
     z-index: 2000;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
     gap: 0.5rem;
     pointer-events: none;
   }
@@ -44,28 +46,28 @@ import { Snackbar } from '@vuetify/v0'
       bottom: 0;
       left: 0;
       right: 0;
+      align-items: stretch;
       transform: none;
     }
   }
 
   .snackbar {
+    position: relative;
     pointer-events: auto;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    border-width: 1px;
-    border-style: solid;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    min-width: 280px;
-    max-width: 420px;
+    gap: 8px;
+    width: 290px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--v0-surface-2);
+    border: 1px solid;
+    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
   }
 
   @media (max-width: 599px) {
     .snackbar {
-      min-width: auto;
-      max-width: none;
       width: 100%;
       border-radius: 0;
       border-left: none;
@@ -74,32 +76,71 @@ import { Snackbar } from '@vuetify/v0'
     }
   }
 
+  .snackbar__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
   .snackbar--success {
-    background: color-mix(in srgb, var(--v0-success) 12%, var(--v0-surface));
-    border-color: var(--v0-success);
+    border-color: color-mix(in srgb, var(--v0-mint) 45%, transparent);
+  }
+
+  .snackbar--success .snackbar__dot {
+    background: var(--v0-mint);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--v0-mint) 65%, transparent);
+  }
+
+  .snackbar--success .snackbar__progress {
+    background: var(--v0-mint);
   }
 
   .snackbar--error {
-    background: color-mix(in srgb, var(--v0-error) 12%, var(--v0-surface));
-    border-color: var(--v0-error);
+    border-color: color-mix(in srgb, var(--v0-error) 45%, transparent);
+  }
+
+  .snackbar--error .snackbar__dot {
+    background: var(--v0-error);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--v0-error) 65%, transparent);
+  }
+
+  .snackbar--error .snackbar__progress {
+    background: var(--v0-error);
   }
 
   .snackbar--warning {
-    background: color-mix(in srgb, var(--v0-warning) 12%, var(--v0-surface));
-    border-color: var(--v0-warning);
+    border-color: color-mix(in srgb, var(--v0-warning) 45%, transparent);
+  }
+
+  .snackbar--warning .snackbar__dot {
+    background: var(--v0-warning);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--v0-warning) 65%, transparent);
+  }
+
+  .snackbar--warning .snackbar__progress {
+    background: var(--v0-warning);
   }
 
   .snackbar--info {
-    background: color-mix(in srgb, var(--v0-primary) 12%, var(--v0-surface));
-    border-color: var(--v0-primary);
+    border-color: color-mix(in srgb, var(--v0-primary) 45%, transparent);
+  }
+
+  .snackbar--info .snackbar__dot {
+    background: var(--v0-primary);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--v0-primary) 65%, transparent);
+  }
+
+  .snackbar--info .snackbar__progress {
+    background: var(--v0-primary);
   }
 
   .snackbar__content {
     flex: 1;
+    min-width: 0;
     display: flex;
     align-items: center;
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: 13px;
   }
 
   .snackbar__text {
@@ -124,15 +165,31 @@ import { Snackbar } from '@vuetify/v0'
     }
   }
 
+  .snackbar__progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    animation: snackbar-progress 3.2s linear forwards;
+    transform-origin: left;
+  }
+
+  @keyframes snackbar-progress {
+    to {
+      width: 0%;
+    }
+  }
+
   /* TransitionGroup animations */
   .snackbar-enter-active,
   .snackbar-leave-active {
-    transition: all 0.3s ease;
+    transition: all 0.35s ease;
   }
 
   .snackbar-enter-from {
     opacity: 0;
-    transform: translateY(1rem) scale(0.95);
+    transform: translateY(16px) scale(0.96);
   }
 
   .snackbar-leave-to {
@@ -142,5 +199,15 @@ import { Snackbar } from '@vuetify/v0'
 
   .snackbar-move {
     transition: transform 0.3s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .snackbar-enter-active,
+    .snackbar-leave-active,
+    .snackbar-move,
+    .snackbar__progress {
+      transition: none;
+      animation: none;
+    }
   }
 </style>

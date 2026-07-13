@@ -4,8 +4,12 @@
     :title="theme.isDark.value ? 'Switch to light theme' : 'Switch to dark theme'"
     @click="toggleTheme"
   >
-    <IconSun v-if="theme.isDark.value" class="theme-toggle__icon" />
-    <IconMoon v-else class="theme-toggle__icon" />
+    <span class="theme-toggle__icons">
+      <Transition name="theme-icon" mode="out-in">
+        <IconSun v-if="theme.isDark.value" key="sun" class="theme-toggle__icon" />
+        <IconMoon v-else key="moon" class="theme-toggle__icon" />
+      </Transition>
+    </span>
   </button>
 </template>
 
@@ -46,7 +50,7 @@ function animateCircle(root: HTMLElement, x: number, y: number, radius: number, 
   return root.animate(
     { clipPath: clipPathValue },
     {
-      duration: 500,
+      duration: 520,
       easing: 'ease-in-out',
       fill: 'both',
       pseudoElement: targetPseudo,
@@ -126,23 +130,53 @@ function toggleTheme(event: MouseEvent) {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    padding: 7px 11px;
     border: 1px solid var(--v0-border);
-    border-radius: 0.5rem;
+    border-radius: 8px;
     background: var(--v0-surface);
     color: var(--v0-text);
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .theme-toggle:hover {
-    background: var(--v0-background);
-    color: var(--v0-primary);
+    border-color: color-mix(in srgb, var(--v0-primary) 50%, transparent);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--v0-primary) 20%, transparent);
+  }
+
+  .theme-toggle__icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
   }
 
   .theme-toggle__icon {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .theme-icon-enter-active,
+  .theme-icon-leave-active {
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    position: absolute;
+  }
+
+  .theme-icon-enter-from {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+  }
+
+  .theme-icon-leave-to {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .theme-icon-enter-active,
+    .theme-icon-leave-active {
+      transition: none;
+    }
   }
 </style>

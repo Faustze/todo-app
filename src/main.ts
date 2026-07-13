@@ -6,6 +6,7 @@ import App from './App.vue'
 import 'virtual:uno.css'
 
 import '@unocss/reset/normalize.css'
+import '@fontsource-variable/geist/index.css'
 import '@/assets/styles/style.css'
 
 const app = createApp(App)

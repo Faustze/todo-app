@@ -1,37 +1,35 @@
 <template>
   <UiModal v-model="open">
-    <div class="pa-4">
-      <h2 class="text-lg font-semibold text-text mb-3">
-        New tag
-      </h2>
+    <h2 class="text-lg font-semibold text-text mb-3">
+      New tag
+    </h2>
 
-      <UiField :error-message="v$.name.$errors[0]?.$message">
-        <UiInput
-          v-model="form.name"
-          placeholder="Tag name"
-          @keydown.enter.prevent="submit"
-          @blur="touch"
-        />
-      </UiField>
+    <UiField :error-message="v$.name.$errors[0]?.$message">
+      <UiInput
+        v-model="form.name"
+        placeholder="Tag name"
+        @keydown.enter.prevent="submit"
+        @blur="touch"
+      />
+    </UiField>
 
-      <div class="mt-4">
-        <div class="text-sm text-muted mb-2">
-          Tag color
-        </div>
-        <TagColorPalette
-          :model-value="selectedColor"
-          @select="selectedColor = $event"
-        />
+    <div class="mt-4">
+      <div class="text-sm text-muted mb-2">
+        Tag color
       </div>
+      <TagColorPalette
+        :model-value="selectedColor"
+        @select="selectedColor = $event"
+      />
+    </div>
 
-      <div class="flex justify-end gap-2 mt-5">
-        <UiButton variant="text" color="text" size="sm" @click="cancel">
-          Cancel
-        </UiButton>
-        <UiButton variant="solid" color="primary" size="sm" @click="submit">
-          Create
-        </UiButton>
-      </div>
+    <div class="flex justify-end gap-2 mt-5">
+      <UiButton variant="text" color="text" size="sm" @click="cancel">
+        Cancel
+      </UiButton>
+      <UiButton variant="solid" color="primary" size="sm" @click="submit">
+        Create
+      </UiButton>
     </div>
   </UiModal>
 </template>

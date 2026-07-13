@@ -23,7 +23,7 @@ export function useSnackbar(): ReturnTypeSnackBar {
     notifications.send({
       subject,
       severity,
-      timeout: timeout ?? 3000,
+      timeout: timeout ?? 3300,
     })
   }
 

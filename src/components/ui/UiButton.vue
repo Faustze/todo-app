@@ -36,7 +36,10 @@ const { variant = 'solid', color } = defineProps<{
 
 const onMap: Record<string, string> = {
   'primary': 'on-primary',
+  'primary-dark': 'on-primary',
+  'primary-deep': 'on-primary',
   'secondary': 'on-secondary',
+  'mint': 'on-secondary',
   'error': 'on-error',
   'info': 'on-info',
   'success': 'on-success',

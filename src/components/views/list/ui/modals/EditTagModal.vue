@@ -1,6 +1,6 @@
 <template>
   <UiModal v-model="open">
-    <div class="edit-tag-modal p-4">
+    <div class="edit-tag-modal">
       <h2 class="edit-tag-modal__title text-lg font-semibold text-text mb-3">
         Edit tag
       </h2>

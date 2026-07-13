@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource-variable/geist": "^5.2.9",
     "@tabler/icons-vue": "^3.44.0",
     "@unocss/reset": "^66.6.8",
     "@vuelidate/core": "^2.0.3",

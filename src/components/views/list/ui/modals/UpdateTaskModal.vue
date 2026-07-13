@@ -1,19 +1,13 @@
 <template>
   <UiModal v-model="open" blocking>
-    <div class="pa-4">
-      <h2 class="text-lg font-semibold text-text mb-5">
-        Edit task
-      </h2>
-      <hr class="border-gray-500 rounded-lg my-4">
-      <TaskForm
-        :key="task?.id"
-        mode="edit"
-        :initial="initialValues"
-        :tags="effectiveTags"
-        @submit="handleSubmit"
-        @cancel="handleCancel"
-      />
-    </div>
+    <TaskForm
+      :key="task?.id"
+      mode="edit"
+      :initial="initialValues"
+      :tags="effectiveTags"
+      @submit="handleSubmit"
+      @cancel="handleCancel"
+    />
   </UiModal>
 </template>
 
@@ -21,7 +15,7 @@
 import type { TaskTag } from '@/types/tag'
 import type { TaskFormValues, TaskWithTag } from '@/types/task'
 import { storeToRefs } from 'pinia'
-import { computed, watch } from 'vue'
+import { computed } from 'vue'
 import UiModal from '@/components/ui/UiModal.vue'
 import TaskForm from '@/components/views/list/ui/forms/TaskForm.vue'
 import { useTags } from '@/stores/useTags'
@@ -62,8 +56,4 @@ function handleSubmit(values: TaskFormValues) {
 function handleCancel() {
   open.value = false
 }
-
-watch(open, (val) => {
-  console.log('modal open:', val)
-})
 </script>

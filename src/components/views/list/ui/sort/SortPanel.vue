@@ -1,9 +1,10 @@
 <template>
   <Select.Root v-model="isOpen">
     <Select.Activator v-slot="{ attrs }">
-      <UiButton variant="outline" color="primary" size="md" v-bind="attrs">
-        <IconArrowsSort size="20" />
-      </UiButton>
+      <button class="sort-trigger" v-bind="attrs">
+        {{ activeLabel }}
+        <span class="sort-trigger__arrow mono">{{ sortDir === 'asc' ? '↑' : '↓' }}</span>
+      </button>
     </Select.Activator>
 
     <Select.Content
@@ -55,7 +56,7 @@
 
 <script setup lang="ts">
 import type { SortBy } from '@/types/sort'
-import { IconArrowsSort, IconCalendar, IconFlag, IconSortAscending, IconSortDescending } from '@tabler/icons-vue'
+import { IconCalendar, IconFlag, IconSortAscending, IconSortDescending } from '@tabler/icons-vue'
 import { Select } from '@vuetify/v0'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
@@ -77,6 +78,10 @@ const sortDirIcon = computed(() =>
   sortDir.value === 'asc' ? IconSortAscending : IconSortDescending,
 )
 
+const activeLabel = computed(() =>
+  sortOptions.find(opt => opt.id === sortBy.value)?.label ?? 'Date',
+)
+
 const hasSorting = computed(() =>
   sortBy.value !== 'date' || sortDir.value !== 'desc',
 )
@@ -96,3 +101,29 @@ function onReset(): void {
     toggleSortDir()
 }
 </script>
+
+<style scoped>
+.sort-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 13px;
+  border-radius: 9px;
+  border: 1px solid var(--v0-border);
+  background: var(--v0-surface);
+  color: var(--v0-text);
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sort-trigger:hover {
+  border-color: color-mix(in srgb, var(--v0-primary) 50%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--v0-primary) 20%, transparent);
+}
+
+.sort-trigger__arrow {
+  color: var(--v0-primary);
+  font-weight: 600;
+}
+</style>

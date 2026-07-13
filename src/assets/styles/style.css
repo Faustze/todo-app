@@ -3,6 +3,7 @@
 @import './panel';
 
 :root {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
   --mono: var(--font-mono);
 
@@ -18,10 +19,37 @@
 
 /* Responsive base size — scales ALL rem in the project */
 html {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: clamp(14px, calc(14px + 2 * ((100vw - 375px) / (1280 - 375))), 16px);
   background: var(--v0-background);
   color: var(--v0-text);
+  scrollbar-color: var(--v0-border-strong) transparent;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--v0-border-strong);
+  border-radius: 9999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 body {
