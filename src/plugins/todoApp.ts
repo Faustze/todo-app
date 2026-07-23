@@ -5,7 +5,7 @@ import {
   createRulesPlugin,
 } from '@vuetify/v0'
 
-export default function todoAppPlugins(app: App) {
+export default function todoAppPlugins(app: App): void {
   app.use(
     createRulesPlugin({
       aliases: {
