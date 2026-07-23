@@ -12,16 +12,16 @@
     "typecheck": "vue-tsc -b --noEmit"
   },
   "dependencies": {
-    "@fontsource-variable/geist": "^5.2.9",
-    "@tabler/icons-vue": "^3.44.0",
-    "@unocss/reset": "^66.6.8",
+    "@fontsource-variable/geist": "^5.3.0",
+    "@tabler/icons-vue": "^3.45.0",
+    "@unocss/reset": "^66.7.5",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
-    "@vuetify/v0": "^1.0.0-alpha.4",
-    "pinia": "^3.0.4",
+    "@vuetify/v0": "^1.0.0",
+    "pinia": "^4.0.2",
     "pinia-plugin-persistedstate": "^4.7.1",
-    "vue": "^3.5.34",
-    "vue-router": "^5.0.7"
+    "vue": "^3.5.40",
+    "vue-router": "^5.2.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^9.0.0",
