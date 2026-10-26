@@ -1,6 +1,5 @@
 <template>
   <div class="shell">
-    <AmbientBackground />
     <Sidebar />
     <div
       v-if="isMobile && isOpen"
@@ -15,7 +14,7 @@
           title="Show sidebar"
           @click="open"
         >
-          <IconLayoutSidebarLeftExpand size="18" />
+          <PhSidebarSimple size="16" />
         </button>
       </div>
       <RouterView />
@@ -24,8 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { IconLayoutSidebarLeftExpand } from '@tabler/icons-vue'
-import AmbientBackground from '@/components/layout/AmbientBackground.vue'
+import { PhSidebarSimple } from '@phosphor-icons/vue'
 import Sidebar from '@/components/layout/Sidebar.vue'
 import { useSidebar } from '@/composables/useSidebar'
 
@@ -55,7 +53,7 @@ const { isOpen, isMobile, open, close } = useSidebar()
   inset: 0;
   z-index: 50;
   background: color-mix(in srgb, #000 55%, transparent);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
 }
 
 .shell__topbar {
@@ -76,12 +74,17 @@ const { isOpen, isMobile, open, close } = useSidebar()
   background: var(--v0-surface);
   color: var(--v0-muted);
   cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  transition:
+    background var(--dur-color) var(--ease-out),
+    color var(--dur-color) var(--ease-out);
 }
 
 .shell__reopen:hover {
-  border-color: color-mix(in srgb, var(--v0-primary) 50%, transparent);
-  box-shadow: 0 0 12px color-mix(in srgb, var(--v0-primary) 20%, transparent);
-  color: var(--v0-primary);
+  background: var(--v0-surface-2);
+  color: var(--v0-text);
+}
+
+.shell__reopen:active {
+  transform: scale(0.98);
 }
 </style>

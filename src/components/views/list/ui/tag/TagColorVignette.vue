@@ -1,5 +1,5 @@
 <template>
-  <IconVignette
+  <PhCircle
     :size="size"
     class="tag-color-picker"
     :style="{ '--tag-color': `var(--v0-${color})` }"
@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import type { TagColorKey } from '@/constants/tag'
-import { IconVignette } from '@tabler/icons-vue'
+import { PhCircle } from '@phosphor-icons/vue'
 
 withDefaults(defineProps<{
   color?: TagColorKey
@@ -22,6 +22,6 @@ withDefaults(defineProps<{
 <style>
   .tag-color-picker {
     color: var(--tag-color);
-    transition: color 0.15s ease;
+    transition: color var(--dur-color) var(--ease-out);
   }
 </style>

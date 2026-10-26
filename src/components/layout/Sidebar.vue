@@ -3,7 +3,7 @@
     <div class="sidebar__inner">
       <div class="sidebar__logo">
         <div class="sidebar__logo-tile">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--v0-on-primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 12l5 5L20 6" />
           </svg>
         </div>
@@ -11,12 +11,12 @@
           <div class="sidebar__logo-title">
             todo-app
           </div>
-          <div class="sidebar__logo-sub mono">
-            TASK MANAGER
+          <div class="sidebar__logo-sub">
+            Task manager
           </div>
         </div>
         <button type="button" class="sidebar__collapse" title="Hide sidebar" @click="close">
-          <IconLayoutSidebarLeftCollapse size="16" />
+          <PhSidebarSimple size="16" />
         </button>
       </div>
 
@@ -25,7 +25,7 @@
           <svg width="60" height="60" viewBox="0 0 60 60">
             <circle cx="30" cy="30" r="26" fill="none" stroke="var(--v0-border)" stroke-width="5.5" />
             <circle
-              cx="30" cy="30" r="26" fill="none" stroke="var(--v0-mint)" stroke-width="5.5"
+              cx="30" cy="30" r="26" fill="none" stroke="var(--v0-success)" stroke-width="5.5"
               stroke-linecap="round" class="sidebar__ring-fill"
               :stroke-dasharray="`${donePercent * 163.4} 163.4`"
             />
@@ -33,8 +33,8 @@
           <span class="sidebar__ring-label mono">{{ Math.round(donePercent * 100) }}%</span>
         </div>
         <div class="sidebar__progress-copy">
-          <div class="sidebar__progress-label mono">
-            PROGRESS
+          <div class="sidebar__progress-label">
+            Progress
           </div>
           <div class="sidebar__progress-value">
             {{ doneCount }} of {{ totalCount }} done
@@ -46,8 +46,8 @@
       </div>
 
       <nav class="sidebar__section">
-        <div class="panel-label sidebar__section-label mono">
-          VIEWS
+        <div class="panel-label sidebar__section-label">
+          Views
         </div>
         <button
           v-for="view in views"
@@ -65,21 +65,21 @@
 
       <div class="sidebar__section sidebar__tags">
         <div class="sidebar__section-header">
-          <span class="panel-label sidebar__section-label mono">TAGS</span>
+          <span class="panel-label sidebar__section-label">Tags</span>
           <button type="button" class="sidebar__tag-add" title="Add tag" @click="createOpen = true">
-            <IconPlus size="13" />
+            <PhPlus size="14" />
           </button>
         </div>
         <div v-for="tag in tags" :key="tag.id" class="sidebar__row sidebar__row--tag">
-          <span class="sidebar__dot" :style="{ background: `var(--v0-${tag.color})`, boxShadow: `0 0 8px color-mix(in srgb, var(--v0-${tag.color}) 45%, transparent)` }" />
+          <span class="sidebar__dot" :style="{ background: `var(--v0-${tag.color})` }" />
           <span class="sidebar__row-label">{{ tag.name }}</span>
           <span class="sidebar__row-count mono">{{ tagCounts[tag.id] ?? 0 }}</span>
           <span class="sidebar__row-actions">
             <button type="button" class="sidebar__row-action" title="Edit tag" @click.stop="openEdit(tag)">
-              <IconPencil size="13" />
+              <PhPencilSimple size="14" />
             </button>
             <button type="button" class="sidebar__row-action sidebar__row-action--danger" title="Delete tag" @click.stop="remove(tag.id)">
-              <IconTrash size="13" />
+              <PhTrash size="14" />
             </button>
           </span>
         </div>
@@ -90,7 +90,7 @@
           href="https://github.com/Faustze/todo-app"
           target="_blank"
           rel="noopener noreferrer"
-          class="sidebar__github mono"
+          class="sidebar__github"
         >GitHub ↗</a>
         <ThemeToggle />
       </div>
@@ -105,7 +105,7 @@
 import type { TagColorKey } from '@/constants/tag'
 import type { TaskTag } from '@/types/tag'
 import type { TaskFilter } from '@/types/task'
-import { IconLayoutSidebarLeftCollapse, IconPencil, IconPlus, IconTrash } from '@tabler/icons-vue'
+import { PhPencilSimple, PhPlus, PhSidebarSimple, PhTrash } from '@phosphor-icons/vue'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import ThemeToggle from '@/components/common/ThemeToggle.vue'
@@ -127,8 +127,8 @@ const { remove, update, create } = tagsStore
 
 const views: { id: TaskFilter, label: string, color: string }[] = [
   { id: 'all', label: 'All tasks', color: 'primary' },
-  { id: 'in-progress', label: 'In Progress', color: 'warning' },
-  { id: 'done', label: 'Done', color: 'mint' },
+  { id: 'in-progress', label: 'In progress', color: 'warning' },
+  { id: 'done', label: 'Done', color: 'success' },
   { id: 'cancel', label: 'Cancelled', color: 'error' },
 ]
 
@@ -171,19 +171,22 @@ function handleSave(values: TagFormPayload) {
   width: 264px;
   height: 100dvh;
   border-right: 1px solid var(--v0-border);
-  background: color-mix(in srgb, var(--v0-surface) 72%, transparent);
-  backdrop-filter: blur(14px);
+  background: var(--v0-surface);
   overflow: hidden;
-  transition: width 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  /* Width collapse is kept on desktop so the task list reflows with the panel */
+  transition:
+    width var(--dur-move) var(--ease-out),
+    border-color var(--dur-color) var(--ease-out),
+    transform var(--dur-move) var(--ease-out);
 }
 
 .sidebar__inner {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 24px;
   width: 264px;
   height: 100%;
-  padding: 20px 14px;
+  padding: 24px 16px 16px;
   overflow-y: auto;
 }
 
@@ -194,13 +197,17 @@ function handleSave(values: TagFormPayload) {
   border-right-color: transparent;
 }
 
-/* Mobile: slide over content as an overlay */
+/* Mobile: full height panel that slides over the content */
 .sidebar[data-mobile] {
   position: fixed;
   inset: 0 auto 0 0;
   z-index: 60;
-  background: var(--v0-surface);
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+  background: color-mix(in srgb, var(--v0-surface) 92%, transparent);
+  backdrop-filter: blur(24px);
+}
+
+.sidebar[data-mobile]:not(.sidebar--closed) {
+  box-shadow: 0 0 48px color-mix(in srgb, var(--v0-background) 60%, #000);
 }
 
 .sidebar[data-mobile].sidebar--closed {
@@ -217,8 +224,8 @@ function handleSave(values: TagFormPayload) {
 .sidebar__logo {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0 2px;
+  gap: 12px;
+  padding: 0 4px;
 }
 
 .sidebar__collapse {
@@ -234,12 +241,18 @@ function handleSave(values: TagFormPayload) {
   background: transparent;
   color: var(--v0-muted);
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background var(--dur-color) var(--ease-out),
+    color var(--dur-color) var(--ease-out);
 }
 
 .sidebar__collapse:hover {
   background: color-mix(in srgb, var(--v0-text) 8%, transparent);
   color: var(--v0-text);
+}
+
+.sidebar__collapse:active {
+  transform: scale(0.98);
 }
 
 .sidebar__logo-tile {
@@ -250,19 +263,20 @@ function handleSave(values: TagFormPayload) {
   height: 28px;
   border-radius: 8px;
   flex-shrink: 0;
-  background: linear-gradient(135deg, var(--v0-primary-deep), var(--v0-mint));
-  box-shadow: 0 0 16px color-mix(in srgb, var(--v0-primary) 35%, transparent);
+  background: var(--v0-primary);
 }
 
 .sidebar__logo-title {
-  font-size: 14px;
-  font-weight: 650;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--v0-text);
 }
 
 .sidebar__logo-sub {
-  font-size: 10px;
-  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--v0-muted);
 }
 
@@ -271,10 +285,9 @@ function handleSave(values: TagFormPayload) {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px;
+  padding: 12px;
   border-radius: 12px;
-  background: var(--v0-surface);
-  border: 1px solid var(--v0-border);
+  background: var(--v0-surface-2);
 }
 
 .sidebar__ring {
@@ -289,8 +302,7 @@ function handleSave(values: TagFormPayload) {
 }
 
 .sidebar__ring-fill {
-  transition: stroke-dasharray 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--v0-mint) 55%, transparent));
+  transition: stroke-dasharray 800ms var(--ease-out);
 }
 
 .sidebar__ring-label {
@@ -299,28 +311,30 @@ function handleSave(values: TagFormPayload) {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
   color: var(--v0-text);
 }
 
 .sidebar__progress-label {
-  font-size: 10px;
-  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--v0-muted);
 }
 
 .sidebar__progress-value {
-  font-size: 13.5px;
-  font-weight: 550;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
   color: var(--v0-text);
   margin-top: 2px;
 }
 
 .sidebar__progress-hint {
-  font-size: 11.5px;
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--v0-muted);
-  margin-top: 1px;
 }
 
 /* Sections */
@@ -337,29 +351,37 @@ function handleSave(values: TagFormPayload) {
 }
 
 .sidebar__section-label {
-  font-size: 10.5px;
-  letter-spacing: 0.12em;
-  color: var(--v0-muted);
-  padding: 0 10px 4px;
+  padding: 0 12px 4px;
+}
+
+.sidebar__section-header .sidebar__section-label {
+  padding-right: 0;
 }
 
 .sidebar__tag-add {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   background: transparent;
   color: var(--v0-muted);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition:
+    background var(--dur-color) var(--ease-out),
+    color var(--dur-color) var(--ease-out);
 }
 
 .sidebar__tag-add:hover {
   color: var(--v0-primary);
   background: color-mix(in srgb, var(--v0-text) 6%, transparent);
+}
+
+.sidebar__tag-add:active {
+  transform: scale(0.98);
 }
 
 .sidebar__tags {
@@ -375,24 +397,31 @@ function handleSave(values: TagFormPayload) {
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 8px 10px;
-  border: 1px solid transparent;
+  padding: 8px 12px;
+  border: none;
   border-radius: 8px;
   background: transparent;
   cursor: pointer;
-  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  transition:
+    background var(--dur-color) var(--ease-out),
+    color var(--dur-color) var(--ease-out);
   text-align: left;
 }
 
+.sidebar__row:not(.sidebar__row--tag):active {
+  transform: scale(0.98);
+}
+
 .sidebar__row--tag {
-  padding: 6px 10px;
+  padding: 4px 12px;
+  min-height: 32px;
   cursor: default;
 }
 
 .sidebar__dot {
   width: 8px;
   height: 8px;
-  border-radius: 2.5px;
+  border-radius: 2px;
   flex-shrink: 0;
 }
 
@@ -402,14 +431,14 @@ function handleSave(values: TagFormPayload) {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 13.5px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   color: var(--v0-text);
 }
 
 .sidebar__row--tag .sidebar__row-label {
-  font-size: 13px;
   color: var(--v0-muted);
-  transition: color 0.15s ease;
+  transition: color var(--dur-color) var(--ease-out);
 }
 
 .sidebar__row--tag:hover .sidebar__row-label {
@@ -417,10 +446,10 @@ function handleSave(values: TagFormPayload) {
 }
 
 .sidebar__row-count {
-  padding: 1px 6px;
-  border-radius: 99px;
-  background: var(--v0-surface-2);
-  font-size: 11px;
+  padding: 0 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--v0-muted);
 }
 
@@ -431,36 +460,46 @@ function handleSave(values: TagFormPayload) {
   gap: 2px;
   opacity: 0;
   transform: translateX(4px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity var(--dur-color) var(--ease-out),
+    transform var(--dur-color) var(--ease-out);
   background: var(--v0-surface);
 }
 
-.sidebar__row--tag:hover .sidebar__row-actions {
+.sidebar__row--tag:hover .sidebar__row-actions,
+.sidebar__row--tag:focus-within .sidebar__row-actions {
   opacity: 1;
   transform: translateX(0);
 }
 
-.sidebar__row--tag:hover .sidebar__row-count {
-  display: none;
+.sidebar__row--tag:hover .sidebar__row-count,
+.sidebar__row--tag:focus-within .sidebar__row-count {
+  visibility: hidden;
 }
 
 .sidebar__row-action {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   background: transparent;
   color: var(--v0-muted);
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background var(--dur-color) var(--ease-out),
+    color var(--dur-color) var(--ease-out);
 }
 
 .sidebar__row-action:hover {
   background: color-mix(in srgb, var(--v0-text) 8%, transparent);
   color: var(--v0-text);
+}
+
+.sidebar__row-action:active {
+  transform: scale(0.98);
 }
 
 .sidebar__row-action--danger:hover {
@@ -475,16 +514,15 @@ function handleSave(values: TagFormPayload) {
 }
 
 .sidebar__row--active {
-  background: color-mix(in srgb, var(--v0-primary) 13%, transparent);
-  border-color: color-mix(in srgb, var(--v0-primary) 32%, transparent);
+  background: color-mix(in srgb, var(--v0-primary) 14%, transparent);
 }
 
 .sidebar__row--active .sidebar__row-label {
-  font-weight: 560;
+  font-weight: 500;
 }
 
-.sidebar__row--active .sidebar__dot {
-  box-shadow: 0 0 8px currentcolor;
+.sidebar__row--active .sidebar__row-count {
+  color: var(--v0-text);
 }
 
 /* Footer */
@@ -493,15 +531,18 @@ function handleSave(values: TagFormPayload) {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding-top: 14px;
+  padding-top: 16px;
   border-top: 1px solid var(--v0-border);
 }
 
 .sidebar__github {
-  font-size: 11.5px;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--v0-muted);
   text-decoration: none;
-  transition: color 0.15s ease;
+  transition: color var(--dur-color) var(--ease-out);
 }
 
 .sidebar__github:hover {

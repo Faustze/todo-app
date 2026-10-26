@@ -8,19 +8,19 @@
         color="primary"
         :data-active="hasRange"
       >
-        <IconCalendar size="20" />
+        <PhCalendarBlank size="20" />
       </UiButton>
     </Select.Activator>
 
-    <Select.Content class="date-picker p-3 rounded-lg border border-divider bg-surface shadow-lg" :style="{ minWidth: '280px' }">
+    <Select.Content class="date-picker p-3 rounded-xl border border-divider bg-surface shadow-lg" :style="{ minWidth: '280px' }">
       <!-- Header: month selection -->
       <div class="flex items-center justify-between mb-3">
         <button type="button" class="p-1 rounded hover:bg-background" @click="prevMonth">
-          <IconChevronLeft size="18" />
+          <PhCaretLeft size="18" />
         </button>
         <span class="text-sm font-medium">{{ monthLabel }}</span>
         <button type="button" class="p-1 rounded hover:bg-background" @click="nextMonth">
-          <IconChevronRight size="18" />
+          <PhCaretRight size="18" />
         </button>
       </div>
 
@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { IconCalendar, IconChevronLeft, IconChevronRight } from '@tabler/icons-vue'
+import { PhCalendarBlank, PhCaretLeft, PhCaretRight } from '@phosphor-icons/vue'
 import { Select } from '@vuetify/v0'
 import { computed, ref } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
@@ -298,9 +298,9 @@ defineExpose({ range, clearRange })
   }
 
   .date-picker__weekday {
-    font-size: 0.65rem;
-    font-weight: 600;
-    text-transform: uppercase;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 500;
     color: var(--v0-muted);
     text-align: center;
     padding: 0.25rem 0;
@@ -313,12 +313,15 @@ defineExpose({ range, clearRange })
     align-items: center;
     justify-content: center;
     font-size: 0.75rem;
-    border-radius: 0.2rem;
+    line-height: 1rem;
+    border-radius: 0.25rem;
     cursor: pointer;
     border: none;
     background: transparent;
     color: var(--v0-on-surface);
-    transition: background 0.1s ease, color 0.1s ease;
+    transition:
+      background var(--dur-color) var(--ease-out),
+      color var(--dur-color) var(--ease-out);
   }
 
   .date-picker__cell:hover:not(:disabled) {
@@ -343,17 +346,17 @@ defineExpose({ range, clearRange })
   .date-picker__cell--start {
     background: var(--v0-primary);
     color: var(--v0-on-primary);
-    border-radius: 0.2rem 0 0 0.2rem;
+    border-radius: 0.25rem 0 0 0.25rem;
   }
 
   .date-picker__cell--end {
     background: var(--v0-primary);
     color: var(--v0-on-primary);
-    border-radius: 0 0.2rem 0.2rem 0;
+    border-radius: 0 0.25rem 0.25rem 0;
   }
 
   .date-picker__cell--start.date-picker__cell--end {
-    border-radius: 0.2rem;
+    border-radius: 0.25rem;
   }
 
   /* Active filter button state when range is set */

@@ -63,7 +63,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown))
   position: relative;
   display: flex;
   align-items: center;
-  max-width: 330px;
+  max-width: 320px;
 }
 
 @media (max-width: 640px) {
@@ -74,53 +74,59 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown))
 
 .search__icon {
   position: absolute;
-  left: 11px;
-  width: 15px;
-  height: 15px;
+  left: 12px;
+  width: 16px;
+  height: 16px;
   color: var(--v0-muted);
   pointer-events: none;
 }
 
 .search__control {
   width: 100%;
-  padding: 9px 62px 9px 34px;
-  border-radius: 9px;
+  padding: 8px 64px 8px 40px;
+  border-radius: 8px;
   border: 1px solid var(--v0-border);
   background: var(--v0-surface);
   color: var(--v0-text);
-  font-size: 13px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color var(--dur-color) var(--ease-out),
+    box-shadow var(--dur-color) var(--ease-out);
 }
 
 .search__control::placeholder {
   color: var(--v0-muted);
 }
 
+.search__control:hover {
+  border-color: var(--v0-border-strong);
+}
+
 .search__control:focus {
-  border-color: color-mix(in srgb, var(--v0-primary) 65%, transparent);
-  box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--v0-primary) 18%, transparent),
-    0 0 18px color-mix(in srgb, var(--v0-primary) 15%, transparent);
+  border-color: var(--v0-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--v0-primary) 20%, transparent);
 }
 
 .search__kbd {
   position: absolute;
   right: 8px;
-  padding: 2px 6px;
-  font-size: 10px;
+  padding: 2px 4px;
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--v0-muted);
   border: 1px solid var(--v0-border);
   background: var(--v0-surface-2);
-  border-radius: 6px;
+  border-radius: 4px;
   pointer-events: none;
 }
 
 .search__spinner {
   position: absolute;
-  right: 11px;
-  width: 14px;
-  height: 14px;
+  right: 12px;
+  width: 16px;
+  height: 16px;
   border: 2px solid var(--v0-primary);
   border-top-color: transparent;
   border-radius: 50%;
@@ -136,7 +142,8 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown))
 .search__error {
   display: block;
   margin-top: 4px;
-  font-size: 11px;
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--v0-error);
 }
 </style>

@@ -164,50 +164,59 @@ function onShow(id: string) {
 
 <style scoped>
 .task-list__reset {
-  padding: 7px 16px;
+  padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid var(--v0-border);
-  background: transparent;
+  background: var(--v0-surface);
   color: var(--v0-text);
-  font-size: 12.5px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  transition:
+    background var(--dur-color) var(--ease-out),
+    border-color var(--dur-color) var(--ease-out);
 }
 
 .task-list__reset:hover {
-  border-color: color-mix(in srgb, var(--v0-primary) 50%, transparent);
-  color: var(--v0-primary);
+  background: var(--v0-surface-2);
+  border-color: var(--v0-border-strong);
+}
+
+.task-list__reset:active {
+  transform: scale(0.98);
 }
 </style>
 
 <style>
 .task-enter-active {
   transition:
-    opacity 0.5s cubic-bezier(0.16, 0.84, 0.3, 1),
-    transform 0.5s cubic-bezier(0.16, 0.84, 0.3, 1);
+    opacity var(--dur-move) var(--ease-out),
+    transform var(--dur-move) var(--ease-out);
   transition-delay: var(--stagger, 0ms);
 }
 
 .task-enter-from {
   opacity: 0;
-  transform: translateY(14px) scale(0.98);
+  transform: translateY(16px);
 }
 
+/* Leaving rows also collapse their height so the list closes the gap smoothly */
 .task-leave-active {
   transition:
-    opacity 0.34s ease,
-    transform 0.34s ease,
-    max-height 0.34s ease,
-    padding-top 0.34s ease,
-    padding-bottom 0.34s ease,
-    margin-bottom 0.34s ease;
+    opacity var(--dur-color) var(--ease-out),
+    transform var(--dur-color) var(--ease-out),
+    max-height var(--dur-color) var(--ease-out),
+    padding-top var(--dur-color) var(--ease-out),
+    padding-bottom var(--dur-color) var(--ease-out),
+    margin-bottom var(--dur-color) var(--ease-out);
   overflow: hidden;
   max-height: 120px !important;
 }
 
 .task-leave-to {
   opacity: 0 !important;
-  transform: translateX(36px) !important;
+  transform: translateX(32px) !important;
   max-height: 0 !important;
   padding-top: 0 !important;
   padding-bottom: 0 !important;
@@ -216,7 +225,7 @@ function onShow(id: string) {
 }
 
 .task-move {
-  transition: transform 0.34s ease;
+  transition: transform var(--dur-move) var(--ease-out);
 }
 
 @media (prefers-reduced-motion: reduce) {

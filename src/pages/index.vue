@@ -10,7 +10,7 @@
         </p>
       </div>
       <button type="button" class="page__new-btn" @click="createOpen = true">
-        <IconPlus size="14" />
+        <PhPlus size="16" weight="bold" />
         New task
       </button>
     </header>
@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import type { TaskFormValues } from '@/types/task'
-import { IconPlus } from '@tabler/icons-vue'
+import { PhPlus } from '@phosphor-icons/vue'
 import { storeToRefs } from 'pinia'
 import { ref, shallowRef } from 'vue'
 import TaskList from '@/components/views/list/TaskList.vue'
@@ -77,61 +77,64 @@ function handleDelete(id: string) {
   .page {
     max-width: 780px;
     margin: 0 auto;
-    padding: 40px 32px 90px;
+    padding: 48px 32px 96px;
   }
 
   .page__header {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: space-between;
-    margin-bottom: 22px;
+    gap: 16px;
+    margin-bottom: 24px;
   }
 
   .page__title {
-    font-size: 23px;
-    font-weight: 680;
-    letter-spacing: -0.02em;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
     color: var(--v0-text);
   }
 
   .page__subtitle {
     margin-top: 4px;
-    font-size: 11.5px;
+    font-size: 0.75rem;
+    line-height: 1rem;
     color: var(--v0-muted);
   }
 
   .page__new-btn {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 9px 16px;
-    border-radius: 9px;
-    border: 1px solid color-mix(in srgb, var(--v0-primary) 60%, transparent);
-    background: linear-gradient(180deg, var(--v0-primary), var(--v0-primary-deep));
-    color: #fff;
-    font-size: 13.5px;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    background: var(--v0-primary);
+    color: var(--v0-on-primary);
+    font-size: 1rem;
+    line-height: 1.5rem;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 0 24px color-mix(in srgb, var(--v0-primary) 40%, transparent), 0 2px 8px rgba(0, 0, 0, 0.35);
-    transition: transform 0.18s ease, filter 0.2s ease, box-shadow 0.2s ease;
+    transition:
+      background var(--dur-color) var(--ease-out),
+      transform var(--dur-color) var(--ease-out);
   }
 
   .page__new-btn:hover {
-    transform: translateY(-1px);
-    filter: brightness(1.07);
-    box-shadow: 0 0 30px color-mix(in srgb, var(--v0-primary) 55%, transparent), 0 2px 8px rgba(0, 0, 0, 0.35);
+    background: var(--v0-primary-deep);
   }
 
   .page__new-btn:active {
-    transform: scale(0.97);
+    transform: scale(0.98);
   }
 
   .page__toolbar {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 18px;
+    gap: 8px;
+    margin-bottom: 16px;
   }
 
   .page__search {
@@ -140,11 +143,17 @@ function handleDelete(id: string) {
 
   @media (max-width: 640px) {
     .page {
-      padding: 24px 16px 70px;
+      padding: 24px 16px 64px;
     }
 
-    .page__toolbar {
-      gap: 8px;
+    .page__title {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+
+    .page__new-btn {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
     }
 
     .page__search {

@@ -2,11 +2,11 @@
   <Select.Root v-model="model">
     <Select.Activator v-slot="{ attrs }">
       <UiButton variant="outline" color="primary" size="sm" v-bind="attrs">
-        <IconFilter size="20" />
+        <PhFunnelSimple size="20" />
       </UiButton>
     </Select.Activator>
 
-    <Select.Content class="p-1 rounded-lg border border-divider bg-surface shadow-lg" :style="{ minWidth: 'anchor-size(width)' }">
+    <Select.Content class="p-1 rounded-xl border border-divider bg-surface shadow-lg" :style="{ minWidth: 'anchor-size(width)' }">
       <FilterOptionItem
         v-for="item in options"
         :key="item.id"
@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import type { FilterOption } from '@/types/filter'
-import { IconFilter } from '@tabler/icons-vue'
+import { PhFunnelSimple } from '@phosphor-icons/vue'
 import { Select } from '@vuetify/v0'
 import { ref } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
