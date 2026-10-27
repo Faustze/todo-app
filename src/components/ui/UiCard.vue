@@ -12,7 +12,7 @@ import { Atom } from '@vuetify/v0'
   .ui-card {
     background: var(--v0-surface);
     border: 1px solid var(--v0-border);
-    border-radius: 0.75rem;
+    border-radius: 1rem;
     padding: 1.5rem;
     height: 100%;
   }

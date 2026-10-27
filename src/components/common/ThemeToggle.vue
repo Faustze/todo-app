@@ -1,20 +1,21 @@
 <template>
   <button
+    type="button"
     class="theme-toggle"
     :title="theme.isDark.value ? 'Switch to light theme' : 'Switch to dark theme'"
     @click="toggleTheme"
   >
     <span class="theme-toggle__icons">
       <Transition name="theme-icon" mode="out-in">
-        <IconSun v-if="theme.isDark.value" key="sun" class="theme-toggle__icon" />
-        <IconMoon v-else key="moon" class="theme-toggle__icon" />
+        <PhSun v-if="theme.isDark.value" key="sun" class="theme-toggle__icon" />
+        <PhMoon v-else key="moon" class="theme-toggle__icon" />
       </Transition>
     </span>
   </button>
 </template>
 
 <script setup lang="ts">
-import { IconMoon, IconSun } from '@tabler/icons-vue'
+import { PhMoon, PhSun } from '@phosphor-icons/vue'
 import { IN_BROWSER, useStorage, useTheme } from '@vuetify/v0'
 import { watch } from 'vue'
 
@@ -50,8 +51,8 @@ function animateCircle(root: HTMLElement, x: number, y: number, radius: number, 
   return root.animate(
     { clipPath: clipPathValue },
     {
-      duration: 520,
-      easing: 'ease-in-out',
+      duration: 500,
+      easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
       fill: 'both',
       pseudoElement: targetPseudo,
     },
@@ -130,18 +131,24 @@ function toggleTheme(event: MouseEvent) {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 7px 11px;
+    padding: 8px 12px;
     border: 1px solid var(--v0-border);
     border-radius: 8px;
     background: var(--v0-surface);
     color: var(--v0-text);
     cursor: pointer;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+      background var(--dur-color) var(--ease-out),
+      border-color var(--dur-color) var(--ease-out);
   }
 
   .theme-toggle:hover {
-    border-color: color-mix(in srgb, var(--v0-primary) 50%, transparent);
-    box-shadow: 0 0 12px color-mix(in srgb, var(--v0-primary) 20%, transparent);
+    background: var(--v0-surface-2);
+    border-color: var(--v0-border-strong);
+  }
+
+  .theme-toggle:active {
+    transform: scale(0.98);
   }
 
   .theme-toggle__icons {
@@ -157,9 +164,12 @@ function toggleTheme(event: MouseEvent) {
     height: 16px;
   }
 
+  /* Icon morphs between sun and moon instead of swapping instantly */
   .theme-icon-enter-active,
   .theme-icon-leave-active {
-    transition: opacity 0.35s ease, transform 0.35s ease;
+    transition:
+      opacity var(--dur-color) var(--ease-out),
+      transform var(--dur-color) var(--ease-out);
     position: absolute;
   }
 

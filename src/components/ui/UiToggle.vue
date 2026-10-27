@@ -34,8 +34,8 @@ const model = defineModel<string>({ default: 'in-progress' })
 <style scoped>
   .ui-toggle {
     display: inline-flex;
-    background: var(--v0-border);
-    border-radius: 0.3rem;
+    background: var(--v0-surface-2);
+    border-radius: 0.75rem;
     padding: 0.25rem;
     gap: 0.25rem;
   }
@@ -43,17 +43,19 @@ const model = defineModel<string>({ default: 'in-progress' })
   .ui-toggle__option {
     padding: 0.5rem 1rem;
     border: none;
-    border-radius: 0.375rem;
+    border-radius: 0.5rem;
     background: transparent;
     color: var(--v0-muted);
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition:
+      background var(--dur-color) var(--ease-out),
+      color var(--dur-color) var(--ease-out);
   }
 
   .ui-toggle__option[data-active] {
     background: var(--v0-surface);
     color: var(--v0-text);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
   }
 </style>

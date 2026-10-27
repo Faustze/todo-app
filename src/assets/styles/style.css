@@ -1,11 +1,15 @@
 /* style.css — global styles */
-@import './_fonts';
 @import './panel';
 
 :root {
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+  --font-mono: 'Geist Mono Variable', ui-monospace, Consolas, monospace;
   --mono: var(--font-mono);
+
+  /* Motion (redesign skill): one decelerating curve, 300ms for color and opacity, 500ms for movement */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-color: 300ms;
+  --dur-move: 500ms;
 
   --theme-transition-x: 50vw;
   --theme-transition-y: 50vh;
@@ -28,8 +32,8 @@ html {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -68,11 +72,29 @@ body {
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.3;
   margin: 0;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 /* Small text */
 small {
   font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+/* Numbers, dates and counters: monospace with fixed-width digits */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Visible focus ring for keyboard users on every interactive element */
+:where(button, a, [role='button'], [role='option'], [tabindex]):focus-visible {
+  outline: 2px solid var(--v0-primary);
+  outline-offset: 2px;
 }
 
 /* ViewTransition */

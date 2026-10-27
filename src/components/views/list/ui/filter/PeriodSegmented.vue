@@ -37,31 +37,40 @@ function toggle(id: DatePreset) {
 .segmented {
   display: flex;
   gap: 2px;
-  padding: 3px;
-  border-radius: 10px;
+  padding: 4px;
+  border-radius: 12px;
   border: 1px solid var(--v0-border);
   background: var(--v0-surface);
 }
 
+/* Nested radius: 12px outer minus 4px gap = 8px */
 .segmented__item {
-  padding: 6px 13px;
+  padding: 4px 12px;
   border: none;
-  border-radius: 7px;
+  border-radius: 8px;
   background: transparent;
   color: var(--v0-muted);
-  font-size: 12.5px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    background var(--dur-color) var(--ease-out),
+    color var(--dur-color) var(--ease-out);
 }
 
 .segmented__item:hover {
   color: var(--v0-text);
+  background: color-mix(in srgb, var(--v0-text) 5%, transparent);
 }
 
-.segmented__item--active {
-  background: var(--v0-seg-active);
+.segmented__item:active {
+  transform: scale(0.98);
+}
+
+.segmented__item--active,
+.segmented__item--active:hover {
+  background: var(--v0-surface-2);
   color: var(--v0-text);
-  font-weight: 560;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--v0-border);
+  font-weight: 500;
 }
 </style>

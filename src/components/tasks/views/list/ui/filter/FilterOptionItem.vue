@@ -3,7 +3,7 @@
     <Select.Item :id="item.id" :value="item.id">
       <template #default="{ isSelected, isHighlighted }">
         <div
-          class="px-3 py-2 rounded-md cursor-pointer select-none text-sm"
+          class="px-3 py-2 rounded-lg cursor-pointer select-none text-sm"
           :class="[
             isHighlighted
               ? 'bg-primary text-on-primary'
@@ -20,11 +20,11 @@
 
   <template v-else>
     <div
-      class="flex items-center gap-2 px-3 py-2 cursor-pointer select-none text-xs font-semibold uppercase tracking-wide text-muted"
+      class="flex items-center gap-2 px-3 py-2 cursor-pointer select-none text-xs font-medium text-muted"
       :style="{ marginTop: depth > 0 ? '0.25rem' : 0 }"
       @click="$emit('toggle', item.id)"
     >
-      <IconChevronRight
+      <PhCaretRight
         size="14"
         class="shrink-0 transition-transform"
         :class="{ 'rotate-90': expandedIds?.has(item.id) }"
@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import type { FilterOption } from '@/types/filter'
-import { IconChevronRight } from '@tabler/icons-vue'
+import { PhCaretRight } from '@phosphor-icons/vue'
 import { Select } from '@vuetify/v0'
 
 defineProps<{

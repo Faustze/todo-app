@@ -17,7 +17,8 @@ pnpm preview  # preview build
 - **Vuetify0** (`@vuetify/v0`) — headless components (Button, Single, Dialog, Input, Select, Atom, Snackbar)
 - **Pinia 3** — state management, `storeToRefs` for reactivity
 - **Vuelidate 2** — form validation with English error descriptions
-- **Tabler Icons** — all icons via `@tabler/icons-vue`
+- **Phosphor Icons** — all icons via `@phosphor-icons/vue`
+- **Geist / Geist Mono** — one typeface; the mono cut only for numbers and dates
 - **UnoCSS** — utility styles (static classes only, dynamic → CSS custom properties)
 - **CSS** — component styles (plain CSS, no preprocessors)
 - **Vite 8** — build tool
@@ -69,3 +70,12 @@ Plugins (vuetify0.ts + todoApp.ts)
   ├── createRulesPlugin()
   └── createNotificationsPlugin() — for useNotifications/useSnackbar
 ```
+
+## Design system
+
+Visual rules come from the `redesign-existing-projects` skill in `.claude/skills/` (by elayadesign, MIT). In short:
+
+- **Color** — one accent (indigo), one neutral gray family, flat backgrounds; dark surfaces use only `#181818`, `#1F1F1F`, `#272727`, `#313131`. Tokens live in `src/tokens/colors.ts`.
+- **Scales** — font sizes on the Tailwind type scale, spacing only from 0/2/4/8/12/16/24/32/40/48/64/80/96px, Tailwind radii with the nested radius rule.
+- **Motion** — one curve `cubic-bezier(0.22, 1, 0.36, 1)` (`--ease-out`), 300ms for color and opacity, 500ms for movement.
+- **States** — hover, `scale(0.98)` on press, visible focus ring on every control.

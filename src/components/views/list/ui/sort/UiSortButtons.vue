@@ -2,7 +2,7 @@
   <!-- Activator -->
   <UiButton variant="outline" color="primary">
     <div class="flex flex-row items-center gap-2">
-      <IconArrowsSort size="16" />
+      <PhArrowsDownUp size="16" />
     </div>
   </UiButton>
 
@@ -14,7 +14,7 @@
     @click="toggle('date')"
   >
     <div class="flex flex-row items-center gap-2">
-      <IconCalendar size="16" />
+      <PhCalendarBlank size="16" />
       <span>Date</span>
       <component :is="dirIcon(sortDir)" v-if="sortBy === 'date'" size="14" />
     </div>
@@ -27,7 +27,7 @@
     @click="toggle('priority')"
   >
     <div class="flex flex-row items-center gap-2">
-      <IconFlag size="16" />
+      <PhFlag size="16" />
       <span>Priority</span>
       <component :is="dirIcon(sortDir)" v-if="sortBy === 'priority'" size="14" />
     </div>
@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import type { SortBy, SortDir } from '@/types/sort'
-import { IconArrowsSort, IconCalendar, IconFlag, IconSortAscending, IconSortDescending } from '@tabler/icons-vue'
+import { PhArrowsDownUp, PhCalendarBlank, PhFlag, PhSortAscending, PhSortDescending } from '@phosphor-icons/vue'
 import { storeToRefs } from 'pinia'
 import UiButton from '@/components/ui/UiButton.vue'
 import { useTasks } from '@/stores/useTasks'
@@ -55,6 +55,6 @@ function toggle(by: SortBy) {
 }
 
 function dirIcon(d: SortDir) {
-  return d === 'asc' ? IconSortAscending : IconSortDescending
+  return d === 'asc' ? PhSortAscending : PhSortDescending
 }
 </script>
