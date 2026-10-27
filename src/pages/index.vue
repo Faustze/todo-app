@@ -5,7 +5,7 @@
         <h1 class="page__title">
           Tasks
         </h1>
-        <p class="page__subtitle mono">
+        <p class="page__subtitle">
           {{ filteredTasks.length }} shown · {{ activeCount }} active · {{ doneCount }} done
         </p>
       </div>
@@ -100,6 +100,7 @@ function handleDelete(id: string) {
     margin-top: 4px;
     font-size: 0.75rem;
     line-height: 1rem;
+    font-variant-numeric: tabular-nums;
     color: var(--v0-muted);
   }
 

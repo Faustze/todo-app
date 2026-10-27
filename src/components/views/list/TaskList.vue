@@ -21,7 +21,13 @@
     </TransitionGroup>
 
     <EmptyState v-if="tasks.length === 0">
-      <template #action>
+      <template v-if="!allTasks.length" #default>
+        No tasks yet
+      </template>
+      <template v-if="!allTasks.length" #hint>
+        Create your first task with the New task button.
+      </template>
+      <template v-if="allTasks.length" #action>
         <button type="button" class="task-list__reset" @click="resetFilters">
           Reset filters
         </button>
@@ -71,7 +77,7 @@ const router = useRouter()
 const { onPointerMove, onPointerLeave } = useProximity('task-list__item')
 const tasksStore = useTasks()
 const { resetFilters } = tasksStore
-const { filter, sortBy, sortDir, datePreset } = storeToRefs(tasksStore)
+const { tasks: allTasks, filter, sortBy, sortDir, datePreset } = storeToRefs(tasksStore)
 
 interface VisibleEntry {
   task: TaskWithTag

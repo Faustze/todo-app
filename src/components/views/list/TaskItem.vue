@@ -6,6 +6,12 @@
   >
     <IconStatus :task-id="task.id" :status="task.status" />
 
+    <span
+      class="task-item__priority mono"
+      :title="`${priorityLabel(task.priority)} priority`"
+      :aria-label="`${priorityLabel(task.priority)} priority`"
+    >{{ priorityIcon(task.priority) }}</span>
+
     <div class="task-item__body">
       <h4 class="task-item__title" :class="{ 'task-item__title--struck': task.status === 'done' || task.status === 'cancel' }">
         {{ task.title }}
@@ -13,8 +19,8 @@
     </div>
 
     <div class="task-item__meta">
-      <span class="task-item__date mono">{{ formatDate(task.createdAtUtc) }}</span>
-      <span class="task-item__arrow mono">{{ priorityIcon(task.priority) }}</span>
+      <span class="task-item__date task-item__date--full mono">{{ formatDate(task.createdAtUtc) }}</span>
+      <span class="task-item__date task-item__date--short mono">{{ formatShortDate(task.createdAtUtc) }}</span>
       <span
         v-if="task.tag"
         class="task-item__pill"
@@ -42,7 +48,7 @@
 import type { TaskWithTag } from '@/types/task'
 import { PhPencilSimple, PhTrash } from '@phosphor-icons/vue'
 import { computed } from 'vue'
-import { formatDate, priorityIcon } from '@/utils/task-display'
+import { formatDate, formatShortDate, priorityIcon, priorityLabel } from '@/utils/task-display'
 import IconStatus from './IconStatus.vue'
 
 const props = defineProps<{
@@ -93,32 +99,35 @@ const priorityClass = computed(() => {
 }
 
 .task-item:active {
-  transform: translateY(1px);
+  transform: scale(0.98);
 }
 
-/* Priority: weight and arrow color carry the hierarchy */
+/* Priority: a tinted arrow chip next to the title, readable at a glance */
+.task-item__priority {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+  color: var(--prio);
+  background: color-mix(in srgb, var(--prio) 14%, transparent);
+}
+
+.task-item--high { --prio: var(--v0-error); }
+.task-item--middle { --prio: var(--v0-primary); }
+.task-item--low { --prio: var(--v0-muted); }
+
 .task-item__title {
   font-weight: 500;
 }
 
 .task-item--high .task-item__title {
   font-weight: 600;
-}
-
-.task-item--high .task-item__arrow {
-  color: var(--v0-error);
-}
-
-.task-item--middle .task-item__arrow {
-  color: var(--v0-primary);
-}
-
-.task-item--low .task-item__title {
-  font-weight: 400;
-}
-
-.task-item--low .task-item__arrow {
-  color: var(--v0-muted);
 }
 
 /* Done / cancelled */
@@ -190,10 +199,18 @@ const priorityClass = computed(() => {
   color: var(--v0-muted);
 }
 
-.task-item__arrow {
-  font-size: 0.75rem;
-  line-height: 1rem;
-  font-weight: 600;
+.task-item__date--short {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .task-item__date--full {
+    display: none;
+  }
+
+  .task-item__date--short {
+    display: inline;
+  }
 }
 
 .task-item__pill {

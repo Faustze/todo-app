@@ -5,7 +5,9 @@
       <slot>No tasks match your filters</slot>
     </p>
     <p class="empty__hint">
-      Try another status or period, or clear the search.
+      <slot name="hint">
+        Try another status or period, or clear the search.
+      </slot>
     </p>
     <slot name="action" />
   </div>
