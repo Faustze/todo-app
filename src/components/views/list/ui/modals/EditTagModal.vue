@@ -24,7 +24,7 @@
         />
       </div>
 
-      <div class="flex justify-end gap-2 mt-5">
+      <div class="flex justify-end gap-2 mt-6">
         <UiButton variant="text" color="text" size="sm" @click="cancel">
           Cancel
         </UiButton>

@@ -14,7 +14,7 @@
             <span class="snackbar__text">{{ item.subject }}</span>
           </Snackbar.Content>
           <Snackbar.Close class="snackbar__close">
-            <IconX size="14" />
+            <PhX size="16" />
           </Snackbar.Close>
           <span class="snackbar__progress" />
         </Snackbar.Root>
@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { IconX } from '@tabler/icons-vue'
+import { PhX } from '@phosphor-icons/vue'
 import { Snackbar } from '@vuetify/v0'
 </script>
 
@@ -57,12 +57,12 @@ import { Snackbar } from '@vuetify/v0'
     display: flex;
     align-items: center;
     gap: 8px;
-    width: 290px;
-    padding: 10px 12px;
-    border-radius: 10px;
+    width: 320px;
+    padding: 12px;
+    border-radius: 12px;
     background: var(--v0-surface-2);
-    border: 1px solid;
-    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--v0-border);
+    box-shadow: 0 12px 32px -8px color-mix(in srgb, var(--v0-background) 40%, rgba(0, 0, 0, 0.4));
     overflow: hidden;
   }
 
@@ -70,65 +70,42 @@ import { Snackbar } from '@vuetify/v0'
     .snackbar {
       width: 100%;
       border-radius: 0;
-      border-left: none;
-      border-right: none;
-      border-bottom: none;
     }
   }
 
   .snackbar__dot {
     width: 8px;
     height: 8px;
-    border-radius: 50%;
+    border-radius: 2px;
     flex-shrink: 0;
   }
 
-  .snackbar--success {
-    border-color: color-mix(in srgb, var(--v0-mint) 45%, transparent);
-  }
-
   .snackbar--success .snackbar__dot {
-    background: var(--v0-mint);
-    box-shadow: 0 0 8px color-mix(in srgb, var(--v0-mint) 65%, transparent);
+    background: var(--v0-success);
   }
 
   .snackbar--success .snackbar__progress {
-    background: var(--v0-mint);
-  }
-
-  .snackbar--error {
-    border-color: color-mix(in srgb, var(--v0-error) 45%, transparent);
+    background: var(--v0-success);
   }
 
   .snackbar--error .snackbar__dot {
     background: var(--v0-error);
-    box-shadow: 0 0 8px color-mix(in srgb, var(--v0-error) 65%, transparent);
   }
 
   .snackbar--error .snackbar__progress {
     background: var(--v0-error);
   }
 
-  .snackbar--warning {
-    border-color: color-mix(in srgb, var(--v0-warning) 45%, transparent);
-  }
-
   .snackbar--warning .snackbar__dot {
     background: var(--v0-warning);
-    box-shadow: 0 0 8px color-mix(in srgb, var(--v0-warning) 65%, transparent);
   }
 
   .snackbar--warning .snackbar__progress {
     background: var(--v0-warning);
   }
 
-  .snackbar--info {
-    border-color: color-mix(in srgb, var(--v0-primary) 45%, transparent);
-  }
-
   .snackbar--info .snackbar__dot {
     background: var(--v0-primary);
-    box-shadow: 0 0 8px color-mix(in srgb, var(--v0-primary) 65%, transparent);
   }
 
   .snackbar--info .snackbar__progress {
@@ -140,7 +117,8 @@ import { Snackbar } from '@vuetify/v0'
     min-width: 0;
     display: flex;
     align-items: center;
-    font-size: 13px;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 
   .snackbar__text {
@@ -155,7 +133,7 @@ import { Snackbar } from '@vuetify/v0'
     border-radius: 0.25rem;
     cursor: pointer;
     color: var(--v0-muted);
-    transition: color 0.15s ease;
+    transition: color var(--dur-color) var(--ease-out);
     flex-shrink: 0;
   }
 
@@ -171,34 +149,38 @@ import { Snackbar } from '@vuetify/v0'
     bottom: 0;
     height: 2px;
     width: 100%;
+    opacity: 0.6;
+    /* Linear on purpose: the bar is a countdown, not a movement */
     animation: snackbar-progress 3.2s linear forwards;
     transform-origin: left;
   }
 
   @keyframes snackbar-progress {
     to {
-      width: 0%;
+      transform: scaleX(0);
     }
   }
 
   /* TransitionGroup animations */
   .snackbar-enter-active,
   .snackbar-leave-active {
-    transition: all 0.35s ease;
+    transition:
+      opacity var(--dur-color) var(--ease-out),
+      transform var(--dur-move) var(--ease-out);
   }
 
   .snackbar-enter-from {
     opacity: 0;
-    transform: translateY(16px) scale(0.96);
+    transform: translateY(16px) scale(0.98);
   }
 
   .snackbar-leave-to {
     opacity: 0;
-    transform: translateY(-0.5rem) scale(0.95);
+    transform: translateY(-8px) scale(0.98);
   }
 
   .snackbar-move {
-    transition: transform 0.3s ease;
+    transition: transform var(--dur-move) var(--ease-out);
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -54,24 +54,32 @@ const fieldId = useId()
   .ui-input {
     display: flex;
     flex-direction: column;
-    gap: 0.375rem;
+    gap: 0.5rem;
   }
 
   .ui-input__label {
     font-size: 0.875rem;
+    line-height: 1.25rem;
     font-weight: 500;
     color: var(--v0-text);
   }
 
   .ui-input__control {
-    padding: 0.5rem;
+    padding: 0.5rem 0.75rem;
     border: 1px solid var(--v0-border);
     border-radius: 0.5rem;
-    background: var(--v0-surface);
+    background: var(--v0-surface-2);
     color: var(--v0-text);
-    font-size: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
     outline: none;
-    transition: border-color 0.15s ease;
+    transition:
+      border-color var(--dur-color) var(--ease-out),
+      box-shadow var(--dur-color) var(--ease-out);
+  }
+
+  .ui-input__control::placeholder {
+    color: var(--v0-muted);
   }
 
   .ui-input__control:focus {
@@ -84,12 +92,14 @@ const fieldId = useId()
   }
 
   .ui-input__description {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
     color: var(--v0-muted);
   }
 
   .ui-input__error {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
     color: var(--v0-error);
   }
 </style>

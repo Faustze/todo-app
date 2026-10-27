@@ -70,15 +70,17 @@ function toggleStatus() {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
   padding: 0;
-  border-radius: 7px;
+  border-radius: 6px;
   border: 1.5px solid var(--v0-border-strong);
   background: transparent;
   cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition:
+    border-color var(--dur-color) var(--ease-out),
+    background var(--dur-color) var(--ease-out);
 }
 
 .checkbox--cancel {
@@ -88,18 +90,18 @@ function toggleStatus() {
 
 @media (hover: hover) {
   .checkbox:not(.checkbox--checked):not(.checkbox--cancel):hover {
-    border-color: var(--v0-mint);
-    box-shadow: 0 0 12px color-mix(in srgb, var(--v0-mint) 50%, transparent);
+    border-color: var(--v0-success);
+    background: color-mix(in srgb, var(--v0-success) 12%, transparent);
   }
 }
 
 .checkbox--checked {
-  background: var(--v0-mint);
-  border-color: var(--v0-mint);
+  background: var(--v0-success);
+  border-color: var(--v0-success);
 }
 
 .checkbox--pop {
-  animation: checkbox-pop 0.35s ease;
+  animation: checkbox-pop 350ms var(--ease-out);
 }
 
 @keyframes checkbox-pop {
@@ -107,7 +109,7 @@ function toggleStatus() {
     transform: scale(0.8);
   }
   60% {
-    transform: scale(1.14);
+    transform: scale(1.1);
   }
   100% {
     transform: scale(1);
@@ -117,11 +119,15 @@ function toggleStatus() {
 .checkbox__check {
   stroke-dasharray: 14;
   stroke-dashoffset: 14;
-  transition: stroke-dashoffset 0.32s ease 0.05s;
+  opacity: 0;
+  transition:
+    stroke-dashoffset var(--dur-color) var(--ease-out) 50ms,
+    opacity var(--dur-color) var(--ease-out);
 }
 
 .checkbox--checked .checkbox__check {
   stroke-dashoffset: 0;
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {

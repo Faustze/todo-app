@@ -6,31 +6,37 @@
   flex-direction: column;
 }
 
-/* Section label — uppercase muted heading */
+/* Section label — small muted heading in sentence case */
 .panel-label {
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
   color: var(--v0-muted);
 }
 
 /* Reset button at the bottom */
 .panel-reset {
   width: 100%;
-  padding: 0.2rem;
+  padding: 0.25rem;
   font-size: 0.75rem;
+  line-height: 1rem;
   border: none;
   background: transparent;
   color: var(--v0-muted);
   cursor: pointer;
-  border-radius: 0.2rem;
-  transition: all 0.15s ease;
+  border-radius: 0.25rem;
+  transition:
+    color var(--dur-color) var(--ease-out),
+    background var(--dur-color) var(--ease-out);
 }
 
 .panel-reset:hover:not(:disabled) {
   color: var(--v0-error);
   background: color-mix(in srgb, var(--v0-error) 8%, transparent);
+}
+
+.panel-reset:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .panel-reset:disabled {
