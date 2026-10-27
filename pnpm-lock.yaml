@@ -11,9 +11,12 @@ importers:
       '@fontsource-variable/geist':
         specifier: ^5.2.9
         version: 5.2.9
-      '@tabler/icons-vue':
-        specifier: ^3.44.0
-        version: 3.44.0(vue@3.5.34(typescript@6.0.3))
+      '@fontsource-variable/geist-mono':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@phosphor-icons/vue':
+        specifier: ^2.2.1
+        version: 2.2.1(vue@3.5.34(typescript@6.0.3))
       '@unocss/reset':
         specifier: ^66.6.8
         version: 66.6.8
@@ -274,6 +277,9 @@ packages:
     resolution: {integrity: sha512-rZAP3aVgB9ds9KOeUSL+zZ21hPmo8dh6fnIFwRQj5EAZl9gzR7wxYbYXYysAM8CTqGmUGyp2S4kUdV17MnGuWQ==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
+  '@fontsource-variable/geist-mono@5.3.0':
+    resolution: {integrity: sha512-vBbuwDEo9AkrqADMXOrlAR3DFcJi4/JxeuU43FoiQERnNwsfXNnvxvReZG02cQKmyk4DZkZdBZX3oTDvy2zBAw==}
+
   '@fontsource-variable/geist@5.2.9':
     resolution: {integrity: sha512-TP+QSBG3wxKGPE33CbMy/L0Nu3qvJ6Fy81Yc4LnQ95xH+i+cfEp8fyU8/kfV14YwszxIFPhnoMTbjL71waVpyQ==}
 
@@ -466,6 +472,12 @@ packages:
   '@oxc-project/types@0.130.0':
     resolution: {integrity: sha512-ibD2usx9JRu7f5pu2tMKMI4cpA4NgXJQoYRP4pQ7Pxmn1l6k/53qWtQWZayhYy3X4QZkt90Ot+mJEaeXouio6Q==}
 
+  '@phosphor-icons/vue@2.2.1':
+    resolution: {integrity: sha512-3RNg1utc2Z5RwPKWFkW3eXI/0BfQAwXgtFxPUPeSzi55jGYUq16b+UqcgbKLazWFlwg5R92OCLKjDiJjeiJcnA==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      vue: '>=3.2.39'
+
   '@pkgr/core@0.2.9':
     resolution: {integrity: sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
@@ -583,14 +595,6 @@ packages:
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^9.0.0 || ^10.0.0
-
-  '@tabler/icons-vue@3.44.0':
-    resolution: {integrity: sha512-mABxdhq3SWo2ZI77w/t0reiOGNim/SEDSlfMT5PeiWA3cZwnZoQUYRiq/X6SgeTaA7LzCTX0IuvQWVf4RWOvsg==}
-    peerDependencies:
-      vue: '>=3.0.1'
-
-  '@tabler/icons@3.44.0':
-    resolution: {integrity: sha512-Wn0AOZG9sg0L+bjfMqq4eNhC6pQjIrk94LvvWYNYkY8KH8wC3YILRzQlrnVJc4FUeMxH/AK97QsYCX35H3LndA==}
 
   '@tybys/wasm-util@0.10.2':
     resolution: {integrity: sha512-RoBvJ2X0wuKlWFIjrwffGw1IqZHKQqzIchKaadZZfnNpsAYp2mM0h36JtPCjNDAHGgYez/15uMBpfGwchhiMgg==}
@@ -2447,6 +2451,8 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
+  '@fontsource-variable/geist-mono@5.3.0': {}
+
   '@fontsource-variable/geist@5.2.9': {}
 
   '@humanfs/core@0.19.2':
@@ -2575,6 +2581,10 @@ snapshots:
 
   '@oxc-project/types@0.130.0': {}
 
+  '@phosphor-icons/vue@2.2.1(vue@3.5.34(typescript@6.0.3))':
+    dependencies:
+      vue: 3.5.34(typescript@6.0.3)
+
   '@pkgr/core@0.2.9': {}
 
   '@polka/url@1.0.0-next.29': {}
@@ -2645,13 +2655,6 @@ snapshots:
       espree: 10.4.0
       estraverse: 5.3.0
       picomatch: 4.0.4
-
-  '@tabler/icons-vue@3.44.0(vue@3.5.34(typescript@6.0.3))':
-    dependencies:
-      '@tabler/icons': 3.44.0
-      vue: 3.5.34(typescript@6.0.3)
-
-  '@tabler/icons@3.44.0': {}
 
   '@tybys/wasm-util@0.10.2':
     dependencies:

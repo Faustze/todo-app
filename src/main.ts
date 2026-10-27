@@ -7,6 +7,7 @@ import 'virtual:uno.css'
 
 import '@unocss/reset/normalize.css'
 import '@fontsource-variable/geist/index.css'
+import '@fontsource-variable/geist-mono/index.css'
 import '@/assets/styles/style.css'
 
 const app = createApp(App)

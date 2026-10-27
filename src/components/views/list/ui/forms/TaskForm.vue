@@ -1,7 +1,7 @@
 <template>
   <form class="task-form" @submit.prevent="handleSubmit">
     <button type="button" class="task-form__close" @click="handleCancel">
-      <IconX size="18" />
+      <PhX size="18" />
     </button>
 
     <h2 class="task-form__heading">
@@ -14,7 +14,7 @@
       :error="v$.title.$error"
       class="task-form__field"
     >
-      <label :for="titleId" class="task-form__label mono">TITLE</label>
+      <label :for="titleId" class="task-form__label">Title</label>
       <Input.Control class="task-form__input" placeholder="Enter task title" />
       <Input.Error>
         <span
@@ -33,7 +33,7 @@
       :error="v$.description.$error"
       class="task-form__field"
     >
-      <label :for="descId" class="task-form__label mono">DESCRIPTION</label>
+      <label :for="descId" class="task-form__label">Description</label>
       <Input.Control
         as="textarea"
         class="task-form__textarea"
@@ -52,12 +52,12 @@
     </Input.Root>
 
     <div v-if="mode === 'edit'" class="task-form__field">
-      <label :for="statusId" class="task-form__label mono">STATUS</label>
+      <label :for="statusId" class="task-form__label">Status</label>
       <UiSelect :id="statusId" v-model="form.status" :options="statusOptions" placeholder="Select status..." />
     </div>
 
     <div class="task-form__field">
-      <span class="task-form__label mono">PRIORITY</span>
+      <span class="task-form__label">Priority</span>
       <div class="task-form__priority-grid">
         <button
           v-for="opt in priorityOptions"
@@ -73,7 +73,7 @@
     </div>
 
     <div class="task-form__field">
-      <span class="task-form__label mono">TAG</span>
+      <span class="task-form__label">Tag</span>
       <div class="task-form__tag-grid">
         <button
           v-for="tag in tags ?? []"
@@ -94,7 +94,7 @@
         Cancel
       </button>
       <button type="submit" class="task-form__submit" :disabled="form.title.trim().length < 3">
-        {{ mode === 'create' ? 'Create' : 'Save' }}
+        {{ mode === 'create' ? 'Create task' : 'Save changes' }}
       </button>
     </div>
   </form>
@@ -104,7 +104,7 @@
 import type { TagColorKey } from '@/constants/tag'
 import type { TaskTag } from '@/types/tag'
 import type { TaskFormValues, TaskPriority, TaskStatus } from '@/types/task'
-import { IconX } from '@tabler/icons-vue'
+import { PhX } from '@phosphor-icons/vue'
 import { useVuelidate } from '@vuelidate/core'
 import { helpers, maxLength, minLength, required } from '@vuelidate/validators'
 import { Input } from '@vuetify/v0'
@@ -138,8 +138,7 @@ const form = reactive<TaskFormValues>({
 function tagPillStyle(color: TagColorKey) {
   return {
     color: `var(--v0-${color})`,
-    borderColor: `color-mix(in srgb, var(--v0-${color}) 45%, transparent)`,
-    background: `color-mix(in srgb, var(--v0-${color}) 10%, transparent)`,
+    background: `color-mix(in srgb, var(--v0-${color}) 12%, transparent)`,
   }
 }
 
@@ -169,7 +168,7 @@ const rules = {
 const v$ = useVuelidate(rules, form)
 
 const statusOptions: Array<{ id: TaskStatus, label: string }> = [
-  { id: 'in-progress', label: 'In Progress' },
+  { id: 'in-progress', label: 'In progress' },
   { id: 'done', label: 'Done' },
   { id: 'cancel', label: 'Cancelled' },
 ]
@@ -231,19 +230,21 @@ watch(() => props.initial, (val) => {
 
   .task-form__close {
     position: absolute;
-    top: 22px;
-    right: 22px;
+    top: 24px;
+    right: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
     border: none;
-    border-radius: 7px;
+    border-radius: 6px;
     background: transparent;
     color: var(--v0-muted);
     cursor: pointer;
-    transition: background 0.15s ease, color 0.15s ease;
+    transition:
+      background var(--dur-color) var(--ease-out),
+      color var(--dur-color) var(--ease-out);
   }
 
   .task-form__close:hover {
@@ -251,149 +252,209 @@ watch(() => props.initial, (val) => {
     color: var(--v0-text);
   }
 
+  .task-form__close:active {
+    transform: scale(0.98);
+  }
+
   .task-form__heading {
-    font-size: 16px;
-    font-weight: 650;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     color: var(--v0-text);
-    padding-right: 26px;
+    padding-right: 32px;
   }
 
   .task-form__field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
 
   .task-form__label {
-    font-size: 10.5px;
-    letter-spacing: 0.1em;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 500;
     color: var(--v0-muted);
   }
 
   .task-form__input,
   .task-form__textarea {
-    padding: 9px 12px;
-    border: none;
+    padding: 8px 12px;
+    border: 1px solid var(--v0-border);
     border-radius: 8px;
     background: var(--v0-surface-2);
     color: var(--v0-text);
-    font-size: 13.5px;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
     outline: none;
-    transition: box-shadow 0.2s ease;
+    transition:
+      border-color var(--dur-color) var(--ease-out),
+      box-shadow var(--dur-color) var(--ease-out);
+  }
+
+  .task-form__input::placeholder,
+  .task-form__textarea::placeholder {
+    color: var(--v0-muted);
   }
 
   .task-form__textarea {
     resize: vertical;
-    min-height: 52px;
+    min-height: 64px;
     font-family: inherit;
   }
 
   .task-form__input[data-focused],
   .task-form__textarea[data-focused] {
-    box-shadow:
-      0 0 0 3px color-mix(in srgb, var(--v0-primary) 18%, transparent),
-      0 0 18px color-mix(in srgb, var(--v0-primary) 15%, transparent);
+    border-color: var(--v0-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--v0-primary) 20%, transparent);
   }
 
   .task-form__input[data-state="invalid"],
   .task-form__textarea[data-state="invalid"] {
-    box-shadow: 0 0 0 1.5px var(--v0-error);
+    border-color: var(--v0-error);
   }
 
   .task-form__error {
-    font-size: 11px;
+    font-size: 0.75rem;
+    line-height: 1rem;
     color: var(--v0-error);
   }
 
   .task-form__priority-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
+    gap: 8px;
   }
 
   .task-form__priority-btn {
-    padding: 8px;
+    padding: 8px 12px;
     border-radius: 8px;
     border: 1px solid var(--v0-border);
     background: var(--v0-surface-2);
     color: var(--v0-muted);
-    font-size: 12.5px;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+    transition:
+      border-color var(--dur-color) var(--ease-out),
+      background var(--dur-color) var(--ease-out),
+      color var(--dur-color) var(--ease-out);
   }
 
-  .task-form__priority-btn--low {
-    border-color: color-mix(in srgb, var(--v0-primary) 45%, transparent);
-    background: color-mix(in srgb, var(--v0-primary) 13%, transparent);
+  .task-form__priority-btn:hover {
+    color: var(--v0-text);
+    border-color: var(--v0-border-strong);
+  }
+
+  .task-form__priority-btn:active {
+    transform: scale(0.98);
+  }
+
+  .task-form__priority-btn--low,
+  .task-form__priority-btn--low:hover {
+    border-color: color-mix(in srgb, var(--v0-muted) 60%, transparent);
+    background: color-mix(in srgb, var(--v0-muted) 14%, transparent);
+    color: var(--v0-text);
+  }
+
+  .task-form__priority-btn--middle,
+  .task-form__priority-btn--middle:hover {
+    border-color: color-mix(in srgb, var(--v0-primary) 60%, transparent);
+    background: color-mix(in srgb, var(--v0-primary) 14%, transparent);
     color: var(--v0-primary);
   }
 
-  .task-form__priority-btn--middle {
-    border-color: color-mix(in srgb, var(--v0-warning) 45%, transparent);
-    background: color-mix(in srgb, var(--v0-warning) 13%, transparent);
-    color: var(--v0-warning);
-  }
-
-  .task-form__priority-btn--high {
-    border-color: color-mix(in srgb, var(--v0-error) 45%, transparent);
-    background: color-mix(in srgb, var(--v0-error) 13%, transparent);
+  .task-form__priority-btn--high,
+  .task-form__priority-btn--high:hover {
+    border-color: color-mix(in srgb, var(--v0-error) 60%, transparent);
+    background: color-mix(in srgb, var(--v0-error) 14%, transparent);
     color: var(--v0-error);
   }
 
   .task-form__tag-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
   }
 
   .task-form__tag-pill {
-    padding: 4px 12px;
-    border-radius: 99px;
-    border: 1px solid;
-    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    font-size: 0.75rem;
+    line-height: 1rem;
     font-weight: 500;
     cursor: pointer;
     opacity: 0.6;
-    transition: opacity 0.15s ease, box-shadow 0.15s ease;
+    transition:
+      opacity var(--dur-color) var(--ease-out),
+      border-color var(--dur-color) var(--ease-out);
   }
 
-  .task-form__tag-pill--active {
+  .task-form__tag-pill:hover {
+    opacity: 0.85;
+  }
+
+  .task-form__tag-pill:active {
+    transform: scale(0.98);
+  }
+
+  .task-form__tag-pill--active,
+  .task-form__tag-pill--active:hover {
     opacity: 1;
-    box-shadow: 0 0 10px color-mix(in srgb, currentcolor 45%, transparent);
+    border-color: currentcolor;
   }
 
   .task-form__actions {
     display: flex;
     justify-content: flex-end;
     gap: 8px;
-    margin-top: 4px;
+    margin-top: 8px;
   }
 
   .task-form__cancel {
-    padding: 8px 14px;
-    border-radius: 9px;
+    padding: 8px 12px;
+    border-radius: 8px;
     border: none;
     background: transparent;
     color: var(--v0-muted);
-    font-size: 13px;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: color 0.15s ease;
+    transition:
+      background var(--dur-color) var(--ease-out),
+      color var(--dur-color) var(--ease-out);
   }
 
   .task-form__cancel:hover {
     color: var(--v0-text);
+    background: color-mix(in srgb, var(--v0-text) 6%, transparent);
+  }
+
+  .task-form__cancel:active {
+    transform: scale(0.98);
   }
 
   .task-form__submit {
-    padding: 8px 18px;
-    border-radius: 9px;
-    border: 1px solid color-mix(in srgb, var(--v0-primary) 60%, transparent);
-    background: linear-gradient(180deg, var(--v0-primary), var(--v0-primary-deep));
-    color: #fff;
-    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    background: var(--v0-primary);
+    color: var(--v0-on-primary);
+    font-size: 1rem;
+    line-height: 1.5rem;
     font-weight: 600;
     cursor: pointer;
-    transition: opacity 0.2s ease, transform 0.18s ease;
+    transition:
+      background var(--dur-color) var(--ease-out),
+      opacity var(--dur-color) var(--ease-out);
+  }
+
+  .task-form__submit:not(:disabled):hover {
+    background: var(--v0-primary-deep);
   }
 
   .task-form__submit:disabled {
@@ -402,6 +463,6 @@ watch(() => props.initial, (val) => {
   }
 
   .task-form__submit:not(:disabled):active {
-    transform: scale(0.97);
+    transform: scale(0.98);
   }
 </style>
