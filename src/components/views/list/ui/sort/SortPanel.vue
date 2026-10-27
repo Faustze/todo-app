@@ -8,13 +8,13 @@
     </Select.Activator>
 
     <Select.Content
-      class="p-3 rounded-lg border border-divider bg-surface shadow-lg"
+      class="p-3 rounded-xl border border-divider bg-surface shadow-lg"
       :style="{ minWidth: '180px' }"
     >
       <div class="panel-section">
         <!-- Sort by field -->
         <div>
-          <span class="panel-label flex justify-center">Sort</span>
+          <span class="panel-label flex justify-center">Sort by</span>
           <div class="flex flex-col gap-1 mt-2">
             <UiButton
               v-for="(opt, idx) in sortOptions"
@@ -56,7 +56,7 @@
 
 <script setup lang="ts">
 import type { SortBy } from '@/types/sort'
-import { IconCalendar, IconFlag, IconSortAscending, IconSortDescending } from '@tabler/icons-vue'
+import { PhCalendarBlank, PhFlag, PhSortAscending, PhSortDescending } from '@phosphor-icons/vue'
 import { Select } from '@vuetify/v0'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
@@ -70,12 +70,12 @@ const { setSortBy, toggleSortDir } = store
 const isOpen = ref<string>('false')
 
 const sortOptions = [
-  { id: 'date' as SortBy, label: 'Date', icon: IconCalendar },
-  { id: 'priority' as SortBy, label: 'Priority', icon: IconFlag },
+  { id: 'date' as SortBy, label: 'Date', icon: PhCalendarBlank },
+  { id: 'priority' as SortBy, label: 'Priority', icon: PhFlag },
 ]
 
 const sortDirIcon = computed(() =>
-  sortDir.value === 'asc' ? IconSortAscending : IconSortDescending,
+  sortDir.value === 'asc' ? PhSortAscending : PhSortDescending,
 )
 
 const activeLabel = computed(() =>
@@ -106,20 +106,27 @@ function onReset(): void {
 .sort-trigger {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 9px 13px;
-  border-radius: 9px;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
   border: 1px solid var(--v0-border);
   background: var(--v0-surface);
   color: var(--v0-text);
-  font-size: 13px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background var(--dur-color) var(--ease-out),
+    border-color var(--dur-color) var(--ease-out);
 }
 
 .sort-trigger:hover {
-  border-color: color-mix(in srgb, var(--v0-primary) 50%, transparent);
-  box-shadow: 0 0 12px color-mix(in srgb, var(--v0-primary) 20%, transparent);
+  background: var(--v0-surface-2);
+  border-color: var(--v0-border-strong);
+}
+
+.sort-trigger:active {
+  transform: scale(0.98);
 }
 
 .sort-trigger__arrow {

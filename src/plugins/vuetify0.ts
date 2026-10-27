@@ -8,7 +8,7 @@ export default function vuetify0Plugin(app: App): void {
 
   app.use(
     createThemePlugin({
-      default: 'dark',
+      default: globalThis.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark',
       target: 'html',
       persist: true,
       themes: {

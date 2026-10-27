@@ -35,19 +35,19 @@ const mobile = toRef(() => breakpoints.mdAndDown.value)
     position: relative;
     width: min(440px, 100%);
     max-height: 85vh;
-    padding: 22px;
+    padding: 24px;
     background: var(--v0-surface);
-    border: 1px solid var(--v0-border-strong);
-    border-radius: 14px;
-    box-shadow: 0 24px 80px -12px rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--v0-border);
+    border-radius: 16px;
+    box-shadow: 0 24px 80px -12px color-mix(in srgb, var(--v0-background) 40%, rgba(0, 0, 0, 0.5));
     overflow: auto;
     opacity: 0;
-    transform: translateY(16px) scale(0.96);
+    transform: translateY(16px) scale(0.98);
     transition:
-      opacity 0.25s ease,
-      transform 0.32s cubic-bezier(0.16, 0.84, 0.3, 1),
-      overlay 0.32s allow-discrete,
-      display 0.32s allow-discrete;
+      opacity var(--dur-color) var(--ease-out),
+      transform var(--dur-move) var(--ease-out),
+      overlay var(--dur-move) allow-discrete,
+      display var(--dur-move) allow-discrete;
   }
 
   .ui-modal[open] {
@@ -58,7 +58,7 @@ const mobile = toRef(() => breakpoints.mdAndDown.value)
   @starting-style {
     .ui-modal[open] {
       opacity: 0;
-      transform: translateY(16px) scale(0.96);
+      transform: translateY(16px) scale(0.98);
     }
   }
 
@@ -66,7 +66,10 @@ const mobile = toRef(() => breakpoints.mdAndDown.value)
     background: color-mix(in srgb, #000 55%, transparent);
     backdrop-filter: blur(8px);
     opacity: 0;
-    transition: opacity 0.25s ease, overlay 0.25s allow-discrete, display 0.25s allow-discrete;
+    transition:
+      opacity var(--dur-color) var(--ease-out),
+      overlay var(--dur-color) allow-discrete,
+      display var(--dur-color) allow-discrete;
   }
 
   .ui-modal[open]::backdrop {

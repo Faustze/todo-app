@@ -12,7 +12,7 @@ export default defineConfig({
     borderRadius: radius,
     fontFamily: {
       sans: '"Geist Variable", ui-sans-serif, system-ui, -apple-system, sans-serif',
-      mono: '"JetBrains Mono", ui-monospace, Consolas, monospace',
+      mono: '"Geist Mono Variable", ui-monospace, Consolas, monospace',
     },
   },
 

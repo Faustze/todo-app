@@ -41,15 +41,21 @@ const colorKeys = Object.keys(paletteColors) as TagColorKey[]
   .tag-color-palette__swatch {
     width: 2rem;
     height: 2rem;
-    border-radius: 50%;
+    border-radius: 8px;
     background: var(--swatch-color);
     border: 2px solid transparent;
     cursor: pointer;
-    transition: transform 0.15s ease, border-color 0.15s ease;
+    transition:
+      transform var(--dur-color) var(--ease-out),
+      border-color var(--dur-color) var(--ease-out);
   }
 
   .tag-color-palette__swatch:hover {
-    transform: scale(1.15);
+    transform: scale(1.1);
+  }
+
+  .tag-color-palette__swatch:active {
+    transform: scale(0.98);
   }
 
   .tag-color-palette__swatch.is-selected {

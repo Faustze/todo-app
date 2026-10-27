@@ -15,6 +15,11 @@ function formatDate(date: Date): string {
   return displayDate(date)
 }
 
+// "Oct 27": fits next to the title on phone width
+function formatShortDate(date: Date): string {
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+}
+
 function statusColor(status: TaskStatus): TaskStatusConfig['color'] {
   return TASK_STATUSES[status]?.color ?? 'primary'
 }
@@ -37,4 +42,4 @@ interface TaskPriorityConfig {
   color: 'primary' | 'success' | 'error' | 'warning'
 }
 
-export { formatDate, priorityColor, priorityIcon, priorityLabel, statusColor, statusLabel }
+export { formatDate, formatShortDate, priorityColor, priorityIcon, priorityLabel, statusColor, statusLabel }
