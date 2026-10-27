@@ -13,7 +13,7 @@
 
     <Button.Loading>
       <span class="ui-button__spinner">
-        <IconLoader size="22" />
+        <PhCircleNotch size="20" />
       </span>
     </Button.Loading>
     <Button.HiddenInput />
@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import type { ThemeColorKey } from '@/tokens/colors'
-import { IconLoader } from '@tabler/icons-vue'
+import { PhCircleNotch } from '@phosphor-icons/vue'
 import { Button } from '@vuetify/v0'
 import { computed } from 'vue'
 
@@ -65,10 +65,14 @@ const colorStyle = computed(() => {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0.25rem;
-    font-weight: 500;
+    border-radius: 0.5rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition:
+      background var(--dur-color) var(--ease-out),
+      border-color var(--dur-color) var(--ease-out),
+      color var(--dur-color) var(--ease-out),
+      opacity var(--dur-color) var(--ease-out);
     border: 1px solid transparent;
   }
 
@@ -109,8 +113,8 @@ const colorStyle = computed(() => {
   /* === HOVER === */
   @media (hover: hover) {
     .ui-button[data-variant="solid"]:hover {
-      background: color-mix(in srgb, var(--btn-color) 80%, black);
-      border-color: color-mix(in srgb, var(--btn-color) 80%, black);
+      background: color-mix(in srgb, var(--btn-color) 85%, var(--v0-text));
+      border-color: color-mix(in srgb, var(--btn-color) 85%, var(--v0-text));
     }
 
     .ui-button[data-variant="outline"]:hover,
@@ -122,38 +126,49 @@ const colorStyle = computed(() => {
     .ui-button[data-variant="text"]:hover,
     .ui-button[data-variant="icon"]:hover {
       color: var(--btn-hover-color);
+      background: color-mix(in srgb, var(--v0-text) 6%, transparent);
     }
   }
 
+  .ui-button:not([data-disabled]):active {
+    transform: scale(0.98);
+  }
+
   .ui-button[data-size="extra-sm"] {
-    padding: 0.25rem 0.625rem;
+    padding: 0.25rem 0.5rem;
     font-size: 0.75rem;
+    line-height: 1rem;
   }
 
   .ui-button[data-size="sm"] {
-    padding: 0.375rem 0.75rem;
+    padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 
+  /* Main button: 8px by 12px, text-base semibold */
   .ui-button[data-size="md"] {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.75rem;
     font-size: 1rem;
+    line-height: 1.5rem;
   }
 
   .ui-button[data-size="lg"] {
     padding: 0.75rem 1.5rem;
     font-size: 1.125rem;
+    line-height: 1.75rem;
   }
 
   /* Responsive buttons: shrink on mobile */
   @media (max-width: 599px) {
     .ui-button[data-size="md"] {
-      padding: 0.375rem 0.75rem;
       font-size: 0.875rem;
+      line-height: 1.25rem;
     }
     .ui-button[data-size="sm"] {
-      padding: 0.25rem 0.625rem;
+      padding: 0.25rem 0.5rem;
       font-size: 0.75rem;
+      line-height: 1rem;
     }
   }
 

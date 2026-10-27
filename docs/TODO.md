@@ -13,7 +13,7 @@
 | Filtering by status (FilterPanel)                          | ✅ Done        |
 | Filtering by period (FilterPanel: day/week/month)          | ✅ Done        |
 | Detail page (/task/:id)                                    | ✅ Done        |
-| Typography (JetBrains Mono, adaptive base size)            | ✅ Done        |
+| Typography (Geist + Geist Mono, adaptive base size)        | ✅ Done        |
 | Vuetify0 components (Button, Input, Select, Modal, Toggle) | ✅ Done        |
 | Toast/notification (Snackbar v0 + useSnackbar)             | ✅ Done        |
 | UiButton: layout-shift fix + custom color + responsive     | ✅ Done        |

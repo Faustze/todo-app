@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-4">
     <div class="flex justify-start">
       <UiButton variant="icon" color="text" @click="router.back()">
-        <IconArrowLeft size="20" />
+        <PhArrowLeft size="20" />
       </UiButton>
     </div>
 
@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { IconArrowLeft } from '@tabler/icons-vue'
+import { PhArrowLeft } from '@phosphor-icons/vue'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import UiButton from '@/components/ui/UiButton.vue'

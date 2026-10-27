@@ -1,33 +1,33 @@
 <template>
   <div v-if="task" class="task-view">
-    <h2 class="task-view__title text-xl font-semibold text-text m-0 leading-tight break-words">
+    <h2 class="task-view__title text-xl font-semibold text-text m-0 break-words">
       {{ task.title }}
     </h2>
 
-    <p v-if="task.description" class="task-view__description text-sm text-muted m-0 leading-relaxed">
+    <p v-if="task.description" class="task-view__description text-sm text-muted m-0">
       {{ task.description }}
     </p>
 
     <div class="task-view__meta">
       <div class="task-view__field">
-        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Status</span>
-        <span class="task-view__value" :class="statusClass">
+        <span class="task-view__label text-xs font-medium text-muted">Status</span>
+        <span class="task-view__value text-sm" :class="statusClass">
           {{ statusLabel(task.status) }}
         </span>
       </div>
       <div class="task-view__field">
-        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Priority</span>
-        <span class="task-view__value" :class="priorityClass">
+        <span class="task-view__label text-xs font-medium text-muted">Priority</span>
+        <span class="task-view__value text-sm" :class="priorityClass">
           {{ priorityLabel(task.priority) }}
         </span>
       </div>
       <div class="task-view__field">
-        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Created</span>
-        <span class="task-view__value text-sm text-text">{{ formatDate(task.createdAtUtc) }}</span>
+        <span class="task-view__label text-xs font-medium text-muted">Created</span>
+        <span class="task-view__value mono text-sm text-text">{{ formatDate(task.createdAtUtc) }}</span>
       </div>
       <div class="task-view__field">
-        <span class="task-view__label text-xs font-medium uppercase tracking-wider text-muted">Updated</span>
-        <span class="task-view__value text-sm text-text">{{ formatDate(task.updatedAtUtc) }}</span>
+        <span class="task-view__label text-xs font-medium text-muted">Updated</span>
+        <span class="task-view__value mono text-sm text-text">{{ formatDate(task.updatedAtUtc) }}</span>
       </div>
     </div>
   </div>
@@ -70,30 +70,29 @@ const priorityClass = computed(() => {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 1.25rem;
+    padding: 1.5rem;
     border: 1px solid var(--v0-border);
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     background: var(--v0-surface);
   }
 
   .task-view__title {
     color: var(--v0-text);
     margin: 0;
-    line-height: 1.3;
     word-break: break-word;
   }
 
   .task-view__description {
     color: var(--v0-muted);
     margin: 0;
-    line-height: 1.5;
+    max-width: 65ch;
   }
 
   .task-view__meta {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-    padding-top: 0.75rem;
+    gap: 1rem;
+    padding-top: 1rem;
     border-top: 1px solid var(--v0-border);
   }
 
@@ -105,8 +104,6 @@ const priorityClass = computed(() => {
 
   .task-view__label {
     font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
     color: var(--v0-muted);
   }
 
@@ -126,6 +123,6 @@ const priorityClass = computed(() => {
     text-align: center;
     color: var(--v0-muted);
     border: 1px solid var(--v0-border);
-    border-radius: 0.5rem;
+    border-radius: 1rem;
   }
 </style>
