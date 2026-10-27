@@ -6,6 +6,13 @@ updates:
       interval: "weekly"
       day: "monday"
     open-pull-requests-limit: 10
+    ignore:
+      # TS 7 is not supported by typescript-eslint and vue-tsc yet
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+      # Types should match the Node major used in CI (22)
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
     groups:
       dev-dependencies:
         dependency-type: "development"
